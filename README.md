@@ -12,6 +12,7 @@
 ├── apps/                  # アプリ/機能ごとの詳細ナレッジ
 │   ├── herdr.md           # ターミナルワークスペースマネージャ (Omarchy 同梱)
 │   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + fcitx5
+│   ├── voxtype.md         # 音声入力(ディクテーション)
 │   └── hyprland-input.md  # キーボード配列 / タッチパッド
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)

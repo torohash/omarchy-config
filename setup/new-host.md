@@ -76,7 +76,40 @@ fcitx5-remote -t          # 戻す
 
 ---
 
-## 2. herdr (ターミナルワークスペースマネージャ)
+## 2. 音声入力 (Voxtype) — 任意
+
+Omarchy の初回通知から入れられる。**既定は英語専用**なので日本語化が必須。
+
+```bash
+omarchy voxtype install     # 通知クリックでも同じ
+
+# 日本語化 (モデルと言語の両方)
+voxtype setup --download --model small --activate   # 多言語モデル 466MB
+voxtype config set whisper.language ja
+
+# 無音の幻覚対策 (VAD は既定 OFF)
+voxtype setup vad                                   # Silero 0.8MB
+voxtype config set vad.enabled true
+voxtype config set vad.backend whisper
+
+# 内蔵GPU があれば Vulkan 加速
+sudo voxtype setup gpu --enable
+
+systemctl --user restart voxtype
+```
+
+確認:
+
+```bash
+voxtype setup check          # All checks passed
+voxtype setup gpu --status   # GPU (Vulkan) - active
+```
+
+→ 詳細: [../apps/voxtype.md](../apps/voxtype.md)
+
+---
+
+## 3. herdr (ターミナルワークスペースマネージャ)
 
 Omarchy 同梱。**キーは herdr 純正デフォルトに戻し**、agent/workspace 移動だけ追加する。
 (Omarchy 版は `ctrl+space` prefix で IME と衝突するため)
@@ -105,7 +138,7 @@ herdr server reload-config    # => applied
 
 ---
 
-## 3. Hyprland input (キーボード配列 / タッチパッド)
+## 4. Hyprland input (キーボード配列 / タッチパッド)
 
 `~/.config/hypr/input.lua` の末尾に追記:
 
@@ -133,12 +166,13 @@ hyprctl getoption input:touchpad:natural_scroll
 
 ---
 
-## 4. インストールされるパッケージ一覧
+## 5. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
 | `fcitx5`, `fcitx5-gtk`, `fcitx5-qt` | 5.1.22-1 等 | Omarchy 標準 |
 | `fcitx5-mozc` | 3.34.6239.2-1 | 日本語入力 |
+| `voxtype-bin` + `wtype` (任意) | 1.0.1-1 | 音声入力 (Omarchy リポジトリ) |
 | `keyd` (任意) | 2.6.0-5 | Caps Lock を IME 切替に remap |
 | `fcitx5-material-color` (任意) | 0.2.1-2 | 既製テーマ。自作テーマを使うなら不要 |
 
@@ -146,19 +180,20 @@ hyprctl getoption input:touchpad:natural_scroll
 
 ---
 
-## 5. 変更ファイル一覧
+## 6. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
 | `~/.config/fcitx5/profile` | keyboard-us + mozc |
 | `~/.config/fcitx5/conf/classicui.conf` | Theme=omarchy-tokyo-night |
 | `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | 自作候補ウィンドウテーマ (assets/ からコピー) |
+| `~/.config/voxtype/config.toml` | model=small, language=ja, VAD有効 |
 | `~/.config/herdr/config.toml` | 純正キー + agent/workspace 移動 |
 | `~/.config/hypr/input.lua` | kb_layout=us, natural_scroll=true |
 
 ---
 
-## 6. 更新で戻されるので注意
+## 7. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。
