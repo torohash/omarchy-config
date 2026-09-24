@@ -166,7 +166,45 @@ hyprctl getoption input:touchpad:natural_scroll
 
 ---
 
-## 5. インストールされるパッケージ一覧
+## 5. 表示倍率 (Display パネルのスライダー化) — 任意
+
+Omarchy の Display パネルの SCALE は 6個の固定ボタン (`1/1.25/1.6/2/3/4`)。
+中間が欲しいので **11段のスライダーに差し替える**。
+
+```bash
+# 1. 雛形を複製 (bar widget の差し替えまで自動)
+omarchy plugin clone omarchy.monitor
+
+# 2. 改造版 Panel.qml を上書き
+cp ~/dev/config/assets/torohash.monitor/Panel.qml \
+   ~/.config/omarchy/plugins/$(whoami).monitor/Panel.qml
+
+# 3. QML は hot-reload されないので shell 再起動
+omarchy restart shell
+```
+
+倍率を変える (パネルのスライダーでも CLI でも可):
+
+```bash
+omarchy hyprland monitor scaling 1.8    # 数値指定。`up`/`down` は 1.6→2 に飛ぶので不可
+hyprctl monitors -j | jq '.[0].scale'   # => 1.8
+```
+
+**注意:** Hyprland が取れる倍率は `gcd(w*120, h*120)` の約数のみ。
+2880x1800 では 1.6〜2.0 の中間は **1.667 / 1.8 / 1.875** の3つだけ。
+
+確認:
+
+```bash
+omarchy plugin validate ~/.config/omarchy/plugins/$(whoami).monitor   # => exit 0
+omarchy-shell omarchy.monitor state | jq -r .scale                    # => 1.8
+```
+
+→ 詳細: [../apps/display-scale.md](../apps/display-scale.md)
+
+---
+
+## 6. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
@@ -180,7 +218,7 @@ hyprctl getoption input:touchpad:natural_scroll
 
 ---
 
-## 6. 変更ファイル一覧
+## 7. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
@@ -190,13 +228,19 @@ hyprctl getoption input:touchpad:natural_scroll
 | `~/.config/voxtype/config.toml` | model=small, language=ja, VAD有効 |
 | `~/.config/herdr/config.toml` | 純正キー + agent/workspace 移動 |
 | `~/.config/hypr/input.lua` | kb_layout=us, natural_scroll=true |
+| `~/.config/hypr/monitors.lua` | omarchy_monitor_scale=1.8 (gdk_scale=2 のまま) |
+| `~/.config/omarchy/plugins/torohash.monitor/Panel.qml` | SCALE を11段スライダー化 (assets/ からコピー) |
+| `~/.config/omarchy/shell.json` | bar widget を `omarchy.monitor` → `torohash.monitor` |
 
 ---
 
-## 7. 更新で戻されるので注意
+## 8. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。
 - fcitx5 は終了時に設定を書き戻すため、手書き後はプロセス再起動で読ませる。
+- `/usr/share/omarchy/` は `omarchy update` で上書きされる。Display パネルの改造は
+  clone 側 (`~/.config/omarchy/plugins/`) にあるので生き残るが、`omarchy plugin clone`/
+  `enable` の再実行が要る場合はある。倍率も `omarchy refresh hyprland` で 1.6 に戻る。
 
 システム更新後に効かなくなったら、この手順を再実行する。

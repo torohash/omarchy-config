@@ -40,11 +40,13 @@
 │   ├── herdr.md           # ターミナルワークスペースマネージャ
 │   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + 候補ウィンドウのテーマ
 │   ├── voxtype.md         # 音声入力(ディクテーション)
-│   └── hyprland-input.md  # キーボード配列 / タッチパッド
+│   ├── hyprland-input.md  # キーボード配列 / タッチパッド
+│   └── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
-│   └── omarchy-tokyo-night/   # fcitx5 classicui 自作テーマ一式
+│   ├── omarchy-tokyo-night/   # fcitx5 classicui 自作テーマ一式
+│   └── torohash.monitor/      # 改造した Display パネル (bar widget clone)
 └── backups/               # 変更前の設定ファイル退避
 ```
 
@@ -133,7 +135,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 
 ---
 
-## 現在の状態(2026-09-24 時点)
+## 現在の状態(2026-09-25 時点)
 
 | 領域 | 状態 | 詳細 |
 |------|------|------|
@@ -142,6 +144,8 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 音声入力 | Voxtype: `small`(実測で確定) / `ja` / VAD 有効 / GPU(Vulkan) | [apps/voxtype.md](apps/voxtype.md) |
 | herdr | 純正キー + `prefix+,` `.` で agent/workspace 移動 | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
+| 表示倍率 | `1.8x`(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
+| Display パネル | 自作 clone `torohash.monitor` に差し替え (SCALE が11段スライダー) | 同上 |
 
 ## 別ホストへの適用
 
@@ -159,6 +163,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は未導入 |
 | タッチパッド | `natural_scroll` を反転して確定(好みが変わったら `~/.config/hypr/input.lua`) |
 | classicui テーマ | 微調整は `~/.local/share/fcitx5/themes/omarchy-tokyo-night/theme.conf`。変更したら `assets/` にも同期 |
+| Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので必ず `omarchy restart shell` |
 
 ---
 
