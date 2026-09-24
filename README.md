@@ -18,8 +18,8 @@
 │   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
 │   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
 │   ├── discord.md         # チャット (公式クライアント)
-│   ├── omarchy-agent.md   # Omarchy のエージェント設定の扱い
-│   └── browser.md         # 既定ブラウザ (Chromium) の理由と変え方
+│   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
+│   └── browser.md         # 使っているブラウザ (Chromium) と候補一覧
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
 ├── assets/                # 他ホストへコピーする実ファイル

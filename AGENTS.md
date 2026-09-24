@@ -44,8 +44,8 @@
 │   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
 │   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
 │   ├── discord.md         # チャット (公式クライアント)
-│   ├── omarchy-agent.md   # Omarchy のエージェント設定の扱い (スキル/既定/使用量)
-│   └── browser.md         # 既定ブラウザ (Chromium) の理由と変え方
+│   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
+│   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
@@ -191,7 +191,8 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
 | Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする (Web アプリ版と重複しないよう注意) | [apps/discord.md](apps/discord.md) |
 | CLI ツール | `gh` / `node` / `pi` / `codex` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
-| エージェント設定 | Omarchy はスキルを各エージェントへ symlink + 既定エージェントだけ管理 | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
+| ブラウザ | Chromium(Omarchy の既定のまま。変更なし) | [apps/browser.md](apps/browser.md) |
+| 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
 ## 別ホストへの適用
 
