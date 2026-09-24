@@ -7,11 +7,12 @@ Omarchy 側には Web アプリ版の導線 (`Discord.desktop`) も用意され�
 ## 導入手順
 
 ```bash
-# 端末から
+# Omarchy 経由 (推奨)
 omarchy pkg add discord
-# 端末が無い場合 (ポリクットのダイアログでパスワードを聞かれる)
-#   pkexec pacman -S --noconfirm --needed discord
 ```
+
+> 権限が要るので**端末で実行する**(エージェントが `pkexec pacman -S` で直接叩かない)。
+> 入れる前に **Omarchy に Web アプリ版がないか**を必ず確認する(下の「ハマりどころ 1」)。
 
 任意: **トレイ (バー) にアイコンを出したい場合**は `libappindicator-gtk3` も入れる
 (パッケージの任意依存。Omarchy の `omarchy.tray` に出る):
@@ -44,9 +45,9 @@ discord          # 初回は更新ウィンドウ (Discord Updater) → 本体�
 
 ## Omarchy 側の既存連携 (設定不要)
 
-- **Web アプリ版**: `~/.local/share/applications/Discord.desktop` が既にあり、
+- **Web アプリ版**: `~/.local/share/applications/Discord.desktop` が最初からあり、
   `omarchy-launch-webapp https://discord.com/channels/@me` を呼ぶ。
-  インストールせずブラウザベースで使いたい場合はこちら。
+  ネイティブを入れないならこちらをそのまま使える(インストール不要)。
 - **`omarchy launch discord community`**: ネイティブの `discord` があればアプリで、
   無ければブラウザで Omarchy コミュニティを開く (`omarchy-launch-discord-community`)。
 - **URL スキーム**: `discord.desktop` が `x-scheme-handler/discord` を登録するので、
@@ -83,16 +84,28 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating, 
 
 ## ハマりどころ
 
-1. **`pacman -S discord` だけでは使えない。** 初回起動で本体 (約 500MB) を落とす。
+1. **ランチャーに "Discord" が2つ並ぶ。** Omarchy は Discord の **Web アプリ版**
+   (`~/.local/share/applications/Discord.desktop`) を最初から持っているので、
+   ネイティブを入れると同名のエントリが重複する。どちらか一方にする:
+
+   ```bash
+   omarchy webapp remove Discord      # Web アプリ版のランチャーを消す
+   # 戻したいとき:
+   #   omarchy webapp install Discord https://discord.com/channels/@me omarchy-discord
+   ```
+
+   (`omarchy install preinstalls` を実行すると Web アプリ側が復活することがある)
+2. **`pacman -S discord` だけでは使えない。** 初回起動で本体 (約 500MB) を落とす。
    オフラインだと Updater が失敗する。
 2. **撤去時に `~/.config/discord/` が残る**(パッケージ外のダウンロード物)。
-3. **`discord-flags.conf` は効かない。** このパッケージの `/usr/bin/discord` は
+3. **撤去時に `~/.config/discord/` が残る**(パッケージ外のダウンロード物)。
+4. **`discord-flags.conf` は効かない。** このパッケージの `/usr/bin/discord` は
    フラグファイルを読まないラッパなので、起動フラグを足したいときは環境変数
    (`ELECTRON_OZONE_PLATFORM_HINT` など) で渡す。
-4. 画面共有・音声がうまく動かない場合は、Wayland 対応をうたう
+5. 画面共有・音声がうまく動かない場合は、Wayland 対応をうたう
    サードパーティクライアント (Vesktop など、AUR) という選択肢もある。
    公式クライアントで足りない場合のみ検討する。
-5. ウィンドウクラスは `discord`。ルールを書くときはこの文字列を使う。
+6. ウィンドウクラスは `discord`。ルールを書くときはこの文字列を使う。
 
 ## 撤去
 

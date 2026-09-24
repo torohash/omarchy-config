@@ -25,7 +25,7 @@
 | Shell | Omarchy shell(Quickshell) |
 | テーマ | Tokyo Night / accent `#7aa2f7` |
 | パッケージ | pacman + AUR(`yay`)。**flatpak / snap は使わない** |
-| 特権 | 端末あり → `sudo` / エージェント → `pkexec` |
+| 特権 | 権限が要る操作は**ユーザーの端末で `sudo`**(エージェントは代行しない) |
 
 ---
 
@@ -43,7 +43,8 @@
 │   ├── hyprland-input.md  # キーボード配列 / タッチパッド
 │   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
 │   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
-│   └── discord.md         # チャット (公式クライアント)
+│   ├── discord.md         # チャット (公式クライアント)
+│   └── omarchy-agent.md   # Omarchy のエージェント設定の扱い (スキル/既定/使用量)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
@@ -92,6 +93,12 @@
    `~/.config/hypr/` や `~/.config/omarchy/` を触るなら必須。
 2. **現状確認 → バックアップ**。設定を書く前に `cat` / `hyprctl getoption` / `... --print` で現在値を見る。
 3. **変更はユーザーに確認してから**。このリポジトリの運用では**勝手にインストールしない**方針。
+   入れるときは:
+   - **Omarchy のコマンド経由**にする (`omarchy pkg add` / `omarchy install ...` /
+     `omarchy webapp ...`)。素の `pacman -S` や `pkexec pacman` は使わない。
+   - **権限が必要な操作はユーザーの端末で実行してもらう**(エージェントは自分で完結させない)。
+   - 入れる**前に既存手段を確認**する: Omarchy の Web アプリ版 / mise 管理の CLI /
+     すでに入っているか (例: Discord は Web アプリ版が最初からあり、`gh` は mise に入っていた)。
 4. **検証コマンドを必ず実行**して、**期待される出力**をドキュメントに残す。
 5. **`CHANGELOG.md` に1行 + `apps/` に詳細**を書く。必要なら `assets/` に実ファイルをコピー。
 6. **git でコミット**(メッセージは日本語・本文に「何を/なぜ」)。
@@ -124,8 +131,9 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 ### 安全規則・落とし穴
 
 - **`/usr/share/omarchy/` は絶対に編集しない**(`omarchy update` で消える)。読むのは自由。
-- **特権**: 端末でパスワード入力できるなら `sudo`、エージェントなど端末が無い場合は `pkexec`。
-  `omarchy pkg add` は自分で sudo するので `pkexec` で二重に包まない(素の `pkexec pacman -S` を使う)。
+- **特権**: 端末でパスワード入力できるなら `sudo`(= ユーザーの端末で実行してもらう)。
+  エージェントは権限が要る操作 (pacman / システムファイル) を**自分で完結させない**。
+  コマンドを提示してユーザーに実行してもらう。素の `pkexec pacman -S` での代行はしない。
 - **fcitx5 は終了時に設定を書き戻す**。手書きの設定を確実に読ませたいときは
   `pkill -9 -x fcitx5`(systemd の `Restart=always` で自動復帰)。
   `fcitx5-remote -r` では profile / classicui は読み直されない。
@@ -152,7 +160,9 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
 | Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
-| Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする | [apps/discord.md](apps/discord.md) |
+| Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする (Web アプリ版と重複しないよう注意) | [apps/discord.md](apps/discord.md) |
+| CLI ツール | `gh` / `node` / `pi` / `codex` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
+| エージェント設定 | Omarchy はスキルを各エージェントへ symlink + 既定エージェントだけ管理 | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
 ## 別ホストへの適用
 

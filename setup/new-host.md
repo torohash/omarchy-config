@@ -263,6 +263,13 @@ omarchy pkg add libappindicator-gtk3   # 任意: バーのトレイに出す
 discord                                # 初回起動で本体 (~500MB) を ~/.config/discord/ にDL
 ```
 
+注意: Omarchy は Discord の **Web アプリ版ランチャー** (`Discord.desktop`) も持っているので、
+ネイティブを入れるとランチャーに "Discord" が2つ並ぶ。片方にする:
+
+```bash
+omarchy webapp remove Discord          # Web アプリ版のランチャーを消す
+```
+
 確認:
 
 ```bash
@@ -283,7 +290,34 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating}'
 
 ---
 
-## 8. インストールされるパッケージ一覧
+## 8. CLI ツール (mise でグローバル)
+
+`gh` / `node` / `pi` / `codex` のような CLI は **mise でグローバル管理**する
+(pacman では入れない。`gh` の pacman パッケージ名は `github-cli` で紛らわしく、
+両方入れると二重管理になる)。
+
+```bash
+mise use -g gh          # ~/.config/mise/config.toml に追記される
+mise use -g node@lts pi codex
+mise ls --global        # 入っているもの一覧
+gh auth login           # 認証 (ブラウザ or トークン)
+```
+
+- 設定・認証は `~/.config/gh/` に人る(ホスト単位のグローバル)。
+- shim は `~/.local/share/mise/shims/gh`。PATH に `~/.local/share/mise/shims` が必要。
+- **Omarchy の `omarchy install dev-env <lang>` とは別系統**。言語によっては
+  Omarchy 側の手順を優先する。
+
+確認:
+
+```bash
+gh --version            # => gh version 2.x
+mise ls --global | grep gh
+```
+
+---
+
+## 9. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
@@ -296,11 +330,13 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating}'
 | `bitwarden-cli` (任意) | 2026.2.0-1 | `bw`。nodejs-lts-jod に依存 |
 | `discord` (任意) | 1:1.0.156-1 | チャット。初回起動で本体 (~500MB) をDLする |
 
+> `gh` などの CLI は **mise 管理**(pacman では入れない) → 節「8. CLI ツール (mise でグローバル)」参照。
+
 `flatpak` / `snap` は**導入しない** (Omarchy は pacman + AUR で完結)。
 
 ---
 
-## 9. 変更ファイル一覧
+## 10. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
@@ -317,7 +353,7 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating}'
 
 ---
 
-## 10. 更新で戻されるので注意
+## 11. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。
