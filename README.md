@@ -16,7 +16,8 @@
 │   ├── voxtype.md         # 音声入力(ディクテーション)
 │   ├── hyprland-input.md  # キーボード配列 / タッチパッド
 │   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
-│   └── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
+│   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
+│   └── discord.md         # チャット (公式クライアント)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
 ├── assets/                # 他ホストへコピーする実ファイル

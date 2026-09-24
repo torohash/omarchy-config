@@ -42,7 +42,8 @@
 │   ├── voxtype.md         # 音声入力(ディクテーション)
 │   ├── hyprland-input.md  # キーボード配列 / タッチパッド
 │   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
-│   └── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
+│   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
+│   └── discord.md         # チャット (公式クライアント)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
@@ -151,6 +152,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
 | Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
+| Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする | [apps/discord.md](apps/discord.md) |
 
 ## 別ホストへの適用
 

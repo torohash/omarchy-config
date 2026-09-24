@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | Discord (公式クライアント) を導入 | `discord` (`extra`) | [apps/discord.md](apps/discord.md) |
 | 2026-09-25 | `SUPER+SHIFT+/` (Passwords) を 1Password → Bitwarden に差し替え | `~/.config/hypr/bindings.lua` | [apps/bitwarden.md](apps/bitwarden.md) |
 | 2026-09-25 | 表示倍率 1.6x → 1.8x (2x は大きすぎ / 1.6x は小さい) | `~/.config/hypr/monitors.lua` | [apps/display-scale.md](apps/display-scale.md) |
 | 2026-09-25 | Display パネルの SCALE を 6ボタン → 11段スライダーに (clone `torohash.monitor`) | `~/.config/omarchy/plugins/torohash.monitor/` | [apps/display-scale.md](apps/display-scale.md) |

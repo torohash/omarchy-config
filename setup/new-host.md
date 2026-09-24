@@ -252,7 +252,38 @@ gtk-launch bitwarden                # GUI 起動 → ログイン
 
 ---
 
-## 7. インストールされるパッケージ一覧
+## 7. Discord (チャット) — 任意
+
+公式クライアント。**`extra` にあるので AUR 不要**。入れるだけでなく初回起動で本体をDLする点に注意。
+
+```bash
+omarchy pkg add discord
+omarchy pkg add libappindicator-gtk3   # 任意: バーのトレイに出す
+
+discord                                # 初回起動で本体 (~500MB) を ~/.config/discord/ にDL
+```
+
+確認:
+
+```bash
+pacman -Q discord                       # => discord 1:1.0.156-1 など
+hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating}'
+# => xwayland=false (Wayland ネイティブ)
+```
+
+注意点:
+
+- **初回起動にネットが必要**。本体はパッケージに含まれない (`~/.config/discord/` に約500MB)。
+- 撤去は `sudo pacman -Rns discord` + `rm -rf ~/.config/discord`。
+- 画面共有は `xdg-desktop-portal-hyprland` 経由 (Omarchy が導入済み + `xdph.conf` 設定済み)。
+  `no_screen_share` な窓は共有しても真っ黒になる。
+- クライアントを入れたくない場合は **Web アプリ版**が既にある (`Discord.desktop`)。
+
+→ 詳細: [../apps/discord.md](../apps/discord.md)
+
+---
+
+## 8. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
@@ -263,12 +294,13 @@ gtk-launch bitwarden                # GUI 起動 → ログイン
 | `fcitx5-material-color` (任意) | 0.2.1-2 | 既製テーマ。自作テーマを使うなら不要 |
 | `bitwarden` (任意) | 2026.3.1-2 | パスワードマネージャ (Electron 39 同梱依存) |
 | `bitwarden-cli` (任意) | 2026.2.0-1 | `bw`。nodejs-lts-jod に依存 |
+| `discord` (任意) | 1:1.0.156-1 | チャット。初回起動で本体 (~500MB) をDLする |
 
 `flatpak` / `snap` は**導入しない** (Omarchy は pacman + AUR で完結)。
 
 ---
 
-## 8. 変更ファイル一覧
+## 9. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
@@ -285,7 +317,7 @@ gtk-launch bitwarden                # GUI 起動 → ログイン
 
 ---
 
-## 9. 更新で戻されるので注意
+## 10. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。
