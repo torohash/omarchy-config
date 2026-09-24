@@ -94,6 +94,10 @@ Omarchy のテーマ (Tokyo Night, accent `#7aa2f7`) に合わせた自作テー
 **設計は [sanweiya/fcitx5-mellow-themes](https://github.com/sanweiya/fcitx5-mellow-themes) を参考**にした
 (実際のスクリーンショットを確認し、一番洗練されていると判断)。
 
+> **採否**: 既製テーマ (Mellow / Tokyo Night / Fluent など) も実物のスクショを確認して比較したが、
+> 「Mellow の設計 + Tokyo Night 配色」の自作テーマが一番馴染むため、**これで確定**。
+> 将来変えたくなったら `Theme=` を差し替えるだけで切り替えられる。
+
 配置先: `~/.local/share/fcitx5/themes/omarchy-tokyo-night/`
 一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存
 (他ホストへはコピーするだけ)。
