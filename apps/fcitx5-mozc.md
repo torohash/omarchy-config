@@ -66,7 +66,7 @@ Layout=
 ```
 
 - Mozc の IM 名は `mozc`、アドオン名は `fcitx_mozc`、表示名は `Mozc`。
-- `DefaultIM` は起動時に使う IM (本環境は `keyboard-us` = 英数始まりを狙う)。
+- `DefaultIM` は起動時に使う IM (`keyboard-us` にして英数始まりにする)。
 
 ### 反映
 
@@ -88,15 +88,15 @@ fcitx5 の候補ウィンドウは `classicui` UI が描画する。素のまま
 **GNOME のようにデスクトップシェルが描いてくれる仕組みは Hyprland には無い**ので、
 fcitx5 のテーマで見た目を決める。
 
-### 現在: 自作 Tokyo Night テーマ (`omarchy-tokyo-night`)
+### 採用: 自作 Tokyo Night テーマ (`omarchy-tokyo-night`)
 
 Omarchy のテーマ (Tokyo Night, accent `#7aa2f7`) に合わせた自作テーマ。
 **設計は [sanweiya/fcitx5-mellow-themes](https://github.com/sanweiya/fcitx5-mellow-themes) を参考**にした
-(実際のスクリーンショットを確認し、一番洗練されていると判断)。
+(スクリーンショット比較で一番洗練されていると判断)。
 
-> **採否**: 既製テーマ (Mellow / Tokyo Night / Fluent など) も実物のスクショを確認して比較したが、
-> 「Mellow の設計 + Tokyo Night 配色」の自作テーマが一番馴染むため、**これで確定**。
-> 将来変えたくなったら `Theme=` を差し替えるだけで切り替えられる。
+> **採否**: 既製テーマ (Mellow / Tokyo Night / Fluent など) もスクショで比較したが、
+> 「Mellow の設計 + Tokyo Night 配色」の自作テーマが一番馴染むのでこれを採用する。
+> 変えたくなったら `Theme=` を差し替えるだけで切り替えられる。
 
 配置先: `~/.local/share/fcitx5/themes/omarchy-tokyo-night/`
 一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存
@@ -132,7 +132,7 @@ pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKI
 # systemd の Restart=always で数秒後に自動復帰
 ```
 
-### 参考: 既製テーマ (実物のスクショを確認済み)
+### 参考: 既製テーマ (比較対象)
 
 | テーマ | URL | 評価 |
 |--------|-----|------|
@@ -188,7 +188,7 @@ pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKI
 |--------|------|------|
 | repo | `fcitx5-breeze` | KDE Breeze 風 |
 | repo | `fcitx5-nord` | Nord 配色 |
-| repo | `fcitx5-material-color` | Material 配色 (導入済みだが現在は未使用) |
+| repo | `fcitx5-material-color` | Material 配色 (採用しない) |
 | AUR | `fcitx5-skin-fluentdark-git` | Fluent Design 風の**影 + ぼかし**付き (!+5) |
 | AUR | `fcitx5-theme-dracula-git`, catppuccin 系 ほか | 各種配色 |
 

@@ -8,16 +8,17 @@ Hyprland の入力設定は Omarchy が Lua で管理している。ユーザー
 `/usr/share/omarchy/default/hypr/input.lua` (参照のみ) が次を行う:
 
 - `kb_layout` を **`/etc/vconsole.conf` の `XKBLAYOUT`** から取得 (無ければ `us`)。
-  本機は `jp` だった。`localectl status` の `X11 Layout: jp` と一致。
+  既定は `/etc/vconsole.conf` の `XKBLAYOUT` で、JIS 機なら `jp` になる(`localectl status` の
+  `X11 Layout` と一致)。
 - `kb_options = "compose:caps,shift:both_capslock_cancel"`
   … Caps Lock を **Compose キー**に。両 Shift 同時押しが本来の Caps Lock。
-- 非ラテン配列のときだけ先頭に `us,` を足して `grp:alts_toggle` を付ける (本機は非該当)。
+- 非ラテン配列のときだけ先頭に `us,` を足して `grp:alts_toggle` を付ける (ラテン配列のみなら不要)。
 - タッチパッド既定: `natural_scroll=false`, `clickfinger_behavior=true`, `scroll_factor=0.4`。
 
 ## 上書きの書き方
 
 `~/.config/hypr/input.lua` の末尾に `hl.config({...})` を書く。**`hl.config` は深くマージ**
-されるので、指定したキーだけ上書きされ、他の Omarchy 既定は生き残る (検証済み)。
+されるので、指定したキーだけ上書きされ、他の Omarchy 既定は生き残る。
 
 ```lua
 hl.config({
@@ -52,15 +53,15 @@ hyprctl getoption input:sensitivity
 hyprctl getoption input:repeat_rate
 ```
 
-## 本環境での変更
+## 適用する設定
 
-| 項目 | Omarchy 既定 | 変更後 | 理由 |
+| 項目 | Omarchy 既定 | 設定値 | 理由 |
 |------|-------------|--------|------|
-| `kb_layout` | `jp` (vconsole 由来) | `us` | US 配列として入力したい |
+| `kb_layout` | vconsole 由来 (`jp` など) | `us` | US 配列として入力したい |
 | `touchpad.natural_scroll` | `false` | `true` | スクロール方向を反転 (自然スクロール) |
 
-反映確認済み:
-`input:kb_layout=us`, `input:touchpad:natural_scroll=true`, 他は既定のまま。
+期待値 (`hyprctl getoption`):
+`input:kb_layout=us`, `input:touchpad:natural_scroll=true`、他は既定のまま。
 
 ## 元に戻す
 
@@ -77,6 +78,6 @@ omarchy refresh hyprland    # ~/.config/hypr/*.lua を既定に戻す (バック
 - 物理キーボードが JIS なのに `us` にすると、印字と出力がずれる (`@` の位置など)。
   配列は物理キーボードに合わせる。
 - `kb_layout` を変えても TTY の `localectl` は変わらない。TTY も揃えるなら
-  `sudo localectl set-x11-keymap us` 等 (未実施)。
+  `sudo localectl set-x11-keymap us` 等 (TTY も揃えたい場合のみ)。
 - `hyprland.md` (Omarchy スキル) の指示どおり、変更後は必ず `hyprctl reload` と
   `hyprctl configerrors` で検証する。

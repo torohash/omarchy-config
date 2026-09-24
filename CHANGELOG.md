@@ -1,6 +1,6 @@
 # CHANGELOG (索引)
 
-このマシンに行った設定変更の索引。詳細な手順・知見は右のファイルへ。
+このリポジトリで扱う設定変更の索引。詳細な手順・知見は右のファイルへ。
 1行 = 1変更。新しいものを上に追記する。詳細はできるだけ `apps/` 側に書き、ここは
 「いつ・何を・なぜ・詳細はどこ」だけを簡潔に保つ。
 
@@ -26,8 +26,8 @@
 
 ## バックアップ
 
-`backups/` に変更前の設定を退避している。
+上書きする前に元ファイルを `backups/` に退避する(差分を見る・戻すとき用)。
 
-- `herdr-config.toml.omarchy-backup` … herdr 純正化前の Omarchy 版 config
-- `herdr-config.toml.before-agent-ws-keys` … agent/workspace キー追加直前の config
-- `hypr-bindings.lua.before-bitwarden` … Passwords キーを Bitwarden に差し替える直前の bindings.lua
+- `herdr-config.toml.omarchy-backup` … Omarchy 版 herdr config (比較用)
+- `herdr-config.toml.before-agent-ws-keys` … agent/workspace キー追加前の config
+- `hypr-bindings.lua.before-bitwarden` … Passwords キーを Bitwarden に向ける前の bindings.lua

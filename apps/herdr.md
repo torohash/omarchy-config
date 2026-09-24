@@ -35,8 +35,8 @@ herdr に移植したもの。そのため **herdr 本体のデフォルトキ�
 | タブ名変更 | `prefix+shift+t` | `prefix+r` |
 | サイドバー | `prefix+b` | `prefix+b` |
 
-> **注意:** `ctrl+space` は fcitx5 の IME 切替キーと衝突する。Omarchy のまま使うと
-> herdr が先に奪って日本語入力に切り替えられない。(このため本環境では純正に戻した)
+> **注意:** `ctrl+space` は fcitx5 の IME 切替キーと衝突する。Omarchy の既定のままだと
+> herdr が先に奪って日本語入力に切り替えられない。
 
 ## よく使うコマンド
 
@@ -66,12 +66,12 @@ omarchy-menu-herdr-keybindings --print   # 同じものをテキスト出力 (�
 - `comma`/`period` のような記号の prefix バインドは、端末や tmux によっては届かないことがある
   (herdr 純正デフォルトは ctrl+letter やファンクションキーを推奨)。
 
-## 本環境での設定 (最終形)
+## 適用する設定
 
 `~/.config/herdr/config.toml`:
-- キーバインドは **herdr 純正デフォルト**に戻した (`[keys]` セクションを全削除 → 本体 v2 キー)
+- キーバインドは **herdr 純正デフォルト**にする (`[keys]` セクションを全削除 → 本体 v2 キー)
   - prefix は `ctrl+b`。これで `ctrl+space` が IME 用に空く。
-- 追加で **agent / workspace の移動キー**を足している:
+- 追加で **agent / workspace の移動キー**を足す:
 
 ```toml
 [keys]

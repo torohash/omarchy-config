@@ -6,8 +6,8 @@
 
 ## 目的
 
-1. **このマシンに何をしたか / なぜそうしたかを残す**(再現性・引き継ぎのため)
-2. **別のホストマシンで同じ作業をまとめて再現できるようにする**
+1. **別のホストマシンで同じ作業をまとめて再現できるようにする**
+2. **なぜその設定にしたかを残す**(採用理由・比較した選択肢)
 
 ## 非ゴール
 
@@ -63,10 +63,10 @@
 
 ### 2. `apps/<name>.md` は詳細ナレッジ
 1アプリ1ファイル。以下を必ず含める:
-- 何をするツールか / なぜ入れたか
+- 何をするツールか / なぜ入れるか
 - **導入手順(コマンドそのまま)**
-- **ハマりどころ**(実際に踏んだ罠。最重要)
-- 検証コマンドと**実際の結果**
+- **ハマりどころ**(最重要)
+- 検証コマンドと**期待される出力**
 - 撤去方法
 - 参考リンク
 
@@ -75,7 +75,8 @@
 他ホストでは `cp -r` するだけで済む。
 
 ### 4. `backups/` は変更前の退避
-`omarchy-refresh-*` などで戻せるものもあるが、独自変更はここに残す。
+上書きする前に元ファイルを退避する(戻すとき・差分を見るとき用)。
+他のホストで使う実ファイルは `assets/` 側に置く。
 
 ### 5. Markdown の書き方
 - **生 URL を表の中に置かない**(レンダラでリンクにならず、末尾の `|` を拾われる)。
@@ -90,7 +91,7 @@
    `~/.config/hypr/` や `~/.config/omarchy/` を触るなら必須。
 2. **現状確認 → バックアップ**。設定を書く前に `cat` / `hyprctl getoption` / `... --print` で現在値を見る。
 3. **変更はユーザーに確認してから**。このリポジトリの運用では**勝手にインストールしない**方針。
-4. **検証コマンドを必ず実行**して、結果をドキュメントに残す。
+4. **検証コマンドを必ず実行**して、**期待される出力**をドキュメントに残す。
 5. **`CHANGELOG.md` に1行 + `apps/` に詳細**を書く。必要なら `assets/` に実ファイルをコピー。
 6. **git でコミット**(メッセージは日本語・本文に「何を/なぜ」)。
 
@@ -136,18 +137,20 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 
 ---
 
-## 現在の状態(2026-09-25 時点)
+## 取り扱っている項目
 
-| 領域 | 状態 | 詳細 |
-|------|------|------|
-| 日本語入力 | fcitx5 + Mozc、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
-| 候補ウィンドウ | 自作 `omarchy-tokyo-night` テーマ(Mellow 設計 + Tokyo Night 配色) | 同上 |
-| 音声入力 | Voxtype: `small`(実測で確定) / `ja` / VAD 有効 / GPU(Vulkan) | [apps/voxtype.md](apps/voxtype.md) |
-| herdr | 純正キー + `prefix+,` `.` で agent/workspace 移動 | [apps/herdr.md](apps/herdr.md) |
+適用手順は [setup/new-host.md](setup/new-host.md) を上から順に。詳細は各 `apps/*.md`。
+
+| 領域 | 何をするか | 詳細 |
+|------|-----------|------|
+| 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
+| 候補ウィンドウ | 自作 `omarchy-tokyo-night` テーマ(Mellow 設計 + Tokyo Night 配色)を配置 | 同上 |
+| 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
+| herdr | 純正キーに戻し、`prefix+,` `.` で agent/workspace 移動を追加 | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
-| 表示倍率 | `1.8x`(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
-| Display パネル | 自作 clone `torohash.monitor` に差し替え (SCALE が11段スライダー) | 同上 |
-| Bitwarden | `bitwarden` + `bitwarden-cli` (`extra`)。`SUPER+SHIFT+/` (Passwords) は Bitwarden に差し替え済み | [apps/bitwarden.md](apps/bitwarden.md) |
+| 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
+| Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
+| Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
 
 ## 別ホストへの適用
 
@@ -156,17 +159,16 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 
 ---
 
-## 保留・未検証(次に触る人へ)
+## 注意点
 
-| 項目 | 状況 |
+| 項目 | 内容 |
 |------|------|
-| fcitx5 の起動時 IM | 終了時に `DefaultIM` を `mozc` に書き戻す癖があり、**次回ログイン時に日本語始まりになる可能性**。英数固定にするならログイン時 `fcitx5-remote -c` を実行する設定を足す(未実施・ユーザー判断待ち) |
-| herdr `prefix+,` / `prefix+.` | IME オン中は `,`/`.` が `、`/`。` に化けて効かない可能性(未検証) |
-| Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は未導入 |
-| タッチパッド | `natural_scroll` を反転して確定(好みが変わったら `~/.config/hypr/input.lua`) |
+| fcitx5 の起動時 IM | 終了時に `DefaultIM` を `mozc` に書き戻す癖があるため、**ログイン直後が日本語始まりになる可能性**。英数固定にするならログイン時に `fcitx5-remote -c` を実行する設定を足す |
+| herdr `prefix+,` / `prefix+.` | IME オン中は `,`/`.` が `、`/`。` に化けて効かない可能性がある |
+| Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は導入しない |
+| Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので `omarchy restart shell` が必須 |
+| Bitwarden の見た目 | `no_screen_share` のため**スクショで検証できない**。倍率が合わないと感じたら `--force-device-scale-factor` で調整 (`apps/bitwarden.md`) |
 | classicui テーマ | 微調整は `~/.local/share/fcitx5/themes/omarchy-tokyo-night/theme.conf`。変更したら `assets/` にも同期 |
-| Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので必ず `omarchy restart shell` |
-| Bitwarden の見た目 | 倍率 1.8 でも論理 875x600 で普通だが、`no_screen_share` により **スクショで検証できない**ため目視判断待ち。大きければ `--force-device-scale-factor=1` (`apps/bitwarden.md`) |
 
 ---
 

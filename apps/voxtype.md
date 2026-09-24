@@ -86,14 +86,14 @@ voxtype setup gpu --status          # 現在のバックエンド
 sudo voxtype setup gpu --disable    # CPU に戻す
 ```
 
-本機の結果:
+期待される出力:
 
 ```
 Active backend: GPU (Vulkan)
   1. [Intel] Core Ultra 200V Series Processors Arc Graphics 130V/140V GPU
 ```
 
-`vulkan-icd-loader` / `vulkan-intel` が必要(本機は導入済み)。
+`vulkan-icd-loader` / `vulkan-intel` が必要 (GPU を使う場合)。
 
 ## VAD(無音区間の幻覚対策) — 既定 OFF
 
@@ -141,10 +141,10 @@ Wikimedia Commons の日本語音声を使ってテストできる。
 curl -sL "https://upload.wikimedia.org/wikipedia/commons/d/d2/Ja-Densha_2.oga" -o /tmp/a.ogg
 ffmpeg -y -i /tmp/a.ogg -ar 16000 -ac 1 /tmp/a.wav
 voxtype transcribe /tmp/a.wav
-# => 電車   (実測 4.08s / Vulkan)
+# => 電車   (Vulkan なら 4 秒前後)
 ```
 
-## モデル精度・速度の実測(本機 / GPU Vulkan)
+## モデルの選定 (精度・速度の比較)
 
 テスト音源: Wikimedia [Ja-Na-adjectives_watch_and_listen.ogg](https://commons.wikimedia.org/wiki/File:Ja-Na-adjectives_watch_and_listen.ogg)
 (65.6 秒の明瞭な日本語 / な形容詞の練習)
@@ -155,12 +155,11 @@ voxtype transcribe /tmp/a.wav
 | `large-v3-turbo` (1.5GB) | 5.66 s | 11x realtime | 「宿題だ」を**重複**、句読点なし |
 
 **結論: 大きいモデルが常に良いわけではない。** 明瞭な日本語なら `small` で十分で、
-本機では `small` のほうが速く、繰り返しエラーも出なかった。
+比較では `small` のほうが速く、繰り返しの誤りも出にくかった。
 
-> **採否 (2026-09-24): `small` で確定。** 実測の結果 `large-v3-turbo` を使う理由が
-> 見つからなかったため、ダウンロードした 1.6GB は削除した。
-> 残っているモデル: `small` (465MB, 使用中) / `base.en` (141MB, 未使用) / Silero VAD (0.9MB)。
-> 再度使いたくなったら `voxtype setup --download --model large-v3-turbo --activate`。
+> **採用: `small`。** 比較の結果 `large-v3-turbo` を使う理由が見つからないので、
+> 入れる必要はない。再度試したくなったら
+> `voxtype setup --download --model large-v3-turbo --activate`。
 
 ### 誤変換の傾向と対策
 
@@ -195,11 +194,11 @@ voxtype record start --model large-v3-turbo   # 高精度で録音開始
 Hyprland 側 (`~/.config/hypr/bindings.lua`) に `SHIFT + F9` を足せば
 「F9=高速 / Shift+F9=高精度」にできる(※ F9 の release バインドと干渉しないか要検証)。
 
-## 本機での確定設定 (検証済み)
+## 適用する設定
 
 ```toml
 [whisper]
-model = "small"            # 実測比較の結果これで確定
+model = "small"            # 比較の結果これを採用
 language = "ja"
 
 [vad]
