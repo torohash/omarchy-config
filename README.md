@@ -15,6 +15,8 @@
 │   └── hyprland-input.md  # キーボード配列 / タッチパッド
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
+├── assets/                # 他ホストへコピーする実ファイル
+│   └── omarchy-tokyo-night/   # fcitx5 classicui 自作テーマ一式
 └── backups/               # 変更前の設定ファイル退避
 ```
 

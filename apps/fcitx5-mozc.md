@@ -3,7 +3,7 @@
 Omarchy は **fcitx5 を標準で導入済み**。Mozc だけ足せば日本語入力できる。
 
 - 導入済み (Omarchy 標準): `fcitx5` `fcitx5-gtk` `fcitx5-qt`
-- 追加導入: `fcitx5-mozc` (IM 本体), `fcitx5-material-color` (候補ウィンドウのテーマ)
+- 追加導入: `fcitx5-mozc` (IM 本体)。候補ウィンドウの見た目は自作テーマで対応 (下記)
 - fcitx5 は systemd の **ユーザーサービス `omarchy-fcitx5.service`** が管理
 
 ## 環境変数 (Omarchy が既定で設定済み)
@@ -34,10 +34,13 @@ pkexec pacman -S --noconfirm --needed fcitx5-mozc
 > `omarchy pkg add` は自身で sudo するため `pkexec` で二重に包まない
 > (agent からは `pkexec pacman` を直接叩くのが素直)。
 
-候補ウィンドウのテーマ (任意だが推奨):
+候補ウィンドウの見た目は、パッケージのテーマではなく**自作テーマ**を使っている
+(後述の「候補ウィンドウ (classicui) のテーマ」)。追加パッケージは不要。
+
+(参考) 既製テーマを使いたい場合:
 
 ```bash
-pkexec pacman -S --noconfirm --needed fcitx5-material-color
+pkexec pacman -S --noconfirm --needed fcitx5-material-color   # Material 配色
 ```
 
 ## プロファイル (登録する入力メソッド)
@@ -81,19 +84,89 @@ omarchy restart xcompose     # ← fcitx5 を「Omarchy の作法」で再起動
 
 ## 候補ウィンドウ (classicui) のテーマ
 
-fcitx5 の候補ウィンドウは `classicui` UI が描画する。素のままだと**プレーンな灰色枠**で
-ダサい。`fcitx5-material-color` を入れてテーマを指定する。
+fcitx5 の候補ウィンドウは `classicui` UI が描画する。素のままだと装飾の無い枠になる。
+**GNOME のようにデスクトップシェルが描いてくれる仕組みは Hyprland には無い**ので、
+fcitx5 のテーマで見た目を決める。
+
+### 現在: 自作 Tokyo Night テーマ (`omarchy-tokyo-night`)
+
+Omarchy のテーマ (Tokyo Night, accent `#7aa2f7`) に合わせた自作テーマ。
+一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存してある
+(他ホストへはコピーするだけ)。
+
+配置先: `~/.local/share/fcitx5/themes/omarchy-tokyo-night/`
+
+| ファイル | 内容 |
+|---------|------|
+| `theme.conf` | 色・余白・画像の定義 |
+| `background.png` | 角丸 + アクセント枠の 9 スライス背景 |
+| `prev.svg` / `next.svg` | ページ送りボタン |
+| `radio.svg` / `arrow.svg` | メニューのチェック / サブメニュー印 |
 
 `~/.config/fcitx5/conf/classicui.conf`:
 
 ```ini
-# Theme: any Material-Color-* / default / default-dark
-Theme=Material-Color-Blue
+Theme=omarchy-tokyo-night
 PerScreenDPI=True
+Font=Sans 12
+MenuFont=Sans 12
 ```
 
-利用可能テーマ: `Material-Color-{Black,Blue,Brown,DeepPurple,Indigo,Orange,Pink,Red,SakuraPink,Teal}`,
-`default`, `default-dark`。Tokyo Night (青アクセント) には `Material-Color-Blue` が合う。
+背景画像の生成 (ImageMagick):
+
+```bash
+magick -size 64x64 xc:none -fill '#1a1b26' -stroke '#7aa2f7' -strokewidth 2 \
+  -draw "roundrectangle 2,2 61,61 8,8" background.png
+```
+
+適用は **fcitx5 のプロセス再起動**が必要 (下記ハマりどころ参照)。
+
+```bash
+pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKILL
+# systemd の Restart=always で数秒後に自動復帰
+```
+
+### theme.conf の書式 (fcitx5 classicui)
+
+`~/.local/share/fcitx5/themes/<name>/theme.conf` に INI 形式で書く。
+`classicui.conf` の `Theme=` で選択。主なキー:
+
+| セクション | キー |
+|-----------|------|
+| `[Metadata]` | `Name` `Version` `Author` `Description` `ScaleWithDPI` |
+| `[InputPanel]` | `NormalColor`(通常候補) `HighlightCandidateColor`(選択候補の文字) `HighlightColor`/`HighlightBackgroundColor`(preedit) `CandidateLabelColor` `HighlightCandidateLabelColor` `CandidateCommentColor` `Spacing` `PageButtonAlignment` `FullWidthHighlight` `LabelTextSizeFactor` `CommentTextSizeFactor` |
+| `[InputPanel/TextMargin]` `[InputPanel/ContentMargin]` `[InputPanel/ShadowMargin]` | `Left` `Right` `Top` `Bottom` |
+| `[InputPanel/Background]` | `Image` `Color` `BorderColor` `BorderWidth` `Overlay` `Gravity` `OverlayOffsetX/Y` `HideOverlayIfOversize` + `[InputPanel/Background/Margin]` `[InputPanel/Background/OverlayClipMargin]` |
+| `[InputPanel/Highlight]` | 背景と同じキー + `HighlightClickMargin` |
+| `[InputPanel/PrevPage]` `[InputPanel/NextPage]` | `Image` + `ClickMargin` |
+| `[Menu]` | `NormalColor` `HighlightCandidateColor` `Spacing` |
+| `[Menu/Background]` `[Menu/Highlight]` `[Menu/Separator]` `[Menu/CheckBox]` `[Menu/SubMenu]` | 背景と同じキー |
+| `[Menu/TextMargin]` `[Menu/ContentMargin]` | 余白 |
+| `[AccentColorField]` | `UseAccentColor=True` のときアクセント色を適用するフィールド番号 |
+
+**注意点:**
+- **`Font` はテーマ項目ではない**。`classicui.conf` 側の `Font` / `MenuFont` で指定する。
+  (`fcitx5-material-color` の theme.conf にある `Font=` は無効)
+- `[InputPanel/Background]` で `Image` を指定すると `Color`/`BorderColor`/`BorderWidth` は
+  **無視される** (画像が全部描く)。
+- **角丸の専用オプションは無い**。背景画像 (角丸 PNG) + 9 スライス `Margin` で表現する。
+  `Margin` は角丸半径 + 枠線ぶん以上にする。
+- `EnableBlur` は **KWin 専用**。Hyprland ではぼかしは効かない。
+- テーマの画像は `ScaleWithDPI` で DPI スケールされる。`<name>@2x.<ext>` を置くと
+  スケール別画像も使われる。
+
+### 見つけたテーマ候補 (未導入)
+
+| 入手先 | 名前 | 特徴 |
+|--------|------|------|
+| repo | `fcitx5-breeze` | KDE Breeze 風 |
+| repo | `fcitx5-nord` | Nord 配色 |
+| repo | `fcitx5-material-color` | Material 配色 (導入済みだが現在は未使用) |
+| AUR | `fcitx5-skin-fluentdark-git` | Fluent Design 風の**影 + ぼかし**付き (!+5) |
+| AUR | `fcitx5-theme-dracula-git`, catppuccin 系 ほか | 各種配色 |
+
+> AUR の Fluent 系は影・ぼかし付きで見た目が近いが、ぼかしは KWin 専用。
+> 導入はユーザー判断で。
 
 ### classicui の全設定キー (既定値)
 

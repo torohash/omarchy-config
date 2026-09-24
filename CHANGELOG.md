@@ -6,7 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
-| 2026-09-24 | 候補ウィンドウを Material-Color-Blue に | fcitx5 classicui | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
+| 2026-09-24 | 候補ウィンドウを自作 Tokyo Night テーマに | `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-24 | Mozc を導入し fcitx5 に登録 | `fcitx5-mozc`, `~/.config/fcitx5/profile` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-24 | キーボード `jp`→`us` / タッチパッド natural_scroll 反転 | `~/.config/hypr/input.lua` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 2026-09-24 | agent/workspace の移動キーを追加 (`prefix+,` `.`) | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |

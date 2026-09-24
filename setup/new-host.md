@@ -26,8 +26,7 @@ pacman -Qq yay                       # AUR ヘルパー
 ```bash
 # パッケージ
 omarchy pkg add fcitx5-mozc            # または sudo pacman -S fcitx5-mozc
-omarchy pkg add fcitx5-material-color  # 候補ウィンドウのテーマ
-# agent から: pkexec pacman -S --noconfirm --needed fcitx5-mozc fcitx5-material-color
+# agent から: pkexec pacman -S --noconfirm --needed fcitx5-mozc
 
 # プロファイル (~/.config/fcitx5/profile)
 cat > ~/.config/fcitx5/profile <<'EOF'
@@ -48,11 +47,16 @@ Layout=
 0=Default
 EOF
 
-# 候補ウィンドウのテーマ
+# 候補ウィンドウ: 自作 Tokyo Night テーマを配置
+mkdir -p ~/.local/share/fcitx5/themes
+cp -r ~/dev/config/assets/omarchy-tokyo-night ~/.local/share/fcitx5/themes/
+
 mkdir -p ~/.config/fcitx5/conf
 cat > ~/.config/fcitx5/conf/classicui.conf <<'EOF'
-Theme=Material-Color-Blue
+Theme=omarchy-tokyo-night
 PerScreenDPI=True
+Font=Sans 12
+MenuFont=Sans 12
 EOF
 
 # 反映 (Omarchy 作法)
@@ -134,8 +138,8 @@ hyprctl getoption input:touchpad:natural_scroll
 |-----------|----------|------|
 | `fcitx5`, `fcitx5-gtk`, `fcitx5-qt` | 5.1.22-1 等 | Omarchy 標準 |
 | `fcitx5-mozc` | 3.34.6239.2-1 | 日本語入力 |
-| `fcitx5-material-color` | 0.2.1-2 | 候補ウィンドウのテーマ |
 | `keyd` (任意) | 2.6.0-5 | Caps Lock を IME 切替に remap |
+| `fcitx5-material-color` (任意) | 0.2.1-2 | 既製テーマ。自作テーマを使うなら不要 |
 
 `flatpak` / `snap` は**導入しない** (Omarchy は pacman + AUR で完結)。
 
@@ -146,7 +150,8 @@ hyprctl getoption input:touchpad:natural_scroll
 | ファイル | 内容 |
 |----------|------|
 | `~/.config/fcitx5/profile` | keyboard-us + mozc |
-| `~/.config/fcitx5/conf/classicui.conf` | Theme=Material-Color-Blue |
+| `~/.config/fcitx5/conf/classicui.conf` | Theme=omarchy-tokyo-night |
+| `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | 自作候補ウィンドウテーマ (assets/ からコピー) |
 | `~/.config/herdr/config.toml` | 純正キー + agent/workspace 移動 |
 | `~/.config/hypr/input.lua` | kb_layout=us, natural_scroll=true |
 
