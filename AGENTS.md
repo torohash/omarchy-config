@@ -147,7 +147,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 表示倍率 | `1.8x`(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | 自作 clone `torohash.monitor` に差し替え (SCALE が11段スライダー) | 同上 |
-| Bitwarden | `bitwarden` + `bitwarden-cli` (`extra`)。メニューに Omarchy 公式の導線あり | [apps/bitwarden.md](apps/bitwarden.md) |
+| Bitwarden | `bitwarden` + `bitwarden-cli` (`extra`)。`SUPER+SHIFT+/` (Passwords) は Bitwarden に差し替え済み | [apps/bitwarden.md](apps/bitwarden.md) |
 
 ## 別ホストへの適用
 
@@ -166,7 +166,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | タッチパッド | `natural_scroll` を反転して確定(好みが変わったら `~/.config/hypr/input.lua`) |
 | classicui テーマ | 微調整は `~/.local/share/fcitx5/themes/omarchy-tokyo-night/theme.conf`。変更したら `assets/` にも同期 |
 | Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので必ず `omarchy restart shell` |
-| Bitwarden のキーバインド | `SUPER+SHIFT+/` (Passwords) は Omarchy 既定の **1Password** を指したまま。押すと 1Password のインストーラが開くので、Bitwarden へ向け直すか要検討 (`apps/bitwarden.md`) |
+| Bitwarden の見た目 | 倍率 1.8 でも論理 875x600 で普通だが、`no_screen_share` により **スクショで検証できない**ため目視判断待ち。大きければ `--force-device-scale-factor=1` (`apps/bitwarden.md`) |
 
 ---
 

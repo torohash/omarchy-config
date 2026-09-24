@@ -231,13 +231,22 @@ gtk-launch bitwarden                # GUI 起動 → ログイン
 注意点:
 
 - 金庫 ( `~/.config/Bitwarden/data.json` ) は**リポジトリにコピーしない**。
-- Omarchy 既定の `SUPER+SHIFT+/` (Passwords) は **1Password** を指しており、
-  押すとインストーラが開く。Bitwarden に向け直すなら `~/.config/hypr/bindings.lua` で
-  `hl.unbind` してから `o.bind("SUPER + SHIFT + SLASH", "Passwords", { launch = "bitwarden", focus = "^Bitwarden$" })`。
-- ウィンドウルール (フローティング + 画面共有除外) は Omarchy が既に持っている
-  (`default/hypr/apps/bitwarden.lua`) ので何もしなくてよい。
+- **`SUPER+SHIFT+/` (Passwords) は既定で 1Password を指している**ので Bitwarden へ差し替える。
+  `~/.config/hypr/bindings.lua` に (変更前は `backups/hypr-bindings.lua.before-bitwarden`):
+
+  ```lua
+  hl.unbind("SUPER + SHIFT + SLASH")   -- 既定: o.bind(..., { omarchy = "1password" })
+  o.bind("SUPER + SHIFT + SLASH", "Passwords", { launch = "bitwarden-desktop", focus = "^Bitwarden$" })
+  ```
+
+  検証: `hyprctl reload && hyprctl configerrors` (空) / `hyprctl binds -j | jq '.[] | select(.description=="Passwords")'` が **1件だけ**。
+  バイナリ名は `bitwarden-desktop` (`bitwarden` というコマンドは無い)。
+- ウィンドウルール (フローティング + **画面共有除外**) は Omarchy が既に持っている
+  (`default/hypr/apps/bitwarden.lua`) ので何もしなくてよい。ただしこの除外のせいで
+  **Bitwarden の窓は `grim` で真っ黒に写る** (バグではない)。描画確認は実画面か
+  レンダラプロセスの有無で行う。
 - Electron なので表示倍率が高いと窓が大きめに出ることがある。
-  `--force-device-scale-factor=1` で調整できる。
+  `--force-device-scale-factor=1` で調整できる(倍率 1.8 では 875x600 で普通)。
 
 → 詳細: [../apps/bitwarden.md](../apps/bitwarden.md)
 

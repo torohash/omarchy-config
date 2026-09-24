@@ -2,7 +2,7 @@
 
 デスクトップアプリ (`bitwarden`) + CLI (`bw` = `bitwarden-cli`)。
 **1Password ではなく Bitwarden を採用**している(Omarchy の既定は 1Password 前提なので、
-「Passwords」キーの行き先などが Bitwarden を指していない。後述)。
+「Passwords」キー `SUPER + SHIFT + /` の行き先だけ Bitwarden に差し替えてある。→ ハマりどころ 2)。
 
 ## 導入手順
 
@@ -81,44 +81,69 @@ bitwarden-cli 2026.2.0-1
 ```bash
 pacman -Q bitwarden bitwarden-cli          # => bitwarden 2026.3.1-2 / bitwarden-cli 2026.2.0-1
 bw --version                               # => 2026.2.0
-gtk-launch bitwarden                       # GUI 起動 → ログイン
-hyprctl clients -j | jq '.[] | select(.class | test("Bitwarden"))'
-                                           # => floating で出る (no_screen_share は hyprctl に出ない)
+
+# キーバインドが実行するコマンドそのもの (o.bind の { launch, focus } の展開形)
+omarchy-launch-or-focus '^Bitwarden$' 'uwsm-app -- bitwarden-desktop'
+hyprctl clients -j | jq '.[] | select(.class=="Bitwarden") | {floating, size, at}'
+# => floating=true, size=[875,600] (論理px / 倍率 1.8 での普通のサイズ)
+# 2回目以降は新窓を作らず既存を focus する (窓数が増えないことを確認済み)
+
+# キー側
+hyprctl configerrors                       # => 空
+hyprctl binds -j | jq '.[] | select(.description=="Passwords")'
+# => SUPER+SHIFT+SLASH のエントリが **1件だけ** (hl.unbind が効いている証拠)
+                                           #   modmask=65 = SUPER(64) + SHIFT(1)
+omarchy menu keybindings --print | grep SLASH   # => SUPER SHIFT + SLASH → Passwords
 omarchy-pkg-present bitwarden              # => 0 (メニューの Install 項目が消える)
 ```
 
+> **スクショで確かめようとすると真っ黒に見えるが正常**。下の「1. 画面共有除外」の仕様。
+> 見た目の確認は実画面で行うこと。
+
 ## ハマりどころ
 
-1. **`SUPER + SHIFT + SLASH` (Passwords) は 1Password を指したまま。**
-   `/usr/share/omarchy/default/hypr/bindings/applications.lua`:
+1. **スクリーンショットに映らない (grim で真っ黒)。** これはバグではなく、
+   Omarchy 既定のウィンドウルール `no_screen_share = true` の仕様。Bitwarden の窓は
+   `grim` や画面共有で**真っ黒な矩形**として写る。描画が死んでいるわけではない。
+   本当に生きているかはレンダラプロセスを見る:
 
-   ```lua
-   o.bind("SUPER + SHIFT + SLASH", "Passwords", { omarchy = "1password" })
+   ```bash
+   for d in /proc/[0-9]*; do tr '\0' ' ' < $d/cmdline 2>/dev/null; echo; done \
+     | grep -c -- "--type=renderer"       # => 1以上 (Bitwarden のレンダラが居る)
    ```
 
-   1Password 未導入なので、押すと**インストーラ(フローティング端末)が開く**。
-   Bitwarden に向けるなら `~/.config/hypr/bindings.lua` で
+   A/B 確認済み: foot に `hyprctl eval 'o.window("^(foot)$", { no_screen_share = true })'`
+   を当てると foot も真っ黒になり、`hyprctl reload` で戻ると再び写る。
+   (`hyprctl keyword` はこのバージョンでは `can't work with non-legacy parsers` で不可。`eval` を使う。
+   動的に当てたルールは `hyprctl reload` で消える)
+2. **`SUPER + SHIFT + SLASH` (Passwords) は既定では 1Password を指している。**
+   本機では `~/.config/hypr/bindings.lua` で **Bitwarden に差し替え済み** (2026-09-25):
 
    ```lua
-   hl.unbind("SUPER + SHIFT + SLASH")            -- 既定は 1Password
-   o.bind("SUPER + SHIFT + SLASH", "Passwords", { launch = "bitwarden", focus = "^Bitwarden$" })
+   hl.unbind("SUPER + SHIFT + SLASH")   -- 既定: o.bind(..., { omarchy = "1password" })
+   o.bind("SUPER + SHIFT + SLASH", "Passwords", { launch = "bitwarden-desktop", focus = "^Bitwarden$" })
    ```
 
-   (未実施。やるなら `hyprctl reload` + `hyprctl configerrors` で検証)
-2. **Electron アプリはスケーリングで巨大になりやすい。** Omarchy 自身が 1Password 用に
+   - **バイナリ名は `bitwarden-desktop`**。`bitwarden` というコマンドは無い (`.desktop` の Exec もこれ)。
+     誤って `launch = "bitwarden"` と書くと起動しない。
+   - `focus` は `omarchy-launch-or-focus` が `\b^Bitwarden$\b` に組み立てる。`^` `$` を付けると
+     ウィンドウクラス `Bitwarden` の完全一致だけに当たる (付けないとブラウザの“Bitwarden”タブを掴む恐れ)。
+   - 変更前は `backups/hypr-bindings.lua.before-bitwarden` に退避。
+3. **Electron アプリはスケーリングで巨大になりやすい。** Omarchy 自身が 1Password 用に
    `--force-device-scale-factor=1` を当てている (`/usr/share/omarchy/bin/omarchy-launch-1password`)。
-   Bitwarden には対策が無いので、**表示倍率を上げているときは窓が大きく出る可能性**がある。
-   気になる場合は `bitwarden-desktop --force-device-scale-factor=1` で起動するか、
+   Bitwarden には対策が無いが、**倍率 1.8 で起動しても論理サイズ 875x600 と普通の大きさ**で、
+   破綻は見られなかった (ただし上記 1 の理由でスクショでは見えないので、見た目の最終判断は目視)。
+   大きすぎると感じたら `bitwarden-desktop --force-device-scale-factor=1` で起動するか、
    `~/.local/share/applications/bitwarden.desktop` を作って `Exec` に足す(未実施)。
-   なお倍率は `~/.config/hypr/monitors.lua` の `omarchy_monitor_scale`(現在 1.8)。
+   倍率は `~/.config/hypr/monitors.lua` の `omarchy_monitor_scale`(現在 1.8)。
    → [display-scale.md](display-scale.md)
-3. `bw --version` 等の**初回実行で `~/.config/Bitwarden CLI/` が勝手に作られる**
+4. `bw --version` 等の**初回実行で `~/.config/Bitwarden CLI/` が勝手に作られる**
    (未ログインの空 `data.json` ができる)。
-4. ウィンドウクラスは `Bitwarden`(`.desktop` の `StartupWMClass` と一致)。
+5. ウィンドウクラスは `Bitwarden`(`.desktop` の `StartupWMClass` と一致)。
    ウィンドウルールを自分で書くときはこの文字列に合わせる。
-5. CLI でスクリプトから使うときはセッションが要る:
+6. CLI でスクリプトから使うときはセッションが要る:
    `export BW_SESSION=$(bw unlock --raw)`。マスターパスワードはファイルに残さない。
-6. `bw login` / `bw unlock` は対話入力が前提。エージェント的な自動化には向かない。
+7. `bw login` / `bw unlock` は対話入力が前提。エージェント的な自動化には向かない。
 
 ## 撤去
 

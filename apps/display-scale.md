@@ -100,6 +100,10 @@ tr -c '[:print:]\n' '\n' < /run/user/1000/quickshell/by-id/*/log.qslog \
    `omarchy display text size 13` (shell base-size / GTK factor / terminal pt を同時に変更。
    9〜20px の整数全部を受ける。パネルの TEXT SIZE バーは `[9,10,11,12,14,16,20]` の7刻み)。
 6. 倍率変更直後、開いていたパネルは閉じることがある(出力の作り直し)。
+7. **画面共有から除外されている窓は grim で真っ黒に写る。** Bitwarden がそれ
+   (`default/hypr/apps/bitwarden.lua` の `no_screen_share = true`)。
+   パネル自体は除外されないので、この検証手順はそのまま使える。
+   → [bitwarden.md](bitwarden.md)
 
 ## 撤去
 
