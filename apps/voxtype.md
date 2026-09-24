@@ -144,11 +144,57 @@ voxtype transcribe /tmp/a.wav
 # => 電車   (実測 4.08s / Vulkan)
 ```
 
+## モデル精度・速度の実測(本機 / GPU Vulkan)
+
+テスト音源: Wikimedia [Ja-Na-adjectives_watch_and_listen.ogg](https://commons.wikimedia.org/wiki/File:Ja-Na-adjectives_watch_and_listen.ogg)
+(65.6 秒の明瞭な日本語 / な形容詞の練習)
+
+| モデル | 処理時間 | 速度 | 結果 |
+|--------|---------|------|------|
+| **`small`** (466MB) | **3.05 s** | **21x realtime** | **全問正解 + 句読点あり** |
+| `large-v3-turbo` (1.5GB) | 5.66 s | 11x realtime | 「宿題だ」を**重複**、句読点なし |
+
+**結論: 大きいモデルが常に良いわけではない。** 明瞭な日本語なら `small` で十分で、
+本機では `small` のほうが速く、繰り返しエラーも出なかった。
+
+### 誤変換の傾向と対策
+
+| 症状 | 例 | 対策 |
+|------|-----|------|
+| **同音異義語の取り違え** | 「青巻紙」→「青巻き髪」(どちらも まきがみ) | 音響ではなく**語彙の問題**。`whisper.initial_prompt` で文脈を与える |
+| 早口言葉 | 「生麦生米生卵」→「生むきのもごめんなま玉子」 | 人間でも難しい。無理 |
+| 無音区間のでたらめ | 「雪外外外外外…」 | VAD を有効化(既定 OFF) |
+
+### 精度を上げる手順(優先順)
+
+1. `whisper.initial_prompt` に分野の語彙を入れる(最も効く・タダ)
+   ```bash
+   voxtype config set whisper.initial_prompt "専門用語や固有名詞、よく使う単語をここに"
+   systemctl --user restart voxtype
+   ```
+2. マイクを見直す(内蔵よりヘッドセット/外付けが有利)
+3. 早口をやめる・区切って話す
+4. どうしても必要なときだけ `--model large-v3-turbo`
+
+> v1.0.1 には**単語置換(text replacement)機能が無い**。1.1.0 で追加された
+> (「text rules everywhere」)。Omarchy リポジトリの更新を待つ。
+
+### 高精度モデルを「必要なときだけ」使う
+
+`voxtype record start` は `--model` を受け付けるので、キーを分けられる:
+
+```bash
+voxtype record start --model large-v3-turbo   # 高精度で録音開始
+```
+
+Hyprland 側 (`~/.config/hypr/bindings.lua`) に `SHIFT + F9` を足せば
+「F9=高速 / Shift+F9=高精度」にできる(※ F9 の release バインドと干渉しないか要検証)。
+
 ## 本機での確定設定 (検証済み)
 
 ```toml
 [whisper]
-model = "small"
+model = "large-v3-turbo"  # ※最終的な既定は small を推奨。large も残してある
 language = "ja"
 
 [vad]
