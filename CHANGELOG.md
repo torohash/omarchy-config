@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | 既定ブラウザが Chromium である理由を調査して記録 | `xdg-settings` / Omarchy ベースパッケージ | [apps/browser.md](apps/browser.md) |
 | 2026-09-25 | AGENTS.md に「作業前に必ず Omarchy スキルを読む」節を追加 | `AGENTS.md` | 同ファイル |
 | 2026-09-25 | Discord の Web アプリ版ランチャーを削除 (ネイティブと重複) | `~/.local/share/applications/Discord.desktop` | [apps/discord.md](apps/discord.md) |
 | 2026-09-25 | Discord (公式クライアント) を導入 | `discord` (`extra`) | [apps/discord.md](apps/discord.md) |
