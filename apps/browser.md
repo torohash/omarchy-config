@@ -1,6 +1,6 @@
 # Browser — 使っているブラウザ
 
-**このホストの選択: Google Chrome(既定ブラウザも Chrome)。**
+**入れるもの: Google Chrome(既定ブラウザも Chrome にする)。**
 Omarchy のベースに含まれる `chromium` は残す(Web アプリのフォールバック / 保険)。
 
 ## 手順
