@@ -106,6 +106,37 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating, 
    サードパーティクライアント (Vesktop など、AUR) という選択肢もある。
    公式クライアントで足りない場合のみ検討する。
 6. ウィンドウクラスは `discord`。ルールを書くときはこの文字列を使う。
+7. **MFA がパスキー/セキュリティキーだとログインできない** ("An error occurred.
+   Please try again.")。Discord の MFA ダイアログが WebAuthn (passkey/security key)
+   を使うのに対し、**Linux の Chromium/Electron にはプラットフォーム認証器がない**
+   (`navigator.credentials.create/get` が即失敗する)。
+   Discord 公式ブログも「Electron に WebAuthn の明示的なサポートはない」と書いている。
+
+   ローカルでの確認結果:
+
+   - Chromium で (secure context で) 評価すると **プラットフォーム認証器は無い**:
+     `PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()` → `false`
+     (確認方法: chromium を `--remote-debugging-port` 付きで起動し https ページで評価)
+   - `busctl --user introspect org.freedesktop.portal.Desktop
+     /org/freedesktop/portal/desktop | grep -i webauthn` → **インターフェースなし**
+     (OS 側のパスキー提供元もない)
+   - `ldd ~/.config/discord/app-*/Discord | grep fido` → **libfido2 はリンクしていない**
+   - Discord のログ (`~/.config/discord/logs/`) には WebAuthn の失敗が**出ない**
+     (ceremony の前で失敗するため)
+
+   回避策:
+
+   1. ダイアログの **"Verify with something else"** で TOTP (認証アプリ) か
+      バックアップコードを使う
+   2. **QR コードログイン**(スマホの Discord で読む)。モバイル側は WebAuthn が使える
+   3. **ブラウザ (Chromium) からログイン**する。パスキーを Bitwarden / Chromium に
+      入れている場合は、その拡張/プロファイル側でなら提示できる
+   4. ブラウザ側で **TOTP を第二手段として登録**しておくと、アプリからも使える
+   5. ハードウェアキーを使う場合は `libfido2` + udev ルールが必要
+      (`omarchy pkg add libfido2`)。この場合はアプリ側の問題と切り分ける
+
+   → 関連: [How Discord Modernized MFA with WebAuthn](https://discord.com/blog/how-discord-modernized-mfa-with-webauthn)、
+   [discord-api-docs#7004](https://github.com/discord/discord-api-docs/issues/7004)
 
 ## 撤去
 

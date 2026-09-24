@@ -55,6 +55,32 @@
 
 ---
 
+## 作業前に必ず読むもの (Omarchy スキル)
+
+**~/.config/hypr/ や ~/.config/omarchy/ を触る前に、必ず Omarchy スキルを読む。**
+まだこのセッションで読んでいないなら、何よりも先に読むこと。読んでから作業を始める。
+
+| ファイル | 中身 |
+|--------|------|
+| `/usr/share/omarchy/default/agents/skills/omarchy/SKILL.md` | 必須。Omarchy のコマンド体系・特権の使い分け・安全規則 |
+| 同 `hyprland.md` | bindings / monitors / window rules / Hyprland 設定 |
+| 同 `theming.md` / `plugins.md` / `capture.md` / `hooks.md` / `contributing.md` | テーマ / shell / 撮影 / hook / バグ報告 |
+
+(`~/.pi/agent/skills/omarchy/` はこのディレクトリへの symlink。どちらを読んでも同じ)
+
+このスキルが読めていないと実際にやらかす。実際に起きた事故:
+
+- `omarchy pkg add` ではなく **`pkexec pacman -S` でインストール**してしまった
+- **Omarchy に既にある手段(Web アプリ版 Discord)を確認せずネイティブを入れ、ランチャーを重複**させた
+- スキルの指示(`omarchy plugin clone` で複製してから編集)に気づかず、
+  `/usr/share/omarchy/` を直接編集しかけた
+
+特に**インストール**は必ず「スキルの決定フレームワーク」に従う:
+`omarchy pkg add` / `omarchy install ...` / `omarchy webapp ...` を使い、
+権限が要る操作はユーザーの端末で実行してもらう。
+
+---
+
 ## 記録ルール(**これがこのリポジトリの肝**)
 
 ### 1. `CHANGELOG.md` は索引
@@ -89,8 +115,10 @@
 
 ## 作業の進め方(エージェント向け)
 
-1. **Omarchy スキルを先に読む**(ハーネスの `skills/omarchy/SKILL.md` と `hyprland.md` 等)。
-   `~/.config/hypr/` や `~/.config/omarchy/` を触るなら必須。
+1. **Omarchy スキルを先に読む** → 「作業前に必ず読むもの」の節を参照。
+   harness の `~/.pi/agent/skills/omarchy/SKILL.md` と、
+   必要なら `hyprland.md` 等のトピックガイド(`/usr/share/omarchy/default/agents/skills/omarchy/`)。
+   未読なら**最初に読む**。読まずに設定を触らない。
 2. **現状確認 → バックアップ**。設定を書く前に `cat` / `hyprctl getoption` / `... --print` で現在値を見る。
 3. **変更はユーザーに確認してから**。このリポジトリの運用では**勝手にインストールしない**方針。
    入れるときは:
