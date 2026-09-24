@@ -139,7 +139,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 |------|------|------|
 | 日本語入力 | fcitx5 + Mozc、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 候補ウィンドウ | 自作 `omarchy-tokyo-night` テーマ(Mellow 設計 + Tokyo Night 配色) | 同上 |
-| 音声入力 | Voxtype: `small` / `ja` / VAD 有効 / GPU(Vulkan) | [apps/voxtype.md](apps/voxtype.md) |
+| 音声入力 | Voxtype: `small`(実測で確定) / `ja` / VAD 有効 / GPU(Vulkan) | [apps/voxtype.md](apps/voxtype.md) |
 | herdr | 純正キー + `prefix+,` `.` で agent/workspace 移動 | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 

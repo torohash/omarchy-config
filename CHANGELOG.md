@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-24 | 音声入力モデルは `small` で確定、`large-v3-turbo` を削除 | `~/.local/share/voxtype/models/` | [apps/voxtype.md](apps/voxtype.md) |
 | 2026-09-24 | Voxtype を日本語化 (small/ja/VAD/Vulkan) | `~/.config/voxtype/config.toml` | [apps/voxtype.md](apps/voxtype.md) |
 | 2026-09-24 | Voxtype (音声入力) を導入 | `voxtype-bin`, `wtype` | [apps/voxtype.md](apps/voxtype.md) |
 | 2026-09-24 | 候補ウィンドウを自作 Tokyo Night テーマに | `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |

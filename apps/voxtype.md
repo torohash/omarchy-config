@@ -157,6 +157,11 @@ voxtype transcribe /tmp/a.wav
 **結論: 大きいモデルが常に良いわけではない。** 明瞭な日本語なら `small` で十分で、
 本機では `small` のほうが速く、繰り返しエラーも出なかった。
 
+> **採否 (2026-09-24): `small` で確定。** 実測の結果 `large-v3-turbo` を使う理由が
+> 見つからなかったため、ダウンロードした 1.6GB は削除した。
+> 残っているモデル: `small` (465MB, 使用中) / `base.en` (141MB, 未使用) / Silero VAD (0.9MB)。
+> 再度使いたくなったら `voxtype setup --download --model large-v3-turbo --activate`。
+
 ### 誤変換の傾向と対策
 
 | 症状 | 例 | 対策 |
@@ -194,7 +199,7 @@ Hyprland 側 (`~/.config/hypr/bindings.lua`) に `SHIFT + F9` を足せば
 
 ```toml
 [whisper]
-model = "small"            # 既定。large-v3-turbo もDL済み(未使用)
+model = "small"            # 実測比較の結果これで確定
 language = "ja"
 
 [vad]
