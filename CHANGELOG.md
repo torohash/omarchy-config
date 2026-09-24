@@ -8,6 +8,7 @@
 |------|------|------|------|
 | 2026-09-25 | 表示倍率 1.6x → 1.8x (2x は大きすぎ / 1.6x は小さい) | `~/.config/hypr/monitors.lua` | [apps/display-scale.md](apps/display-scale.md) |
 | 2026-09-25 | Display パネルの SCALE を 6ボタン → 11段スライダーに (clone `torohash.monitor`) | `~/.config/omarchy/plugins/torohash.monitor/` | [apps/display-scale.md](apps/display-scale.md) |
+| 2026-09-24 | Bitwarden (デスクトップ + CLI `bw`) を導入 | `bitwarden`, `bitwarden-cli` (`extra`) | [apps/bitwarden.md](apps/bitwarden.md) |
 | 2026-09-24 | 音声入力モデルは `small` で確定、`large-v3-turbo` を削除 | `~/.local/share/voxtype/models/` | [apps/voxtype.md](apps/voxtype.md) |
 | 2026-09-24 | Voxtype を日本語化 (small/ja/VAD/Vulkan) | `~/.config/voxtype/config.toml` | [apps/voxtype.md](apps/voxtype.md) |
 | 2026-09-24 | Voxtype (音声入力) を導入 | `voxtype-bin`, `wtype` | [apps/voxtype.md](apps/voxtype.md) |

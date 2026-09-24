@@ -204,7 +204,46 @@ omarchy-shell omarchy.monitor state | jq -r .scale                    # => 1.8
 
 ---
 
-## 6. インストールされるパッケージ一覧
+## 6. Bitwarden (パスワードマネージャ) — 任意
+
+Omarchy のメニューに**公式の導線**がある (Install → Bitwarden)。
+入れているのは 1Password ではなく **Bitwarden** である点に注意。
+
+```bash
+# メニュー相当の CLI (フローティング端末でインストール → 起動)
+omarchy install and launch Bitwarden 'bitwarden bitwarden-cli' bitwarden
+
+# 手で入れるなら
+omarchy pkg add bitwarden bitwarden-cli
+```
+
+両方とも **`extra` (公式リポジトリ)**。AUR / yay は不要。
+`bitwarden-cli` は `nodejs-lts-jod` に依存する。
+
+確認:
+
+```bash
+pacman -Q bitwarden bitwarden-cli   # => 2026.3.1-2 / 2026.2.0-1
+bw --version                        # => 2026.2.0
+gtk-launch bitwarden                # GUI 起動 → ログイン
+```
+
+注意点:
+
+- 金庫 ( `~/.config/Bitwarden/data.json` ) は**リポジトリにコピーしない**。
+- Omarchy 既定の `SUPER+SHIFT+/` (Passwords) は **1Password** を指しており、
+  押すとインストーラが開く。Bitwarden に向け直すなら `~/.config/hypr/bindings.lua` で
+  `hl.unbind` してから `o.bind("SUPER + SHIFT + SLASH", "Passwords", { launch = "bitwarden", focus = "^Bitwarden$" })`。
+- ウィンドウルール (フローティング + 画面共有除外) は Omarchy が既に持っている
+  (`default/hypr/apps/bitwarden.lua`) ので何もしなくてよい。
+- Electron なので表示倍率が高いと窓が大きめに出ることがある。
+  `--force-device-scale-factor=1` で調整できる。
+
+→ 詳細: [../apps/bitwarden.md](../apps/bitwarden.md)
+
+---
+
+## 7. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
@@ -213,12 +252,14 @@ omarchy-shell omarchy.monitor state | jq -r .scale                    # => 1.8
 | `voxtype-bin` + `wtype` (任意) | 1.0.1-1 | 音声入力 (Omarchy リポジトリ) |
 | `keyd` (任意) | 2.6.0-5 | Caps Lock を IME 切替に remap |
 | `fcitx5-material-color` (任意) | 0.2.1-2 | 既製テーマ。自作テーマを使うなら不要 |
+| `bitwarden` (任意) | 2026.3.1-2 | パスワードマネージャ (Electron 39 同梱依存) |
+| `bitwarden-cli` (任意) | 2026.2.0-1 | `bw`。nodejs-lts-jod に依存 |
 
 `flatpak` / `snap` は**導入しない** (Omarchy は pacman + AUR で完結)。
 
 ---
 
-## 7. 変更ファイル一覧
+## 8. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
@@ -231,10 +272,11 @@ omarchy-shell omarchy.monitor state | jq -r .scale                    # => 1.8
 | `~/.config/hypr/monitors.lua` | omarchy_monitor_scale=1.8 (gdk_scale=2 のまま) |
 | `~/.config/omarchy/plugins/torohash.monitor/Panel.qml` | SCALE を11段スライダー化 (assets/ からコピー) |
 | `~/.config/omarchy/shell.json` | bar widget を `omarchy.monitor` → `torohash.monitor` |
+| `~/.config/Bitwarden/` | デスクトップアプリの金庫 (**コピーしない**) |
 
 ---
 
-## 8. 更新で戻されるので注意
+## 9. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。

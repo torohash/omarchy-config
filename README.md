@@ -15,7 +15,8 @@
 │   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + fcitx5
 │   ├── voxtype.md         # 音声入力(ディクテーション)
 │   ├── hyprland-input.md  # キーボード配列 / タッチパッド
-│   └── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
+│   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
+│   └── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
 ├── assets/                # 他ホストへコピーする実ファイル
