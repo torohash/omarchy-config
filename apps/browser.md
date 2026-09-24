@@ -24,7 +24,7 @@
 - `omarchy-launch-browser` は `xdg-settings` から既定ブラウザを引いて起動し、
   `--private` を各ブラウザの privacy フラグに変換する。
 
-## 設計思想 (なぜ Chromium を既定にしたのか)
+## 設計思想 (なぜ Chromium を既定にしたのか) — ※再現には不要な補足
 
 Omarchy は自らを **「omakase(おまかせ)」の opinionated ディストロ**と呼ぶ。
 公式サイトの言葉:
@@ -60,6 +60,71 @@ Manual は Firefox/Zen について「**拡張なし・テーマなし。そこ�
 - Chromium はベースに残る (Web アプリのエンジンなので `Remove > Browser` にも出ない)
 
 要するに **「opinionated default + 完全な自由、ただし逸脱コストは明示」** という設計。
+
+## 他の候補ブラウザ (Omarchy が実際に何をするか)
+
+`omarchy install browser <name>` がやることを、そのまま表にする。
+**他のホストで別ブラウザを選ぶときは、この表の「パッケージ」と「設定されるもの」が必要になる。**
+
+| ブラウザ | パッケージ (入手元) | 設定されるもの | テーマ | 拡張 | Web アプリ |
+|---------|------------------|--------------|------|------|-----------|
+| **Chromium** (既定) | `chromium` (repo) | `/etc/chromium/policies/managed` + `~/.config/chromium-flags.conf` | ◯ | ◯ | ◯ |
+| Chrome | `google-chrome` (**AUR**) | `/etc/opt/chrome/policies/managed` + `~/.config/chrome-flags.conf` | ◯ | ◯ | ◯ |
+| Edge | `microsoft-edge-stable-bin` (**AUR**) | `/etc/opt/edge/policies/managed` + `~/.config/microsoft-edge-stable-flags.conf` | ◯ | ◯ | ◯ |
+| Brave | `brave-bin` (**AUR**) | `/etc/brave/policies/managed` + `~/.config/brave-flags.conf` | ◯ | ◯ | ◯ |
+| Brave Origin | `brave-origin-bin` (**AUR**) | 同上(policy は brave と共通) + `~/.config/brave-origin-flags.conf` | ◯ | ◯ | ◯ |
+| Firefox | `firefox` (repo) | `/usr/lib/firefox/distribution/policies.json` + `~/.config/environment.d/omarchy-firefox-wayland.conf` | ✗ | ✗ | ✗ |
+| Zen | `zen-browser-bin` (**AUR**) | `/opt/zen-browser/distribution/policies.json` + 同じ Wayland env | ✗ | ✗ | ✗ |
+
+### Chromium 系に共通の処理 (`copy_chromium_flags`)
+
+1. policy dir を用意する(root:root 0755。`browser-policy.sh` が親ディレクトリも含めて hardening)
+2. `$OMARCHY_PATH/config/chromium-flags.conf` を **そのブラウザ用の名前にコピー**
+   (`-flags.conf` の命名はブラウザごとに違う。Chromium は `chromium-flags.conf`、Chrome は
+   `chrome-flags.conf`、Edge は `microsoft-edge-stable-flags.conf`、Brave は `brave-flags.conf`)
+3. **Copy URL / yt-dlp の native messaging host をインストール**
+   (`omarchy-install-chromium-copy-url` / `-ytdlp`。
+   `~/.config/chromium`, `google-chrome`, `BraveSoftware/Brave-Browser`, `microsoft-edge` などの
+   プロファイルディレクトリ全部に対して manifest を置く)
+4. 現在のテーマ色を `color.json` として policy dir に書く (`omarchy-theme-set-browser`)
+
+### Firefox / Zen の扱い (思想としての割り切り)
+
+設定されるのは**既定値の調整と Wayland ネイティブ化だけ**:
+
+- `/usr/share/omarchy/default/firefox/policies.json` を `distribution/` に配置。中身は
+  `apz.overscroll.enabled` / `media.ffmpeg.vaapi.enabled` /
+  `media.hardware-video-decoding.force-enabled` / `widget.disable-swipe-tracker` /
+  `widget.wayland.fractional-scale.enabled` (= タッチパッド・HW デコード・fractional scale を有効化)
+- `~/.config/environment.d/omarchy-firefox-wayland.conf` に `MOZ_ENABLE_WAYLAND=1`
+
+**テーマは当たらない・拡張は入らない・Web アプリは Chromium のまま**(下表の注意 1)。
+Manual にも「extensions は無し、themed でも無い。そこは自分でやる」と明記されている。
+
+### 導入手順と切替
+
+```bash
+# 1. 入れる (AUR パッケージは omarchy-pkg-aur-add が入れる。sudo が要るので端末で実行)
+omarchy install browser firefox
+
+# 2. 既定にする (XDG ハンドラごと差し替わる)
+omarchy default browser firefox
+
+# 3. やめる
+omarchy remove browser firefox      # flags ファイルと color.json も消す
+```
+
+`omarchy remove browser` は「既定がそれだったら chromium に戻す」処理も入っている。
+
+### どれを選ぶか
+
+| 望み | 選択 |
+|------|------|
+| Omarchy の体験(テーマ / Web アプリ / 拡張)をそのまま使いたい | **Chromium** のままでよい |
+| Google 連携・Chrome 固有機能が欲しい | Chrome |
+| 広告ブロック / privacy 優先 | Brave(Brave Origin は crypto・rewards を外したミニマル版) |
+| Gecko / Firefox が好き | Firefox(テーマ・拡張・Web アプリは自分で。**chromium は残す**) |
+| Firefox ベースで見た目も今風に | Zen(扱いは Firefox と同じ) |
 
 ## 変える
 
