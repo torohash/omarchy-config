@@ -194,7 +194,7 @@ Hyprland 側 (`~/.config/hypr/bindings.lua`) に `SHIFT + F9` を足せば
 
 ```toml
 [whisper]
-model = "large-v3-turbo"  # ※最終的な既定は small を推奨。large も残してある
+model = "small"            # 既定。large-v3-turbo もDL済み(未使用)
 language = "ja"
 
 [vad]
