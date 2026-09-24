@@ -25,7 +25,7 @@
 | Shell | Omarchy shell(Quickshell) |
 | テーマ | Tokyo Night / accent `#7aa2f7` |
 | パッケージ | pacman + AUR(`yay`)。**flatpak / snap は使わない** |
-| 特権 | 権限が要る操作は**ユーザーの端末で `sudo`**(エージェントは代行しない) |
+| 特権 | エージェントの bash に TTY は無い → sudo 不可。Omarchy 経由か floating terminal で |
 
 ---
 
@@ -125,7 +125,9 @@
    入れるときは:
    - **Omarchy のコマンド経由**にする (`omarchy pkg add` / `omarchy install ...` /
      `omarchy webapp ...`)。素の `pacman -S` や `pkexec pacman` は使わない。
-   - **権限が必要な操作はユーザーの端末で実行してもらう**(エージェントは自分で完結させない)。
+   - **権限が必要な操作**は Omarchy コマンド経由で行う。AUR のように非対話で無理なものは
+     `omarchy-launch-floating-terminal-with-presentation` でユーザーの端末に出して
+     パスワードを入力してもらう(エージェントの bash には TTY が無く sudo が使えない)。
    - 入れる**前に既存手段を確認**する: Omarchy の Web アプリ版 / mise 管理の CLI /
      すでに入っているか (例: Discord は Web アプリ版が最初からあり、`gh` は mise に入っていた)。
 4. **検証コマンドを必ず実行**して、**期待される出力**をドキュメントに残す。
@@ -160,9 +162,16 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 ### 安全規則・落とし穴
 
 - **`/usr/share/omarchy/` は絶対に編集しない**(`omarchy update` で消える)。読むのは自由。
-- **特権**: 端末でパスワード入力できるなら `sudo`(= ユーザーの端末で実行してもらう)。
-  エージェントは権限が要る操作 (pacman / システムファイル) を**自分で完結させない**。
-  コマンドを提示してユーザーに実行してもらう。素の `pkexec pacman -S` での代行はしない。
+- **特権**: エージェントの bash には **TTY が無い**ので `sudo` はプロンプトを出せない
+  (実測: `sudo -v` → `sudo: a terminal is required to read the password`)。
+  よってスキルの「端末が無い場合」に該当する。ただし:
+  - **手順は必ず Omarchy コマンド経由**(`omarchy pkg add` / `omarchy install ...`)。
+    素の `pacman -S` / `pkexec pacman -S` を自前で叩かない。
+  - **AUR は root では入れられない**(makepkg / yay が root を拒否)。
+    その場合は `omarchy-launch-floating-terminal-with-presentation '<omarchy-install-...>'`
+    を使う。ユーザーの見えるフローティング端末で sudo を入力してもらえる
+    (Omarchy メニューと同じ経路)。
+  - 非対話で完結できるもの(システム設定の書き換え等)だけ `pkexec` を使う。
 - **fcitx5 は終了時に設定を書き戻す**。手書きの設定を確実に読ませたいときは
   `pkill -9 -x fcitx5`(systemd の `Restart=always` で自動復帰)。
   `fcitx5-remote -r` では profile / classicui は読み直されない。
@@ -191,7 +200,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
 | Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする (Web アプリ版と重複しないよう注意) | [apps/discord.md](apps/discord.md) |
 | CLI ツール | `gh` / `node` / `pi` / `codex` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
-| ブラウザ | Chromium(Omarchy の既定のまま。変更なし) | [apps/browser.md](apps/browser.md) |
+| ブラウザ | Chrome(既定。AUR の google-chrome。ベースの chromium は残す) | [apps/browser.md](apps/browser.md) |
 | 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
 ## 別ホストへの適用

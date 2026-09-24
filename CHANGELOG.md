@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | ブラウザを Chrome にして既定にする | `google-chrome` (AUR) / xdg default-web-browser | [apps/browser.md](apps/browser.md) |
 | 2026-09-25 | 記録を「どれを選んだか」の粒度に整理 (browser / エージェント) | `apps/browser.md`, `apps/omarchy-agent.md` | 各ファイル |
 | 2026-09-25 | 既定ブラウザが Chromium である理由を調査して記録 | `xdg-settings` / Omarchy ベースパッケージ | [apps/browser.md](apps/browser.md) |
 | 2026-09-25 | AGENTS.md に「作業前に必ず Omarchy スキルを読む」節を追加 | `AGENTS.md` | 同ファイル |
