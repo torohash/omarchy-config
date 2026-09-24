@@ -132,15 +132,15 @@ pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKI
 
 | テーマ | URL | 評価 |
 |--------|-----|------|
-| **Mellow** | https://github.com/sanweiya/fcitx5-mellow-themes | ★217。**丸角 + 上品な枠 + 角丸ハイライトで一番きれい**。AUR: `fcitx5-mellow-themes-git`。本テーマの設計元 |
-| Tokyo Night | https://github.com/ch3n9w/fcitx5-Tokyonight | 配色は Tokyo Night (Storm/Day)。ただし平坦で角丸なし |
-| Round Simple | https://github.com/StarWhiteIsBusy/Round-Simple-Fcitx5-Skin | 丸角 + Noctalia Material You 連動 |
-| Ori | https://github.com/Reverier-Xu/Ori-fcitx5 | 丸角のシンプル系 |
-| Fluent | https://github.com/Reverier-Xu/Fluent-fcitx5 | Fluent Design。影/ぼかしは Wayland では効かない (作者明記) |
-| Catppuccin | https://github.com/catppuccin/fcitx5 | `enable-rounded.sh` で丸角化 |
-| Persona 5 | https://github.com/Liushenwuzhu-Alpaca/fcitx5-p5-phantom-theme | 攻めたデザイン |
+| **Mellow** | [sanweiya/fcitx5-mellow-themes](https://github.com/sanweiya/fcitx5-mellow-themes) | ★217。**丸角 + 上品な枠 + 角丸ハイライトで一番きれい**。AUR: `fcitx5-mellow-themes-git`。本テーマの設計元 |
+| Tokyo Night | [ch3n9w/fcitx5-Tokyonight](https://github.com/ch3n9w/fcitx5-Tokyonight) | 配色は Tokyo Night (Storm/Day)。ただし平坦で角丸なし |
+| Round Simple | [StarWhiteIsBusy/Round-Simple-Fcitx5-Skin](https://github.com/StarWhiteIsBusy/Round-Simple-Fcitx5-Skin) | 丸角 + Noctalia Material You 連動 |
+| Ori | [Reverier-Xu/Ori-fcitx5](https://github.com/Reverier-Xu/Ori-fcitx5) | 丸角のシンプル系 |
+| Fluent | [Reverier-Xu/Fluent-fcitx5](https://github.com/Reverier-Xu/Fluent-fcitx5) | Fluent Design。影/ぼかしは Wayland では効かない (作者明記) |
+| Catppuccin | [catppuccin/fcitx5](https://github.com/catppuccin/fcitx5) | `enable-rounded.sh` で丸角化 |
+| Persona 5 | [Liushenwuzhu-Alpaca/fcitx5-p5-phantom-theme](https://github.com/Liushenwuzhu-Alpaca/fcitx5-p5-phantom-theme) | 攻めたデザイン |
 
-一覧: https://github.com/topics/fcitx5-theme / https://aur.archlinux.org/packages?K=fcitx5-theme
+一覧: [GitHub topics: fcitx5-theme](https://github.com/topics/fcitx5-theme) / [AUR 検索](https://aur.archlinux.org/packages?K=fcitx5-theme)
 
 ### Wayland での制約 (重要)
 

@@ -4,8 +4,8 @@ Omarchy 4.0.4 に**同梱**されている。tmux 的なマルチプレクサで
 向けのペイン/タブ/ワークスペース管理機能を持つ。
 
 - バイナリ: `/usr/bin/herdr` (例: v0.8.2)
-- 公式: https://herdr.dev/
-- エージェント向けガイド: https://herdr.dev/agent-guide.md, https://herdr.dev/llms.txt
+- 公式: [herdr.dev](https://herdr.dev/)
+- エージェント向けガイド: [agent-guide.md](https://herdr.dev/agent-guide.md) / [llms.txt](https://herdr.dev/llms.txt)
   (`herdr --skill` でも取得可)
 
 ## 設定ファイルの場所
