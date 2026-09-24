@@ -54,6 +54,7 @@ cp -r ~/dev/config/assets/omarchy-tokyo-night ~/.local/share/fcitx5/themes/
 mkdir -p ~/.config/fcitx5/conf
 cat > ~/.config/fcitx5/conf/classicui.conf <<'EOF'
 Theme=omarchy-tokyo-night
+UseAccentColor=False
 PerScreenDPI=True
 Font=Sans 12
 MenuFont=Sans 12

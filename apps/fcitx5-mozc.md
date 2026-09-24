@@ -91,32 +91,34 @@ fcitx5 のテーマで見た目を決める。
 ### 現在: 自作 Tokyo Night テーマ (`omarchy-tokyo-night`)
 
 Omarchy のテーマ (Tokyo Night, accent `#7aa2f7`) に合わせた自作テーマ。
-一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存してある
-(他ホストへはコピーするだけ)。
+**設計は [sanweiya/fcitx5-mellow-themes](https://github.com/sanweiya/fcitx5-mellow-themes) を参考**にした
+(実際のスクリーンショットを確認し、一番洗練されていると判断)。
 
 配置先: `~/.local/share/fcitx5/themes/omarchy-tokyo-night/`
+一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存
+(他ホストへはコピーするだけ)。
 
 | ファイル | 内容 |
 |---------|------|
 | `theme.conf` | 色・余白・画像の定義 |
-| `background.png` | 角丸 + アクセント枠の 9 スライス背景 |
+| `panel.svg` | **31x31 の角丸長方形 (radius 9.5)** + 控えめな枠。パネル/メニュー背景 |
+| `highlight.svg` | **31x31 の角丸ピル (radius 15.5)**。選択候補の背景 |
 | `prev.svg` / `next.svg` | ページ送りボタン |
 | `radio.svg` / `arrow.svg` | メニューのチェック / サブメニュー印 |
+
+**SVG を 9 スライス**で伸ばすのがコツ:
+- `[InputPanel/Background] Image=panel.svg` + `Margin` 15 (角丸半径より大きい値)
+- `[InputPanel/Highlight] Image=highlight.svg` + `Margin` L/R=15, T/B=10
+- SVG なら高 DPI でもジャギらない (PNG だと粗くなる)
 
 `~/.config/fcitx5/conf/classicui.conf`:
 
 ```ini
 Theme=omarchy-tokyo-night
+UseAccentColor=False   # ポータルのアクセント色で上書きさせない (決定的にする)
 PerScreenDPI=True
-Font=Sans 12
+Font=Sans 12           # フォントはテーマではなくここ
 MenuFont=Sans 12
-```
-
-背景画像の生成 (ImageMagick):
-
-```bash
-magick -size 64x64 xc:none -fill '#1a1b26' -stroke '#7aa2f7' -strokewidth 2 \
-  -draw "roundrectangle 2,2 61,61 8,8" background.png
 ```
 
 適用は **fcitx5 のプロセス再起動**が必要 (下記ハマりどころ参照)。
@@ -125,6 +127,27 @@ magick -size 64x64 xc:none -fill '#1a1b26' -stroke '#7aa2f7' -strokewidth 2 \
 pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKILL
 # systemd の Restart=always で数秒後に自動復帰
 ```
+
+### 参考: 既製テーマ (実物のスクショを確認済み)
+
+| テーマ | URL | 評価 |
+|--------|-----|------|
+| **Mellow** | https://github.com/sanweiya/fcitx5-mellow-themes | ★217。**丸角 + 上品な枠 + 角丸ハイライトで一番きれい**。AUR: `fcitx5-mellow-themes-git`。本テーマの設計元 |
+| Tokyo Night | https://github.com/ch3n9w/fcitx5-Tokyonight | 配色は Tokyo Night (Storm/Day)。ただし平坦で角丸なし |
+| Round Simple | https://github.com/StarWhiteIsBusy/Round-Simple-Fcitx5-Skin | 丸角 + Noctalia Material You 連動 |
+| Ori | https://github.com/Reverier-Xu/Ori-fcitx5 | 丸角のシンプル系 |
+| Fluent | https://github.com/Reverier-Xu/Fluent-fcitx5 | Fluent Design。影/ぼかしは Wayland では効かない (作者明記) |
+| Catppuccin | https://github.com/catppuccin/fcitx5 | `enable-rounded.sh` で丸角化 |
+| Persona 5 | https://github.com/Liushenwuzhu-Alpaca/fcitx5-p5-phantom-theme | 攻めたデザイン |
+
+一覧: https://github.com/topics/fcitx5-theme / https://aur.archlinux.org/packages?K=fcitx5-theme
+
+### Wayland での制約 (重要)
+
+- **ぼかしは KWin 専用** (`EnableBlur`)。Hyprland では無効。
+- **影 (`ShadowMargin`) も Wayland では効かない** — パネル位置を fcitx5 ではなく Wayland 側が
+  決めるため (Fluent 作者の README に明記)。
+- 丸角は**背景画像 (SVG) + 9 スライス**で作るのが唯一の方法。専用オプションは無い。
 
 ### theme.conf の書式 (fcitx5 classicui)
 
