@@ -315,6 +315,14 @@ gh --version            # => gh version 2.x
 mise ls --global | grep gh
 ```
 
+### GitHub を SSH remote で使う場合
+
+`gh auth login` とは別に、GitHub のホスト鍵を `~/.ssh/known_hosts` に登録する。
+初回接続を非対話で行うと `Host key verification failed` になり得るため、
+公式の鍵を確認してから登録する。検証を無効化して回避しない。
+
+→ 登録手順・SSH 認証と Git アクセスの検証: [../apps/github-ssh.md](../apps/github-ssh.md)
+
 ---
 
 ## 9. インストールされるパッケージ一覧

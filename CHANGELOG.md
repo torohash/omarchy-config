@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | GitHub のホスト鍵を公式 HTTPS API から取得し、SSH の初回検証を有効にする | `~/.ssh/known_hosts` | [apps/github-ssh.md](apps/github-ssh.md) |
 | 2026-09-25 | ブラウザを Chrome にして既定にする | `google-chrome` (AUR) / xdg default-web-browser | [apps/browser.md](apps/browser.md) |
 | 2026-09-25 | 記録を「どれを選んだか」の粒度に整理 (browser / エージェント) | `apps/browser.md`, `apps/omarchy-agent.md` | 各ファイル |
 | 2026-09-25 | 既定ブラウザが Chromium である理由を調査して記録 | `xdg-settings` / Omarchy ベースパッケージ | [apps/browser.md](apps/browser.md) |

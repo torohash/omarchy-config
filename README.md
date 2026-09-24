@@ -19,6 +19,7 @@
 │   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
 │   ├── discord.md         # チャット (公式クライアント)
 │   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
+│   ├── github-ssh.md      # GitHub SSH のホスト鍵登録と検証
 │   └── browser.md         # 使っているブラウザ (Chromium) と候補一覧
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)

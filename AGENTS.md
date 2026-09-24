@@ -45,6 +45,7 @@
 │   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
 │   ├── discord.md         # チャット (公式クライアント)
 │   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
+│   ├── github-ssh.md      # GitHub SSH のホスト鍵登録と検証
 │   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
@@ -223,6 +224,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
 | Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする (Web アプリ版と重複しないよう注意) | [apps/discord.md](apps/discord.md) |
 | CLI ツール | `gh` / `node` / `pi` / `codex` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
+| GitHub SSH | 公式ホスト鍵を `known_hosts` に登録し、検証を無効化せず接続する | [apps/github-ssh.md](apps/github-ssh.md) |
 | ブラウザ | Chrome(既定。AUR の google-chrome。ベースの chromium は残す) | [apps/browser.md](apps/browser.md) |
 | 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
