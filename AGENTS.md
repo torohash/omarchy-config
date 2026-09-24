@@ -103,7 +103,8 @@
 - 検査(残っていたら直す):
 
   ```bash
-  grep -rn -E "このホスト|本機|このマシン|適用済み|実施済み|時点" --include="*.md" .
+  # AGENTS.md 自身はこの表と検査コマンドを含むので除外する
+  grep -rn -E "このホスト|本機|このマシン|適用済み|実施済み|時点" --include="*.md" --exclude=AGENTS.md .
   ```
 
 ### 1. `CHANGELOG.md` は索引
