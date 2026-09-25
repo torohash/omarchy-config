@@ -42,6 +42,7 @@ claude        # または pi
 | `nix-home-manager` | Nix + [nix-config](https://github.com/torohash/nix-config) (Claude Code の CLAUDE.md、Pi の設定) |
 | `pi-packages` | Pi の拡張 |
 | `agent-photo-sync` | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
+| `omarchy-webapps-cleanup` | 使わない HEY・Basecamp の Web アプリとキーを外す (任意) |
 | `display-scale` | Display パネルの倍率スライダー (任意) |
 | `voxtype` | 音声入力の日本語化 (任意) |
 | `openwhispr` | 会議の議事録と音声入力 (任意) |

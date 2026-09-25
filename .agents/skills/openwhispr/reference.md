@@ -25,6 +25,12 @@
 Hyprland のキーから D-Bus で呼ぶ仕組みも試したが、アプリ側のキーと二重になって分かりにくいので入れない
 (アプリ側のキーで困ったら、下の D-Bus を Hyprland の `o.bind` から呼べる)。
 
+## アプリを開くキー
+
+`Super+Shift+V` (Voice)。Omarchy は `Super+Shift+<英字>` をアプリの起動に使っている (O = Obsidian など)。
+`{ launch = "openwhispr" }` だけにして `focus` は付けない。起動済みで `openwhispr` を実行すると既存のコントロールパネルが開くため。
+`focus = "^open-whispr$"` にすると、同じウィンドウクラスの小さな録音パネル (「Voice Recorder」) に移動してしまう。
+
 ## アプリの形
 
 - Electron の GUI アプリ。設定・メモ・議事録のコントロールパネルと、録音中の小さなパネルがある。トレイに常駐する。

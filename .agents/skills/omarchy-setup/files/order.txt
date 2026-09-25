@@ -8,6 +8,7 @@ claude-code-optout  必須
 nix-home-manager    必須
 pi-packages         必須
 agent-photo-sync    必須
+omarchy-webapps-cleanup 任意
 display-scale       任意
 voxtype             任意
 openwhispr          任意
