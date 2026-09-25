@@ -1,0 +1,5 @@
+# Pi の package (pi install <source>)。1 行 1 つ。全ホストで使うものだけ書く。
+npm:pi-web-access
+npm:@ff-labs/pi-fff
+npm:@ogulcancelik/pi-session-recall
+npm:pi-token-speed

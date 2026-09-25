@@ -25,7 +25,7 @@ mise use -g turso        # ~/.config/mise/config.toml に turso = "latest" が�
 
 ## ユーザーに頼む操作
 
-Turso を使い始めるときに、ブラウザで GitHub 認証してもらう (セットアップの時点では不要)。
+Turso を使い始めるときに、ブラウザで GitHub 認証してもらう (セットアップ中は不要)。
 
 ```bash
 turso auth login         # ヘッドレスなら turso auth login --headless
