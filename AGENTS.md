@@ -36,8 +36,11 @@
 ├── AGENTS.md              # ← これ。引き継ぎ書
 ├── README.md              # 人間向けの概要
 ├── CHANGELOG.md           # 索引: 日付 / 変更 / 対象 / 詳細リンク
-├── apps/                  # アプリ・機能ごとの詳細ナレッジ
-│   ├── herdr.md           # ターミナルワークスペースマネージャ
+├── .agents/skills/        # 作業 skill (1 作業 = 1 skill)。移行中: 移したものから apps/ を消す
+│   ├── add-task/          # 作業 skill の書式とルール (新しく足すときはこれに従う)
+│   └── herdr/             # herdr のキー割り当て (SKILL.md = 手順 / reference.md = 理由)
+├── .claude/skills         # → .agents/skills (Claude Code 用の symlink)
+├── apps/                  # アプリ・機能ごとの詳細ナレッジ (skill へ移行中)
 │   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + 候補ウィンドウのテーマ
 │   ├── voxtype.md         # 音声入力(ディクテーション)
 │   ├── hyprland-input.md  # キーボード配列 / タッチパッド
@@ -221,7 +224,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 候補ウィンドウ | Omarchy のテーマに追従する自作テーマ `omarchy`(テンプレート + theme-set hook)。フォントは Noto Sans CJK JP | 同上 |
 | 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
-| herdr | 純正キーを土台に、prefix を `alt+s`、`prefix+a` `d` で workspace、`prefix+shift+a` `d` で agent を移動 (左手だけ) | [apps/herdr.md](apps/herdr.md) |
+| herdr | 純正キーを土台に、prefix を `alt+s`、`prefix+a` `d` で workspace、`prefix+shift+a` `d` で agent を移動 (左手だけ) | [.agents/skills/herdr](.agents/skills/herdr/SKILL.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |

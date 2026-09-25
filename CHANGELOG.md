@@ -6,10 +6,10 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
-| 2026-09-25 | herdr を左手だけで操作できるように: prefix `ctrl+b` → `alt+s`、workspace 移動 `prefix+a` `d`、agent 移動 `prefix+shift+a` `d`、workspace を閉じるを `prefix+shift+q` へ。`ctrl+s` 案は Pi / Claude Code と衝突するため不採用 | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
+| 2026-09-25 | herdr を左手だけで操作できるように: prefix `ctrl+b` → `alt+s`、workspace 移動 `prefix+a` `d`、agent 移動 `prefix+shift+a` `d`、workspace を閉じるを `prefix+shift+q` へ。`ctrl+s` 案は Pi / Claude Code と衝突するため不採用 | `~/.config/herdr/config.toml` | [herdr](.agents/skills/herdr/reference.md) |
 | 2026-09-25 | Claude Code のオプトアウト (テレメトリ・エラー報告・評価アンケート) を `settings.json` の `env` に設定。Nix ではなく手順書で管理 (Omarchy と Claude Code も書くファイルのため) | `~/.claude/settings.json` | [apps/claude-code.md](apps/claude-code.md) |
 | 2026-09-25 | 候補ウィンドウを Omarchy のテーマに追従する自作テーマ `omarchy` (Soft デザイン) に置き換え、フォントを Noto Sans CJK JP に (Sans だと漢字が KR 字形)。3 案 (Omarchy / Soft / Bold) をスクショ比較して Soft を採用 | `~/.config/omarchy/themed/fcitx5-*.tpl` / `hooks/theme-set.d/fcitx5-theme` / `~/.config/fcitx5/conf/classicui.conf` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
-| 2026-09-25 | herdr の移動キーを入れ替え: workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
+| 2026-09-25 | herdr の移動キーを入れ替え: workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする | `~/.config/herdr/config.toml` | [herdr](.agents/skills/herdr/reference.md) |
 | 2026-09-25 | Nix を `omarchy pkg add nix` で導入し、flakes を有効化。nix-config に Omarchy 用の構成 (Omarchy 優先・エージェント設定だけ Nix) を用意する方針に決定 | `nix` (`extra`) / `nix-daemon.socket` / `~/.config/nix/nix.conf` | [apps/nix.md](apps/nix.md) |
 | 2026-09-25 | Turso CLI を mise で導入 (AUR / Nix ではなく Omarchy と同じ mise 経路) | `turso` (mise, `aqua:tursodatabase/turso-cli`) | [apps/turso.md](apps/turso.md) |
 | 2026-09-25 | Zed (エディタ) を導入。Arch は CLI 名が `zeditor` なので `zed` symlink を追加 | `zed`, `omazed` (`extra`) / `~/.local/bin/zed` | [apps/zed.md](apps/zed.md) |
@@ -27,9 +27,9 @@
 | 2026-09-24 | 候補ウィンドウを自作 Tokyo Night テーマに | `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-24 | Mozc を導入し fcitx5 に登録 | `fcitx5-mozc`, `~/.config/fcitx5/profile` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-24 | キーボード `jp`→`us` / タッチパッド natural_scroll 反転 | `~/.config/hypr/input.lua` | [apps/hyprland-input.md](apps/hyprland-input.md) |
-| 2026-09-24 | agent/workspace の移動キーを追加 (`prefix+,` `.`) | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
-| 2026-09-24 | herdr キーバインドを本体デフォルトに戻す | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
-| 2026-09-24 | herdr prefix `ctrl+space`→`ctrl+b` | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
+| 2026-09-24 | agent/workspace の移動キーを追加 (`prefix+,` `.`) | `~/.config/herdr/config.toml` | [herdr](.agents/skills/herdr/reference.md) |
+| 2026-09-24 | herdr キーバインドを本体デフォルトに戻す | `~/.config/herdr/config.toml` | [herdr](.agents/skills/herdr/reference.md) |
+| 2026-09-24 | herdr prefix `ctrl+space`→`ctrl+b` | `~/.config/herdr/config.toml` | [herdr](.agents/skills/herdr/reference.md) |
 
 ## 新規ホストへの適用手順
 

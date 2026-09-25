@@ -1,0 +1,14 @@
+[keys]
+# Left-hand only: prefix is alt+s (no conflict with pi / Claude Code / bash / Hyprland).
+prefix = "alt+s"
+
+# Workspace move (WASD-like): prefix+a = previous / prefix+d = next
+previous_workspace = "prefix+a"
+next_workspace = "prefix+d"
+
+# Agent move: prefix+shift+a = previous / prefix+shift+d = next
+previous_agent = "prefix+shift+a"
+next_agent = "prefix+shift+d"
+
+# Close workspace moves off prefix+shift+d (the herdr default) to make room for agent move.
+close_workspace = "prefix+shift+q"

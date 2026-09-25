@@ -113,39 +113,8 @@ voxtype setup gpu --status   # GPU (Vulkan) - active
 
 ## 3. herdr (ターミナルワークスペースマネージャ)
 
-Omarchy 同梱。**キーは herdr 純正デフォルトに戻し**、左手だけで操作できるよう prefix と移動キーを変える。
-(Omarchy 版は `ctrl+space` prefix で IME と衝突するため)
-
-```bash
-# 純正キーに戻す (自動バックアップされる)
-herdr config reset-keys
-
-# prefix (alt+s) と移動キー (A / D) を追記 (~/.config/herdr/config.toml の末尾)
-cat >> ~/.config/herdr/config.toml <<'EOF'
-
-[keys]
-# Left-hand only: prefix is alt+s (no conflict with pi / Claude Code / bash / Hyprland).
-prefix = "alt+s"
-
-# Workspace move (WASD-like): prefix+a = previous / prefix+d = next
-previous_workspace = "prefix+a"
-next_workspace = "prefix+d"
-
-# Agent move: prefix+shift+a = previous / prefix+shift+d = next
-previous_agent = "prefix+shift+a"
-next_agent = "prefix+shift+d"
-
-# Close workspace moves off prefix+shift+d (the herdr default) to make room for agent move.
-close_workspace = "prefix+shift+q"
-EOF
-
-herdr config check            # => config: ok
-herdr server reload-config    # => applied
-```
-
-確認: `omarchy-menu-herdr-keybindings --print` (`PREFIX → ALT + S`、重複が無いこと)
-
-→ 詳細: [../apps/herdr.md](../apps/herdr.md)
+skill **`herdr`** を実行する (`.agents/skills/herdr/SKILL.md`)。
+prefix を `alt+s`、workspace / agent の移動を A / D にする (左手だけで操作できる)。
 
 ---
 
