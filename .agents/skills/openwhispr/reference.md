@@ -44,6 +44,10 @@ dbus-send --session --type=method_call --dest=com.openwhispr.App /com/openwhispr
 `Super+Shift+M` は Omarchy の Music、`Super+Ctrl+K` は Herdr keybindings、`Super+Alt+K` は Tmux keybindings が使っている。
 議事録は `Super+Shift+J` (音声入力の K の隣) にする。空いているかは `hyprctl binds -j` で確かめる (add-task のルール)。
 
+OpenWhispr 自身の既定のキー (Linux) は音声入力の `Control+Super` で、登録に失敗すると `F8` → `F9` → `Control+Shift+Space` の順に試す。
+**`F9` は Voxtype の音声入力と同じ**なので、アプリの設定でキーを明示的に登録しておく (例: `F10`)。
+議事録・翻訳・音声エージェントに既定のキーは無い (GNOME のショートカットに登録する作り)。
+
 OpenWhispr 自身のキーの登録画面では、Hyprland に割り当てたキーは押しても入らない (Hyprland が先に受け取る)。
 OpenWhispr は XWayland (`--ozone-platform=x11`) で動いていて、X11 のグローバルなキーの横取りは
 XWayland のウィンドウにフォーカスがあるときしか効かない。なので Hyprland のキーから D-Bus で呼ぶ。
