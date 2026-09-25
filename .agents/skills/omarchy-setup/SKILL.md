@@ -24,6 +24,7 @@ metadata:
 | `agent-photo-sync` | 必須 | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `display-scale` | 任意 | Display パネルの倍率スライダーと表示倍率 |
 | `voxtype` | 任意 | 音声入力の日本語化 |
+| `openwhispr` | 任意 | 会議の議事録 (話者の区別) と音声入力 |
 | `chrome` / `bitwarden` / `discord` / `zed` / `turso` | 任意 | アプリ |
 
 ## 前提
