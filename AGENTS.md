@@ -49,6 +49,7 @@
 │   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
 │   ├── turso.md           # Turso CLI (mise)
 │   ├── nix.md             # Nix + Home Manager (nix-config との分担)
+│   ├── claude-code.md     # Claude Code のオプトアウト設定 (手順書)
 │   ├── zed.md             # エディタ (Arch は CLI 名が zeditor)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
@@ -231,6 +232,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | ブラウザ | Chrome(既定。AUR の google-chrome。ベースの chromium は残す) | [apps/browser.md](apps/browser.md) |
 | エディタ | Zed を入れ、CLI 名 `zeditor` に `zed` symlink を張る | [apps/zed.md](apps/zed.md) |
 | Nix | `omarchy pkg add nix` で入れ、nix-config の `torohash_omarchy` でエージェント設定だけを共有する (Omarchy 優先) | [apps/nix.md](apps/nix.md) |
+| Claude Code | テレメトリ・エラー報告・評価アンケートを `settings.json` の `env` でオプトアウト (手順書で管理) | [apps/claude-code.md](apps/claude-code.md) |
 | 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
 ## 別ホストへの適用

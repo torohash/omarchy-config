@@ -347,6 +347,28 @@ gh --version            # => gh version 2.x
 mise ls --global | grep gh
 ```
 
+### Claude Code のオプトアウト
+
+テレメトリ・エラー報告・評価アンケートを止める。`~/.claude/settings.json` の `env` にだけマージする
+(Omarchy と Claude Code も書くファイルなので上書きしない)。
+
+```bash
+f=~/.claude/settings.json
+mkdir -p ~/.claude
+[ -f "$f" ] || echo '{}' > "$f"
+tmp=$(mktemp "$f.XXXXXX")
+jq '.env = ((.env // {}) + {
+  "DISABLE_TELEMETRY": "1",
+  "DISABLE_ERROR_REPORTING": "1",
+  "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+})' "$f" > "$tmp" && chmod 0644 "$tmp" && mv "$tmp" "$f"
+jq '.env' "$f"          # 3つの変数が "1" で並ぶ
+```
+
+モデル学習への利用はアカウント単位: [claude.ai/settings/data-privacy-controls](https://claude.ai/settings/data-privacy-controls)
+
+→ 詳細: [../apps/claude-code.md](../apps/claude-code.md)
+
 ### GitHub を SSH remote で使う場合
 
 `gh auth login` とは別に、GitHub のホスト鍵を `~/.ssh/known_hosts` に登録する。
