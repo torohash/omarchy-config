@@ -71,17 +71,17 @@ omarchy-menu-herdr-keybindings --print   # 同じものをテキスト出力 (�
 `~/.config/herdr/config.toml`:
 - キーバインドは **herdr 純正デフォルト**にする (`[keys]` セクションを全削除 → 本体 v2 キー)
   - prefix は `ctrl+b`。これで `ctrl+space` が IME 用に空く。
-- 追加で **agent / workspace の移動キー**を足す:
+- 追加で **workspace / agent の移動キー**を足す。よく使う workspace 移動を Shift 無しにする:
 
 ```toml
 [keys]
-# Agent move: prefix+, = previous agent / prefix+. = next agent
-previous_agent = "prefix+comma"
-next_agent = "prefix+period"
+# Workspace move: prefix+, = previous workspace / prefix+. = next workspace
+previous_workspace = "prefix+comma"
+next_workspace = "prefix+period"
 
-# Workspace move: prefix+shift+, = previous / prefix+shift+. = next
-previous_workspace = "prefix+shift+comma"
-next_workspace = "prefix+shift+period"
+# Agent move: prefix+shift+, = previous / prefix+shift+. = next
+previous_agent = "prefix+shift+comma"
+next_agent = "prefix+shift+period"
 ```
 
 `[theme]` `[ui]` などキー以外は Omarchy のまま (tmux 風の見た目)。
@@ -91,7 +91,8 @@ next_workspace = "prefix+shift+period"
 1. 初期: Omarchy 版 (prefix `ctrl+space`, tmux 互換キー)。
 2. prefix だけ `ctrl+b` に変更 (IME 衝突回避)。
 3. 混乱が大きいので `herdr config reset-keys` で **全キーを純正へ**。
-4. agent / workspace の移動キーだけ `,` `.` で追加。
+4. agent / workspace の移動キーだけ `,` `.` で追加 (当初は agent が Shift 無し)。
+5. workspace と agent を入れ替え、workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする。
 
 ### 反映手順
 

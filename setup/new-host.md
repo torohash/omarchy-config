@@ -111,21 +111,21 @@ voxtype setup gpu --status   # GPU (Vulkan) - active
 
 ## 3. herdr (ターミナルワークスペースマネージャ)
 
-Omarchy 同梱。**キーは herdr 純正デフォルトに戻し**、agent/workspace 移動だけ追加する。
+Omarchy 同梱。**キーは herdr 純正デフォルトに戻し**、workspace/agent 移動だけ追加する。
 (Omarchy 版は `ctrl+space` prefix で IME と衝突するため)
 
 ```bash
 # 純正キーに戻す (自動バックアップされる)
 herdr config reset-keys
 
-# agent / workspace 移動キーを追記 (~/.config/herdr/config.toml の末尾)
+# workspace / agent 移動キーを追記 (~/.config/herdr/config.toml の末尾)
 cat >> ~/.config/herdr/config.toml <<'EOF'
 
 [keys]
-previous_agent = "prefix+comma"
-next_agent = "prefix+period"
-previous_workspace = "prefix+shift+comma"
-next_workspace = "prefix+shift+period"
+previous_workspace = "prefix+comma"
+next_workspace = "prefix+period"
+previous_agent = "prefix+shift+comma"
+next_agent = "prefix+shift+period"
 EOF
 
 herdr config check            # => config: ok

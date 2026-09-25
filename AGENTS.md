@@ -220,7 +220,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 候補ウィンドウ | 自作 `omarchy-tokyo-night` テーマ(Mellow 設計 + Tokyo Night 配色)を配置 | 同上 |
 | 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
-| herdr | 純正キーに戻し、`prefix+,` `.` で agent/workspace 移動を追加 | [apps/herdr.md](apps/herdr.md) |
+| herdr | 純正キーに戻し、`prefix+,` `.` で workspace、`prefix+shift+,` `.` で agent を移動 | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
