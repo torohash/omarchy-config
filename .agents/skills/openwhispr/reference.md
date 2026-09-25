@@ -13,17 +13,35 @@
 | 観点 | Voxtype | OpenWhispr |
 |------|---------|------------|
 | 議事録 | できない | **できる** (話者の区別・メモ) |
-| Omarchy との統合 | Omarchy のリポジトリから入り更新される。F9 / `Super+Ctrl+X`、バーの録音表示が最初からある | 無し。AUR から入れ、キーは Hyprland で用意する |
-| 重さ | Rust の常駐プロセス | Electron のアプリ |
+| Omarchy との統合 | Omarchy のリポジトリから入り更新される。F9 / `Super+Ctrl+X`、バーの録音表示が最初からある | 無し。AUR から入れ、キーはアプリで決める |
+| 重さ | Rust の常駐プロセス | Electron の GUI アプリ (トレイに常駐) |
 | 認識の精度 | whisper.cpp | 同じモデルならほぼ同じ |
 
-議事録には OpenWhispr が要る。音声入力をどちらでするかは、Hyprland での使い勝手を試して決める
-(OpenWhispr で足りれば Voxtype を外してアプリを 1 つにできる)。両方を使うなら、キーを分けて衝突させない
-(Voxtype = F9 / `Super+Ctrl+X`、OpenWhispr = `Super+Shift+K` / `Super+Shift+J`)。
+議事録には OpenWhispr が要る。両方を使うなら、キーを分けて衝突させない (Voxtype = F9 / `Super+Ctrl+X`)。
 
-## D-Bus で呼ぶ
+## 責務: インストールまで
 
-OpenWhispr は `com.openwhispr.App` (`/com/openwhispr/App`) を公開している。メソッドは次の 4 つ。
+キーやモデルは、どうせ初期設定でアプリが聞いてくるので、skill ではインストールだけを行い、設定はユーザーに任せる。
+Hyprland のキーから D-Bus で呼ぶ仕組みも試したが、アプリ側のキーと二重になって分かりにくいので入れない
+(アプリ側のキーで困ったら、下の D-Bus を Hyprland の `o.bind` から呼べる)。
+
+## アプリの形
+
+- Electron の GUI アプリ。設定・メモ・議事録のコントロールパネルと、録音中の小さなパネルがある。トレイに常駐する。
+- アプリ内に「ログイン時に起動」「最小化で起動」の設定がある。キーをすぐ使うにはオンにしておく。
+- **XWayland (`--ozone-platform=x11`) で動く**。
+- 設定と議事録は `~/.config/open-whispr/` (議事録は `transcriptions.db`)。
+
+## キー選び
+
+- 既定のキー (Linux) は音声入力の `Control+Super`。登録に失敗すると `F8` → `F9` → `Control+Shift+Space` の順に試す。
+  **`F9` は Voxtype と同じ**なので、キーは明示的に登録する。
+- Hyprland (Omarchy) が使っているキーは、アプリの登録画面では入らない。例: `Super+Shift+M` = Music、
+  `Super+Ctrl+K` = Herdr keybindings、`Super+Alt+K` = Tmux keybindings。空きは `hyprctl binds -j` で確かめる。
+
+## D-Bus で呼ぶ (必要なときだけ)
+
+OpenWhispr は `com.openwhispr.App` (`/com/openwhispr/App`) を公開している。
 
 | メソッド | 操作 |
 |---------|------|
@@ -32,25 +50,9 @@ OpenWhispr は `com.openwhispr.App` (`/com/openwhispr/App`) を公開してい�
 | `ToggleTranslation` | 翻訳入力 |
 | `ToggleVoiceAgent` | 音声エージェント |
 
-OpenWhispr 自身のグローバルキーは GNOME のショートカットやポータルを使う作りで、Hyprland では効かないことがある。
-Hyprland の `o.bind` から `dbus-send` で呼ぶ。起動していなければ `dbus-send` が失敗するので、そのときは起動する。
-
 ```bash
 dbus-send --session --type=method_call --dest=com.openwhispr.App /com/openwhispr/App com.openwhispr.App.ToggleMeeting
 ```
-
-## キー選び
-
-`Super+Shift+M` は Omarchy の Music、`Super+Ctrl+K` は Herdr keybindings、`Super+Alt+K` は Tmux keybindings が使っている。
-議事録は `Super+Shift+J` (音声入力の K の隣) にする。空いているかは `hyprctl binds -j` で確かめる (add-task のルール)。
-
-OpenWhispr 自身の既定のキー (Linux) は音声入力の `Control+Super` で、登録に失敗すると `F8` → `F9` → `Control+Shift+Space` の順に試す。
-**`F9` は Voxtype の音声入力と同じ**なので、アプリの設定でキーを明示的に登録しておく (例: `F10`)。
-議事録・翻訳・音声エージェントに既定のキーは無い (GNOME のショートカットに登録する作り)。
-
-OpenWhispr 自身のキーの登録画面では、Hyprland に割り当てたキーは押しても入らない (Hyprland が先に受け取る)。
-OpenWhispr は XWayland (`--ozone-platform=x11`) で動いていて、X11 のグローバルなキーの横取りは
-XWayland のウィンドウにフォーカスがあるときしか効かない。なので Hyprland のキーから D-Bus で呼ぶ。
 
 ## 入力の経路
 
