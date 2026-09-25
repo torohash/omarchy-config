@@ -20,6 +20,11 @@ Android で撮った写真を、同じ LAN の Pi / Claude Code に渡す。ア�
 | Pi | `pi install ~/dev/agent-photo-sync` (グローバル) | すべてのプロジェクトで使うため。settings.json には `../../dev/agent-photo-sync` (`~/.pi/agent` からの相対パス) で入る |
 | Claude Code | `claude mcp add --scope user` で `mise exec -C <repo> -- node …` | Node.js は `mise.toml` で固定した版を使う (TypeScript を直接実行するため 22.18 以降が必要) |
 
+Claude Code は MCP ツールを呼ぶたびに確認を求める。`~/.claude/settings.json` の `permissions.allow` に
+`mcp__photosync` (このサーバーの全ツール。`mcp__photosync__*` と同じ) を足して確認なしにする。
+写真の受け取りと状態の表示だけで、ファイルやシェルには触らないため全許可でよい。
+`settings.json` は Omarchy のテーマ切替と Claude Code 自身も書くので、Nix の symlink にせず jq で足す。
+
 ローカルのリポジトリなので、skill `pi-packages` の `packages.txt` には書かない (clone していないホストで壊れるため)。
 
 ## ネットワーク
