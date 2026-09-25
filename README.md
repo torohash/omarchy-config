@@ -40,6 +40,7 @@ claude        # または pi
 | `claude-code-optout` | Claude Code のテレメトリ等を止める |
 | `nix-home-manager` | Nix + [nix-config](https://github.com/torohash/nix-config) (Pi の設定) |
 | `pi-packages` | Pi の拡張 |
+| `agent-photo-sync` | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `display-scale` | Display パネルの倍率スライダー (任意) |
 | `voxtype` | 音声入力の日本語化 (任意) |
 | `chrome` / `bitwarden` / `discord` / `zed` / `turso` | アプリ (任意) |

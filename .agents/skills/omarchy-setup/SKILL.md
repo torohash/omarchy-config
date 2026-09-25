@@ -20,6 +20,7 @@ metadata:
 | `claude-code-optout` | 必須 | Claude Code のテレメトリ等を止める |
 | `nix-home-manager` | 必須 | Nix + Home Manager (Pi のモデル設定・検索設定・自動圧縮) |
 | `pi-packages` | 必須 | Pi の拡張 |
+| `agent-photo-sync` | 必須 | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `display-scale` | 任意 | Display パネルの倍率スライダーと表示倍率 |
 | `voxtype` | 任意 | 音声入力の日本語化 |
 | `chrome` / `bitwarden` / `discord` / `zed` / `turso` | 任意 | アプリ |
@@ -46,6 +47,9 @@ metadata:
 
 NG のうち「任意」の skill は、入れるかどうかをユーザーに聞く (まとめて 1 回聞く)。
 「必須」はそのまま対象にする。
+
+同じときに、対象の skill の「ユーザーに頼む操作」のうち **特権の操作の前に** と書かれたもの
+(例: `agent-photo-sync` の、ufw で許可する LAN の確認) も聞いておく。
 
 ## 3. 特権の操作をまとめて実行する (パスワードは 1 回)
 
