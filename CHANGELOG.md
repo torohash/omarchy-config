@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | herdr を左手だけで操作できるように: prefix `ctrl+b` → `alt+s`、workspace 移動 `prefix+a` `d`、agent 移動 `prefix+shift+a` `d`、workspace を閉じるを `prefix+shift+q` へ。`ctrl+s` 案は Pi / Claude Code と衝突するため不採用 | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
 | 2026-09-25 | Claude Code のオプトアウト (テレメトリ・エラー報告・評価アンケート) を `settings.json` の `env` に設定。Nix ではなく手順書で管理 (Omarchy と Claude Code も書くファイルのため) | `~/.claude/settings.json` | [apps/claude-code.md](apps/claude-code.md) |
 | 2026-09-25 | 候補ウィンドウを Omarchy のテーマに追従する自作テーマ `omarchy` (Soft デザイン) に置き換え、フォントを Noto Sans CJK JP に (Sans だと漢字が KR 字形)。3 案 (Omarchy / Soft / Bold) をスクショ比較して Soft を採用 | `~/.config/omarchy/themed/fcitx5-*.tpl` / `hooks/theme-set.d/fcitx5-theme` / `~/.config/fcitx5/conf/classicui.conf` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-25 | herdr の移動キーを入れ替え: workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
@@ -44,4 +45,5 @@
 - `fcitx5-classicui.conf.before-redesign` … 候補ウィンドウを作り直す前の classicui.conf
 - `fcitx5-theme-omarchy-tokyo-night/` … 置き換える前の自作テーマ一式 (Tokyo Night 直書き)
 - `claude-settings.json.before-optout` … オプトアウト設定を入れる前の `~/.claude/settings.json`
+- `herdr-config.toml.before-alt-s-prefix` … prefix を `alt+s` にする前の config
 - `hypr-bindings.lua.before-bitwarden` … Passwords キーを Bitwarden に向ける前の bindings.lua

@@ -221,7 +221,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 候補ウィンドウ | Omarchy のテーマに追従する自作テーマ `omarchy`(テンプレート + theme-set hook)。フォントは Noto Sans CJK JP | 同上 |
 | 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
-| herdr | 純正キーに戻し、`prefix+,` `.` で workspace、`prefix+shift+,` `.` で agent を移動 | [apps/herdr.md](apps/herdr.md) |
+| herdr | 純正キーを土台に、prefix を `alt+s`、`prefix+a` `d` で workspace、`prefix+shift+a` `d` で agent を移動 (左手だけ) | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
 | Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
@@ -247,7 +247,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 項目 | 内容 |
 |------|------|
 | fcitx5 の起動時 IM | 終了時に `DefaultIM` を `mozc` に書き戻す癖があるため、**ログイン直後が日本語始まりになる可能性**。英数固定にするならログイン時に `fcitx5-remote -c` を実行する設定を足す |
-| herdr `prefix+,` / `prefix+.` | IME オン中は `,`/`.` が `、`/`。` に化けて効かない可能性がある |
+| herdr の prefix 後の文字キー | IME オン中は `a` `d` などが Mozc に取られて効かない可能性がある。prefix は Pi / Claude Code のキーとも突き合わせる |
 | Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は導入しない |
 | Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので `omarchy restart shell` が必須 |
 | Bitwarden の見た目 | `no_screen_share` のため**スクショで検証できない**。倍率が合わないと感じたら `--force-device-scale-factor` で調整 (`apps/bitwarden.md`) |

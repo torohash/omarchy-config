@@ -69,20 +69,50 @@ omarchy-menu-herdr-keybindings --print   # 同じものをテキスト出力 (�
 ## 適用する設定
 
 `~/.config/herdr/config.toml`:
-- キーバインドは **herdr 純正デフォルト**にする (`[keys]` セクションを全削除 → 本体 v2 キー)
-  - prefix は `ctrl+b`。これで `ctrl+space` が IME 用に空く。
-- 追加で **workspace / agent の移動キー**を足す。よく使う workspace 移動を Shift 無しにする:
+- キーバインドは **herdr 純正デフォルト**を土台にする (`[keys]` セクションを全削除 → 本体 v2 キー)
+- **左手だけで操作できる**ように、prefix と移動キーを変える:
+
+| 操作 | キー | 純正の既定 |
+|------|------|-----------|
+| prefix | `alt+s` | `ctrl+b` |
+| 前 / 次の workspace | `prefix+a` / `prefix+d` | (なし) |
+| 前 / 次の agent | `prefix+shift+a` / `prefix+shift+d` | (なし) |
+| workspace を閉じる | `prefix+shift+q` | `prefix+shift+d` |
 
 ```toml
 [keys]
-# Workspace move: prefix+, = previous workspace / prefix+. = next workspace
-previous_workspace = "prefix+comma"
-next_workspace = "prefix+period"
+# Left-hand only: prefix is alt+s (no conflict with pi / Claude Code / bash / Hyprland).
+prefix = "alt+s"
 
-# Agent move: prefix+shift+, = previous / prefix+shift+. = next
-previous_agent = "prefix+shift+comma"
-next_agent = "prefix+shift+period"
+# Workspace move (WASD-like): prefix+a = previous / prefix+d = next
+previous_workspace = "prefix+a"
+next_workspace = "prefix+d"
+
+# Agent move: prefix+shift+a = previous / prefix+shift+d = next
+previous_agent = "prefix+shift+a"
+next_agent = "prefix+shift+d"
+
+# Close workspace moves off prefix+shift+d (the herdr default) to make room for agent move.
+close_workspace = "prefix+shift+q"
 ```
+
+**prefix を `alt+s` にする理由**: 左手の親指 + 薬指で押せて、次のどれとも衝突しない。
+
+| 相手 | 調べた場所 | `alt+s` |
+|------|-----------|---------|
+| Pi | 本体同梱の `docs/keybindings.md` | 未使用 (`ctrl+英字` はほぼ全部使っている) |
+| Claude Code | 公式 Interactive mode のショートカット一覧 | 未使用 (`ctrl+s` はプロンプトの一時退避) |
+| bash (Omarchy の inputrc + fzf) | `bind -p` | 未使用 (fzf は `ctrl+r` `ctrl+t` `alt+c`) |
+| Hyprland (Omarchy) | `hyprctl binds -j` の SUPER なし | 未使用 (Alt 系は `alt+tab` だけ) |
+| fcitx5 | IME 切替 | `ctrl+space` なので別 |
+
+不採用にした候補: `ctrl+b` (Claude Code のバックグラウンド実行・Pi のカーソル左)、
+`ctrl+s` (Pi の設定保存・Claude Code のプロンプト退避)、`ctrl+a` (bash の行頭移動)、
+`ctrl+g` (Pi / Claude Code の外部エディタ)、`ctrl+q` (衝突は少ないが小指 2 本で押しにくい)。
+
+**移動キーを A / D にする理由**: prefix の S の両隣で、WASD と同じ「A = 前、D = 次」。
+agent は Shift 付きで同じ並びにする。そのため純正の「workspace を閉じる」(`prefix+shift+d`) を
+`prefix+shift+q` へ移す (閉じる系: pane = `x`、tab = `shift+x`、workspace = `shift+q`)。
 
 `[theme]` `[ui]` などキー以外は Omarchy のまま (tmux 風の見た目)。
 
@@ -93,6 +123,8 @@ next_agent = "prefix+shift+period"
 3. 混乱が大きいので `herdr config reset-keys` で **全キーを純正へ**。
 4. agent / workspace の移動キーだけ `,` `.` で追加 (当初は agent が Shift 無し)。
 5. workspace と agent を入れ替え、workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする。
+6. 左手だけで操作できるよう、prefix を `alt+s`、移動を `prefix+a` / `d` (Shift 付きで agent) にし、
+   workspace を閉じるキーを `prefix+shift+q` に移す。
 
 ### 反映手順
 
@@ -117,10 +149,18 @@ herdr server reload-config
   実行すると prefix が `ctrl+space` に戻り、`[keys]` も Omarchy 版になる。
   更新後はこのファイルの手順で再適用する。
 - **prefix が IME と衝突**: `ctrl+space` を prefix にすると fcitx5 の IME 切替が効かない。
-  prefix は `ctrl+b` (純正) のままにしておくのが安全。
-- **IME オン時の記号 prefix**: fcitx5 が有効な間は `,`/`.` が `、`/`。` に化けて
-  プレフィックスモードに届かないことがある。herdr には
-  `switch_ascii_input_source_in_prefix` という対策設定があるが **macOS/Windows 限定**。
-  効かない場合は IME をオフにして操作するか、`prefix+[` `]` など別キーにする。
+  prefix は `ctrl+space` 以外にする。
+- **prefix 候補はエージェント CLI と突き合わせる**: Pi と Claude Code は `ctrl+英字` をほぼ全部使う。
+  `ctrl+s` などは「Omarchy とは衝突しないが、端末の中のエージェントと衝突する」。
+  変えるときは Pi の `docs/keybindings.md` と Claude Code の Interactive mode の一覧を確認する。
+- **prefix のあとのキーは herdr 自身の割り当てとだけ突き合わせる**: `omarchy-menu-herdr-keybindings --print`
+  の重複を見る (純正の `prefix+shift+d` = workspace を閉じる、のように既定が埋まっていることがある)。
+  ```bash
+  omarchy-menu-herdr-keybindings --print | awk -F'→' '{gsub(/ +$/,"",$1); print $1}' | sort | uniq -d   # 空であること
+  ```
+- **IME オン時の prefix 後の文字キー**: fcitx5 (Mozc) が有効な間は、prefix の後の `a` `d` などが
+  Mozc の入力に取られてプレフィックスモードに届かない可能性がある。herdr の
+  `switch_ascii_input_source_in_prefix` は **macOS/Windows 限定**。
+  効かない場合は IME をオフにして操作する。
 - **設定は自動保存・自動反映されない**: 編集後は `herdr server reload-config` を忘れずに。
 - **キー確認は `herdr --default-config`**: 純正の既定値が全部コメント付きで出る。
