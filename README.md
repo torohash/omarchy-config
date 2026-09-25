@@ -44,7 +44,6 @@ claude        # または pi
 | `agent-photo-sync` | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `omarchy-webapps-cleanup` | 使わない HEY・Basecamp の Web アプリとキーを外す (任意) |
 | `display-scale` | Display パネルの倍率スライダー (任意) |
-| `voxtype` | 音声入力の日本語化 (任意) |
 | `openwhispr` | 会議の議事録と音声入力 (任意) |
 | `chrome` / `bitwarden` / `discord` / `zed` / `turso` | アプリ (任意) |
 

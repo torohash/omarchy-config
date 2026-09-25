@@ -8,16 +8,19 @@
 話者の区別はローカルで動く。音声入力 (キーで録音してカーソル位置に入力) や翻訳入力もできる。
 サインインは任意 (共有・同期に使う)。ローカルのモデル (whisper 系、Parakeet など) で全機能が動く。
 
-## Voxtype との比較
+## Voxtype ではなく OpenWhispr にする理由
 
-| 観点 | Voxtype | OpenWhispr |
-|------|---------|------------|
+Omarchy には音声入力の Voxtype があるが、議事録を取れない。OpenWhispr はローカルのモデルで、音声入力と議事録の両方をこなすので一本化する。
+
+| 観点 | Voxtype (Omarchy) | OpenWhispr |
+|------|-------------------|------------|
 | 議事録 | できない | **できる** (話者の区別・メモ) |
 | Omarchy との統合 | Omarchy のリポジトリから入り更新される。F9 / `Super+Ctrl+X`、バーの録音表示が最初からある | 無し。AUR から入れ、キーはアプリで決める |
 | 重さ | Rust の常駐プロセス | Electron の GUI アプリ (トレイに常駐) |
 | 認識の精度 | whisper.cpp | 同じモデルならほぼ同じ |
 
-議事録には OpenWhispr が要る。両方を使うなら、キーを分けて衝突させない (Voxtype = F9 / `Super+Ctrl+X`)。
+Omarchy の F9 / `Super+Ctrl+X` は、Voxtype が入っているときだけ有効になる (`o.cmd_present("voxtype")`)。
+Voxtype を入れなければ、どちらのキーも空く。入れていたら `omarchy voxtype remove` で外す (設定とモデルも消える)。
 
 ## 責務: インストールまで
 
@@ -41,7 +44,7 @@ Hyprland のキーから D-Bus で呼ぶ仕組みも試したが、アプリ側�
 ## キー選び
 
 - 既定のキー (Linux) は音声入力の `Control+Super`。登録に失敗すると `F8` → `F9` → `Control+Shift+Space` の順に試す。
-  **`F9` は Voxtype と同じ**なので、キーは明示的に登録する。
+  意図しないキーにならないよう、キーは明示的に登録する (Voxtype を入れている場合、`F9` は Voxtype と重なる)。
 - Hyprland (Omarchy) が使っているキーは、アプリの登録画面では入らない。例: `Super+Shift+M` = Music、
   `Super+Ctrl+K` = Herdr keybindings、`Super+Alt+K` = Tmux keybindings。空きは `hyprctl binds -j` で確かめる。
 

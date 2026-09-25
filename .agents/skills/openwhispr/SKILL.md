@@ -8,7 +8,7 @@ metadata:
 
 # OpenWhispr (議事録・音声入力)
 
-会議の議事録 (Zoom / Teams の自動検出、話者の区別、メモ) のために入れる。Voxtype は議事録を取れない。
+会議の議事録 (Zoom / Teams の自動検出、話者の区別、メモ) と音声入力に使う。Omarchy の Voxtype は議事録を取れないので、Voxtype は入れず OpenWhispr に一本化する。
 この skill の範囲は**インストールと、アプリを開くキー (`Super+Shift+V`) まで**。録音のキー・モデル・マイクは、アプリの初期設定でユーザーが決める。
 理由・Voxtype との比較・キー選びの注意は [reference.md](reference.md)。
 
@@ -51,8 +51,8 @@ OpenWhispr を起動して初期設定をしてもらう (モデルの選択・�
   ```bash
   hyprctl binds -j | jq -r '.[] | select(.modmask == 65 and (.key | ascii_upcase) == "J" and .submap == "") | .description'
   ```
-- **`F9` は Voxtype の音声入力と同じ**。OpenWhispr は既定のキーの登録に失敗すると `F8` → `F9` の順に試すので、
-  キーは明示的に登録する。
+- OpenWhispr は既定のキー (`Control+Super`) の登録に失敗すると `F8` → `F9` → `Control+Shift+Space` の順に試す。
+  意図しないキーにならないよう、キーは明示的に登録する。
 
 ## 検証
 
