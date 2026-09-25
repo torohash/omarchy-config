@@ -47,6 +47,7 @@
 │   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
 │   ├── github-ssh.md      # GitHub SSH のホスト鍵登録と検証
 │   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
+│   ├── zed.md             # エディタ (Arch は CLI 名が zeditor)
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
@@ -226,6 +227,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | CLI ツール | `gh` / `node` / `pi` / `codex` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
 | GitHub SSH | 公式ホスト鍵を `known_hosts` に登録し、検証を無効化せず接続する | [apps/github-ssh.md](apps/github-ssh.md) |
 | ブラウザ | Chrome(既定。AUR の google-chrome。ベースの chromium は残す) | [apps/browser.md](apps/browser.md) |
+| エディタ | Zed を入れ、CLI 名 `zeditor` に `zed` symlink を張る | [apps/zed.md](apps/zed.md) |
 | 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
 
 ## 別ホストへの適用

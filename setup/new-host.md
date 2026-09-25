@@ -290,7 +290,36 @@ hyprctl clients -j | jq '.[] | select(.class=="discord") | {xwayland, floating}'
 
 ---
 
-## 8. CLI ツール (mise でグローバル)
+## 8. Zed (エディタ) — 任意
+
+Arch の `zed` パッケージ。**CLI 名が `zeditor`** なので、`zed .` を使うには symlink が要る。
+
+```bash
+omarchy install editor zed      # zed + omazed (テーマ同期 hook) を入れて起動
+# エージェントからは: omarchy-launch-floating-terminal-with-presentation 'omarchy-install-editor-zed'
+
+ln -s /usr/bin/zeditor ~/.local/bin/zed   # `zed` コマンドを生やす (sudo 不要)
+```
+
+`/usr/bin/zed` は ZFS の `zed` (`zfs-utils`) と衝突するため、Arch が CLI を `zeditor` に
+リネームしている。GUI 本体は `/usr/lib/zed/zed-editor`、ランチャーは
+`dev.zed.Zed.desktop` (`Exec=zeditor %U`)。
+
+確認:
+
+```bash
+which zed        # => ~/.local/bin/zed
+zed --version    # => Zed 1.18.1 – /usr/lib/zed/zed-editor
+```
+
+注意: Omarchy は `~/.local/bin` を PATH の末尾に足すので、`zfs-utils` を入れると
+`/usr/bin/zed` (ZFS Event Daemon) が優先される。そのときは `zeditor` を使う。
+
+→ 詳細: [../apps/zed.md](../apps/zed.md)
+
+---
+
+## 9. CLI ツール (mise でグローバル)
 
 `gh` / `node` / `pi` / `codex` のような CLI は **mise でグローバル管理**する
 (pacman では入れない。`gh` の pacman パッケージ名は `github-cli` で紛らわしく、
@@ -325,7 +354,7 @@ mise ls --global | grep gh
 
 ---
 
-## 9. インストールされるパッケージ一覧
+## 10. インストールされるパッケージ一覧
 
 | パッケージ | 版 (参考) | 用途 |
 |-----------|----------|------|
@@ -337,14 +366,16 @@ mise ls --global | grep gh
 | `bitwarden` (任意) | 2026.3.1-2 | パスワードマネージャ (Electron 39 同梱依存) |
 | `bitwarden-cli` (任意) | 2026.2.0-1 | `bw`。nodejs-lts-jod に依存 |
 | `discord` (任意) | 1:1.0.156-1 | チャット。初回起動で本体 (~500MB) をDLする |
+| `zed` (任意) | 1.18.1-1 | エディタ。CLI は `zeditor` という名前 |
+| `omazed` (任意) | 2.1.2-1 | Omarchy テーマを Zed に同期する hook |
 
-> `gh` などの CLI は **mise 管理**(pacman では入れない) → 節「8. CLI ツール (mise でグローバル)」参照。
+> `gh` などの CLI は **mise 管理**(pacman では入れない) → 節「9. CLI ツール (mise でグローバル)」参照。
 
 `flatpak` / `snap` は**導入しない** (Omarchy は pacman + AUR で完結)。
 
 ---
 
-## 10. 変更ファイル一覧
+## 11. 変更ファイル一覧
 
 | ファイル | 内容 |
 |----------|------|
@@ -358,10 +389,11 @@ mise ls --global | grep gh
 | `~/.config/omarchy/plugins/torohash.monitor/Panel.qml` | SCALE を11段スライダー化 (assets/ からコピー) |
 | `~/.config/omarchy/shell.json` | bar widget を `omarchy.monitor` → `torohash.monitor` |
 | `~/.config/Bitwarden/` | デスクトップアプリの金庫 (**コピーしない**) |
+| `~/.local/bin/zed` | `/usr/bin/zeditor` への symlink (端末の `zed` コマンド用) |
 
 ---
 
-## 11. 更新で戻されるので注意
+## 12. 更新で戻されるので注意
 
 - `omarchy-refresh-herdr` … herdr 設定を Omarchy 既定 (`ctrl+space`) に上書き。
 - `omarchy refresh hyprland` … `~/.config/hypr/*.lua` を既定に戻す。

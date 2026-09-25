@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | Zed (エディタ) を導入。Arch は CLI 名が `zeditor` なので `zed` symlink を追加 | `zed`, `omazed` (`extra`) / `~/.local/bin/zed` | [apps/zed.md](apps/zed.md) |
 | 2026-09-25 | GitHub のホスト鍵を公式 HTTPS API から取得し、SSH の初回検証を有効にする | `~/.ssh/known_hosts` | [apps/github-ssh.md](apps/github-ssh.md) |
 | 2026-09-25 | ブラウザを Chrome にして既定にする | `google-chrome` (AUR) / xdg default-web-browser | [apps/browser.md](apps/browser.md) |
 | 2026-09-25 | Discord の Web アプリ版ランチャーを削除 (ネイティブと重複) | `~/.local/share/applications/Discord.desktop` | [apps/discord.md](apps/discord.md) |
