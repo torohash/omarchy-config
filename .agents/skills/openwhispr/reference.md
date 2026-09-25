@@ -19,7 +19,7 @@
 
 議事録には OpenWhispr が要る。音声入力をどちらでするかは、Hyprland での使い勝手を試して決める
 (OpenWhispr で足りれば Voxtype を外してアプリを 1 つにできる)。両方を使うなら、キーを分けて衝突させない
-(Voxtype = F9 / `Super+Ctrl+X`、OpenWhispr = `Super+Shift+K` / `Super+Shift+M`)。
+(Voxtype = F9 / `Super+Ctrl+X`、OpenWhispr = `Super+Shift+K` / `Super+Shift+J`)。
 
 ## D-Bus で呼ぶ
 
@@ -38,6 +38,15 @@ Hyprland の `o.bind` から `dbus-send` で呼ぶ。起動していなければ
 ```bash
 dbus-send --session --type=method_call --dest=com.openwhispr.App /com/openwhispr/App com.openwhispr.App.ToggleMeeting
 ```
+
+## キー選び
+
+`Super+Shift+M` は Omarchy の Music、`Super+Ctrl+K` は Herdr keybindings、`Super+Alt+K` は Tmux keybindings が使っている。
+議事録は `Super+Shift+J` (音声入力の K の隣) にする。空いているかは `hyprctl binds -j` で確かめる (add-task のルール)。
+
+OpenWhispr 自身のキーの登録画面では、Hyprland に割り当てたキーは押しても入らない (Hyprland が先に受け取る)。
+OpenWhispr は XWayland (`--ozone-platform=x11`) で動いていて、X11 のグローバルなキーの横取りは
+XWayland のウィンドウにフォーカスがあるときしか効かない。なので Hyprland のキーから D-Bus で呼ぶ。
 
 ## 入力の経路
 

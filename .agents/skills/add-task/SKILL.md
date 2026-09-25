@@ -41,6 +41,12 @@ description: Omarchy 環境構築リポジトリ (~/dev/config) に、新しい�
    退避してから書く (リポジトリには置かない)。
 8. 経緯・比較・ハマりどころは `reference.md` に書き、SKILL.md から 1 行でリンクする。
 9. 追加・名前変更したら `omarchy-setup` の作業一覧も更新する。
+10. **Hyprland のキーを割り当てるときは、空いているかを `hyprctl binds -j` で確かめる**。
+    `omarchy menu keybindings --print` を `grep -E` で探すと、`+` が正規表現の記号になり、使われているキーを見落とす。
+    ```bash
+    # SUPER=64 SHIFT=1 CTRL=4 ALT=8 の合計と、キー名 (大文字) で調べる。出力が空なら空き
+    hyprctl binds -j | jq -r '.[] | select(.modmask == 65 and (.key | ascii_upcase) == "J" and .submap == "") | .description'
+    ```
 
 ## SKILL.md のテンプレート
 

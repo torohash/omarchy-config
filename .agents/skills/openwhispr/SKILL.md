@@ -1,6 +1,6 @@
 ---
 name: openwhispr
-description: OpenWhispr (音声入力と会議の議事録を取るアプリ。話者の区別つき) を AUR から入れ、Hyprland の Super+Shift+K (音声入力) と Super+Shift+M (議事録) から呼べるようにする。議事録を取りたい、OpenWhispr を導入・確認するときに使う。
+description: OpenWhispr (音声入力と会議の議事録を取るアプリ。話者の区別つき) を AUR から入れ、Hyprland の Super+Shift+K (音声入力) と Super+Shift+J (議事録) から呼べるようにする。議事録を取りたい、OpenWhispr を導入・確認するときに使う。
 metadata:
   privilege: sudo
   depends: none
@@ -15,7 +15,7 @@ Hyprland では OpenWhispr 自身のグローバルキー (GNOME のポータル
 | キー | 操作 (D-Bus のメソッド) |
 |------|------------------------|
 | `Super+Shift+K` | 音声入力の開始 / 停止 (`Toggle`) |
-| `Super+Shift+M` | 議事録の開始 / 停止 (`ToggleMeeting`) |
+| `Super+Shift+J` | 議事録の開始 / 停止 (`ToggleMeeting`) |
 理由と Voxtype との比較は [reference.md](reference.md)。
 
 ## 確認 (済んでいれば「実行」を飛ばす)
@@ -49,7 +49,9 @@ hyprctl configerrors      # => 空
 ## ユーザーに頼む操作
 
 OpenWhispr を起動して初期設定をしてもらう (モデルの選択・ダウンロード、マイクの許可)。サインインは任意。
-OpenWhispr の設定にある自身のグローバルキーは使わない (Hyprland のキーと二重になる)。
+初期設定でキーの登録を求められたら、Hyprland が使っていないキー (例: `F10`) を入れておく。
+Hyprland に割り当てたキー (`Super+Shift+K` / `J`) は Hyprland が先に受け取るので、アプリの画面では登録できない。
+実際の操作は Hyprland のキーから D-Bus で行う。
 
 ## 検証
 
@@ -57,7 +59,7 @@ OpenWhispr の設定にある自身のグローバルキーは使わない (Hypr
 pacman -Q openwhispr-bin                                          # => openwhispr-bin 1.x.x
 omarchy menu keybindings --print | grep '→ OpenWhispr'
 # => SUPER SHIFT + K → OpenWhispr dictation
-#    SUPER SHIFT + M → OpenWhispr meeting
+#    SUPER SHIFT + J → OpenWhispr meeting
 ```
 
 ## 元に戻す
