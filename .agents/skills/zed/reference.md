@@ -19,6 +19,13 @@
 | `/usr/lib/zed/zed-editor` | GUI 本体。単体では CLI オプションを受けない |
 | `/usr/share/applications/dev.zed.Zed.desktop` | ランチャー (`Exec=zeditor %U`) |
 
+## フォント
+
+`omarchy font set` が変えるのは端末 (alacritty / kitty / ghostty / foot) と fontconfig の monospace だけで、
+Zed は `~/.config/zed/settings.json` の `buffer_font_family` (本文)・`ui_font_family` (UI)・`terminal.font_family`
+(Zed の中の端末) でフォントを決める。指定が無いと Zed の既定のフォントになる。他のホスト (nix-config の `zed.nix`) と同じく
+3 つとも HackGen Console NF にする。`settings.json` は Zed の設定画面なども書き換えるので、symlink にせず jq でキーを足す。
+
 ## ハマりどころ
 
 - **`zed` が無いのはインストール失敗ではない**。`/usr/bin/zed` は ZFS Event Daemon (`zfs-utils`) と
