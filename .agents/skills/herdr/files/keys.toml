@@ -10,5 +10,8 @@ next_workspace = "prefix+d"
 previous_agent = "prefix+shift+a"
 next_agent = "prefix+shift+d"
 
+# New workspace: prefix+shift+c, paired with new tab = prefix+c (herdr default prefix+shift+n is far for the left hand).
+new_workspace = "prefix+shift+c"
+
 # Close workspace moves off prefix+shift+d (the herdr default) to make room for agent move.
 close_workspace = "prefix+shift+q"

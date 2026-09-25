@@ -1,6 +1,6 @@
 ---
 name: herdr
-description: herdr (Omarchy 同梱のターミナルワークスペースマネージャ) のキー割り当てを、左手だけで操作できる設定 (prefix alt+s、A/D で workspace・agent 移動) にする。herdr のキー設定を適用・確認・修正するとき、omarchy refresh herdr で設定が戻ったときに使う。
+description: herdr (Omarchy 同梱のターミナルワークスペースマネージャ) のキー割り当てを、左手だけで操作できる設定 (prefix alt+s、A/D で workspace・agent 移動、Shift+C で新しい workspace) にする。herdr のキー設定を適用・確認・修正するとき、omarchy refresh herdr で設定が戻ったときに使う。
 metadata:
   privilege: none
   depends: none
@@ -16,6 +16,7 @@ Omarchy 版の既定 (prefix `ctrl+space`) は fcitx5 の IME 切替と衝突す
 | prefix | `alt+s` |
 | 前 / 次の workspace | `prefix+a` / `prefix+d` |
 | 前 / 次の agent | `prefix+shift+a` / `prefix+shift+d` |
+| 新しい workspace | `prefix+shift+c` (純正は `prefix+shift+n`) |
 | workspace を閉じる | `prefix+shift+q` (純正は `prefix+shift+d`) |
 
 ## 確認 (済んでいれば「実行」を飛ばす)
@@ -55,6 +56,8 @@ diff <(sed -n '/^\[keys\]/,$p' ~/.config/herdr/config.toml | grep -v -e '^#' -e 
 ```bash
 omarchy-menu-herdr-keybindings --print | grep -E '^PREFIX +→|workspace$|agent$'
 # => PREFIX                           → ALT + S
+#    PREFIX + SHIFT + C               → New workspace
+#    PREFIX + SHIFT + W               → Rename workspace
 #    PREFIX + SHIFT + Q               → Close workspace
 #    PREFIX + A                       → Previous workspace
 #    PREFIX + D                       → Next workspace

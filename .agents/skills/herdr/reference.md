@@ -62,6 +62,16 @@ prefix の S の両隣で、WASD と同じ「A = 前、D = 次」。agent は Sh
 純正の「workspace を閉じる」(`prefix+shift+d`) と重なるので `prefix+shift+q` へ移す
 (閉じる系: pane = `x`、tab = `shift+x`、workspace = `shift+q`)。
 
+## 新しい workspace を `prefix+shift+c` にする理由
+
+純正の `prefix+shift+n` は左手から遠い。新しい tab が `prefix+c` なので、Shift を足すと新しい workspace にする
+(閉じる系の `x` = pane / `shift+x` = tab と同じ並び)。`prefix+shift+c` は純正では空いている。
+
+| 操作 | 小さい単位 | 大きい単位 |
+|------|-----------|-----------|
+| 作る | `c` = tab | `shift+c` = workspace |
+| 閉じる | `x` = pane | `shift+x` = tab、`shift+q` = workspace |
+
 workspace・tab・pane を 1:1:1 で使っていると、`prefix+x` (pane を閉じる) で全部が消えるので、
 workspace を閉じるキーを直接使う場面は少ない。
 
@@ -73,6 +83,7 @@ workspace を閉じるキーを直接使う場面は少ない。
 4. agent / workspace の移動キーを `,` `.` で追加。
 5. workspace と agent を入れ替え、よく使う workspace 移動を Shift 無しにする。
 6. 左手だけで操作できるよう、prefix を `alt+s`、移動を A / D にする。
+7. 新しい workspace を、左手から遠い `prefix+shift+n` から `prefix+shift+c` に移す。
 
 ## ハマりどころ
 
