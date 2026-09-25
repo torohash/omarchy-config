@@ -328,6 +328,7 @@ zed --version    # => Zed 1.18.1 – /usr/lib/zed/zed-editor
 ```bash
 mise use -g gh          # ~/.config/mise/config.toml に追記される
 mise use -g node@lts pi codex
+mise use -g turso        # Turso CLI (→ ../apps/turso.md)
 mise ls --global        # 入っているもの一覧
 gh auth login           # 認証 (ブラウザ or トークン)
 ```
