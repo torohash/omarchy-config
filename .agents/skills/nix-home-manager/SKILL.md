@@ -1,6 +1,6 @@
 ---
 name: nix-home-manager
-description: Nix (Arch 公式パッケージ) を入れ、torohash/nix-config の Home Manager 構成 torohash_omarchy を適用する (Pi のモデル設定・検索設定・自動圧縮)。Nix や Home Manager を導入・適用・確認するときに使う。
+description: Nix (Arch 公式パッケージ) を入れ、torohash/nix-config の Home Manager 構成 torohash_omarchy を適用する (Claude Code の CLAUDE.md、Pi のモデル設定・検索設定・自動圧縮)。Nix や Home Manager を導入・適用・確認するときに使う。
 metadata:
   privilege: sudo
   depends: none
@@ -9,8 +9,8 @@ metadata:
 # Nix + Home Manager
 
 Nix は `omarchy pkg add nix` で入れる (mise では入れられない。`/nix/store` と root の daemon が要る)。
-nix-config の `torohash_omarchy` は Omarchy を優先する構成で、Pi の設定ファイルだけを扱う
-(`.bashrc`・git・nvim・端末・fcitx5・herdr には触れない)。理由とハマりどころは [reference.md](reference.md)。
+nix-config の `torohash_omarchy` は Omarchy を優先する構成
+(Claude Code の `CLAUDE.md` と Pi の設定ファイルだけを扱い、`.bashrc`・git・nvim・端末・fcitx5・herdr には触れない)。理由とハマりどころは [reference.md](reference.md)。
 
 ## 確認 (済んでいれば「実行」を飛ばす)
 
@@ -18,6 +18,7 @@ nix-config の `torohash_omarchy` は Omarchy を優先する構成で、Pi の�
 command -v nix >/dev/null && systemctl is-active --quiet nix-daemon.socket \
   && nix config show experimental-features | grep -q flakes \
   && readlink ~/.pi/agent/models.json | grep -q '^/nix/store/' \
+  && readlink ~/.claude/CLAUDE.md | grep -q '^/nix/store/' \
   && echo "nix-home-manager: ok"
 ```
 
@@ -64,6 +65,7 @@ nix --version                                   # => nix (Nix) 2.x.x
 nix store info                                  # => Store URL: daemon
 readlink ~/.pi/agent/models.json                # => /nix/store/…-home-manager-files/.pi/agent/models.json
 readlink ~/.pi/web-search.json                  # => /nix/store/…-home-manager-files/.pi/web-search.json
+readlink ~/.claude/CLAUDE.md                    # => /nix/store/…-home-manager-files/.claude/CLAUDE.md
 jq -c .compaction ~/.pi/agent/settings.json     # => {"enabled":true,"reserveTokens":150000}
 readlink ~/.bashrc                              # => 何も出ない (Home Manager は .bashrc を持たない)
 ```

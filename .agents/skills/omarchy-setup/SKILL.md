@@ -18,7 +18,7 @@ metadata:
 | `herdr` | 必須 | herdr のキーを左手だけで操作できるようにする (prefix `alt+s`) |
 | `github` | 必須 | `gh auth login` の案内と GitHub の SSH ホスト鍵 |
 | `claude-code-optout` | 必須 | Claude Code のテレメトリ等を止める |
-| `nix-home-manager` | 必須 | Nix + Home Manager (Pi のモデル設定・検索設定・自動圧縮) |
+| `nix-home-manager` | 必須 | Nix + Home Manager (Claude Code の CLAUDE.md、Pi のモデル設定・検索設定・自動圧縮) |
 | `pi-packages` | 必須 | Pi の拡張 |
 | `agent-photo-sync` | 必須 | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `display-scale` | 任意 | Display パネルの倍率スライダーと表示倍率 |

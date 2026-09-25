@@ -38,7 +38,7 @@ claude        # または pi
 | `herdr` | herdr を左手だけで操作 (prefix `alt+s`、A / D で移動、Shift+C で新しい workspace) |
 | `github` | `gh auth login` の案内、GitHub の SSH ホスト鍵 |
 | `claude-code-optout` | Claude Code のテレメトリ等を止める |
-| `nix-home-manager` | Nix + [nix-config](https://github.com/torohash/nix-config) (Pi の設定) |
+| `nix-home-manager` | Nix + [nix-config](https://github.com/torohash/nix-config) (Claude Code の CLAUDE.md、Pi の設定) |
 | `pi-packages` | Pi の拡張 |
 | `agent-photo-sync` | スマホの写真を Pi / Claude Code で受け取る (拡張・MCP・ufw) |
 | `display-scale` | Display パネルの倍率スライダー (任意) |
