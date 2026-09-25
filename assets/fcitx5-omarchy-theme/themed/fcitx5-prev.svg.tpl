@@ -1,0 +1,1 @@
+<svg width="16" height="20" viewBox="0 0 4.2333334 5.2916667" xmlns="http://www.w3.org/2000/svg"><path style="fill:{{ foreground }}" d="m 2.9104167,4.2333334 -1.5875,-1.5875 1.5875,-1.5875001 z"/></svg>

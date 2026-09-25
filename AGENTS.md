@@ -53,7 +53,7 @@
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
 ├── assets/                # 他ホストへコピーする実ファイル
-│   ├── omarchy-tokyo-night/   # fcitx5 classicui 自作テーマ一式
+│   ├── fcitx5-omarchy-theme/  # fcitx5 候補ウィンドウ (Omarchy テーマ追従のテンプレート + hook)
 │   └── torohash.monitor/      # 改造した Display パネル (bar widget clone)
 └── backups/               # 変更前の設定ファイル退避
 ```
@@ -218,7 +218,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | 領域 | 何をするか | 詳細 |
 |------|-----------|------|
 | 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
-| 候補ウィンドウ | 自作 `omarchy-tokyo-night` テーマ(Mellow 設計 + Tokyo Night 配色)を配置 | 同上 |
+| 候補ウィンドウ | Omarchy のテーマに追従する自作テーマ `omarchy`(テンプレート + theme-set hook)。フォントは Noto Sans CJK JP | 同上 |
 | 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
 | herdr | 純正キーに戻し、`prefix+,` `.` で workspace、`prefix+shift+,` `.` で agent を移動 | [apps/herdr.md](apps/herdr.md) |
 | 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
@@ -236,7 +236,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 ## 別ホストへの適用
 
 → **[setup/new-host.md](setup/new-host.md)** を上から順に実行する。
-`assets/omarchy-tokyo-night/` のコピーも含まれている。
+`assets/fcitx5-omarchy-theme/` の配置も含まれている。
 
 ---
 
@@ -249,7 +249,7 @@ voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
 | Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は導入しない |
 | Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので `omarchy restart shell` が必須 |
 | Bitwarden の見た目 | `no_screen_share` のため**スクショで検証できない**。倍率が合わないと感じたら `--force-device-scale-factor` で調整 (`apps/bitwarden.md`) |
-| classicui テーマ | 微調整は `~/.local/share/fcitx5/themes/omarchy-tokyo-night/theme.conf`。変更したら `assets/` にも同期 |
+| classicui テーマ | 微調整は `~/.config/omarchy/themed/fcitx5-*.tpl` を編集して `omarchy theme refresh`。`~/.local/share/fcitx5/themes/omarchy/` は hook が上書きするので直接編集しない。変更したら `assets/` にも同期 |
 
 ---
 

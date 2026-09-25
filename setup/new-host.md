@@ -47,21 +47,23 @@ Layout=
 0=Default
 EOF
 
-# 候補ウィンドウ: 自作 Tokyo Night テーマを配置
-mkdir -p ~/.local/share/fcitx5/themes
-cp -r ~/dev/config/assets/omarchy-tokyo-night ~/.local/share/fcitx5/themes/
+# 候補ウィンドウ: Omarchy のテーマに追従する自作テーマ (テンプレート + theme-set hook)
+mkdir -p ~/.config/omarchy/themed
+cp ~/dev/config/assets/fcitx5-omarchy-theme/themed/*.tpl ~/.config/omarchy/themed/
+omarchy hook install theme-set ~/dev/config/assets/fcitx5-omarchy-theme/hooks/fcitx5-theme
 
 mkdir -p ~/.config/fcitx5/conf
 cat > ~/.config/fcitx5/conf/classicui.conf <<'EOF'
-Theme=omarchy-tokyo-night
+Theme=omarchy
 UseAccentColor=False
 PerScreenDPI=True
-Font=Sans 12
-MenuFont=Sans 12
+Font=Noto Sans CJK JP 12
+MenuFont=Noto Sans CJK JP 12
 EOF
 
 # 反映 (Omarchy 作法)
 omarchy restart xcompose
+omarchy theme refresh          # テンプレートを描画し、hook で ~/.local/share/fcitx5/themes/omarchy/ に配置
 ```
 
 確認:
@@ -381,8 +383,10 @@ mise ls --global | grep gh
 | ファイル | 内容 |
 |----------|------|
 | `~/.config/fcitx5/profile` | keyboard-us + mozc |
-| `~/.config/fcitx5/conf/classicui.conf` | Theme=omarchy-tokyo-night |
-| `~/.local/share/fcitx5/themes/omarchy-tokyo-night/` | 自作候補ウィンドウテーマ (assets/ からコピー) |
+| `~/.config/fcitx5/conf/classicui.conf` | Theme=omarchy / Font=Noto Sans CJK JP 12 |
+| `~/.config/omarchy/themed/fcitx5-*.tpl` | 候補ウィンドウのテンプレート (assets/ からコピー) |
+| `~/.config/omarchy/hooks/theme-set.d/fcitx5-theme` | テーマ変更時に候補ウィンドウのテーマを配置し直す hook |
+| `~/.local/share/fcitx5/themes/omarchy/` | hook が描画結果を置く (手で編集しない) |
 | `~/.config/voxtype/config.toml` | model=small, language=ja, VAD有効 |
 | `~/.config/herdr/config.toml` | 純正キー + agent/workspace 移動 |
 | `~/.config/hypr/input.lua` | kb_layout=us, natural_scroll=true |

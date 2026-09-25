@@ -1,0 +1,19 @@
+#!/bin/bash
+# Omarchy theme-set hook: install the fcitx5 candidate-window theme rendered from
+# ~/.config/omarchy/themed/fcitx5-*.tpl and make fcitx5 reload it.
+set -euo pipefail
+
+src="$HOME/.local/state/omarchy/current/theme"
+dest="$HOME/.local/share/fcitx5/themes/omarchy"
+
+# Themes without colors.toml get no rendered templates; keep the last theme then.
+[[ -f $src/fcitx5-theme.conf ]] || exit 0
+
+mkdir -p "$dest"
+for file in "$src"/fcitx5-*; do
+  cp "$file" "$dest/${file##*/fcitx5-}"
+done
+
+# classicui re-reads its theme on ReloadAddonConfig; no fcitx5 restart needed.
+gdbus call --session --dest org.fcitx.Fcitx5 --object-path /controller \
+  --method org.fcitx.Fcitx.Controller1.ReloadAddonConfig classicui >/dev/null 2>&1 || true

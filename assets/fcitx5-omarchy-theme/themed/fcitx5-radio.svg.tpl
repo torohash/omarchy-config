@@ -1,0 +1,1 @@
+<svg width="24" height="24" viewBox="0 0 6.3500001 6.3500001" xmlns="http://www.w3.org/2000/svg"><circle style="fill:{{ accent }}" cx="3.175" cy="3.175" r="1.0583334"/></svg>

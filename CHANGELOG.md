@@ -6,6 +6,7 @@
 
 | 日付 | 変更 | 対象 | 詳細 |
 |------|------|------|------|
+| 2026-09-25 | 候補ウィンドウを Omarchy のテーマに追従する自作テーマ `omarchy` (Soft デザイン) に置き換え、フォントを Noto Sans CJK JP に (Sans だと漢字が KR 字形)。3 案 (Omarchy / Soft / Bold) をスクショ比較して Soft を採用 | `~/.config/omarchy/themed/fcitx5-*.tpl` / `hooks/theme-set.d/fcitx5-theme` / `~/.config/fcitx5/conf/classicui.conf` | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
 | 2026-09-25 | herdr の移動キーを入れ替え: workspace を `prefix+,` `.`、agent を `prefix+shift+,` `.` にする | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
 | 2026-09-25 | Nix を `omarchy pkg add nix` で導入し、flakes を有効化。nix-config に Omarchy 用の構成 (Omarchy 優先・エージェント設定だけ Nix) を用意する方針に決定 | `nix` (`extra`) / `nix-daemon.socket` / `~/.config/nix/nix.conf` | [apps/nix.md](apps/nix.md) |
 | 2026-09-25 | Turso CLI を mise で導入 (AUR / Nix ではなく Omarchy と同じ mise 経路) | `turso` (mise, `aqua:tursodatabase/turso-cli`) | [apps/turso.md](apps/turso.md) |
@@ -39,4 +40,6 @@
 - `herdr-config.toml.omarchy-backup` … Omarchy 版 herdr config (比較用)
 - `herdr-config.toml.before-agent-ws-keys` … agent/workspace キー追加前の config
 - `herdr-config.toml.before-swap-agent-ws` … workspace / agent の移動キーを入れ替える前の config
+- `fcitx5-classicui.conf.before-redesign` … 候補ウィンドウを作り直す前の classicui.conf
+- `fcitx5-theme-omarchy-tokyo-night/` … 置き換える前の自作テーマ一式 (Tokyo Night 直書き)
 - `hypr-bindings.lua.before-bitwarden` … Passwords キーを Bitwarden に向ける前の bindings.lua

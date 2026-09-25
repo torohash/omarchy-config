@@ -25,7 +25,7 @@
 ├── setup/
 │   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
 ├── assets/                # 他ホストへコピーする実ファイル
-│   ├── omarchy-tokyo-night/   # fcitx5 classicui 自作テーマ一式
+│   ├── fcitx5-omarchy-theme/  # fcitx5 候補ウィンドウ (Omarchy テーマ追従のテンプレート + hook)
 │   └── torohash.monitor/      # 改造した Display パネル (bar widget clone)
 └── backups/               # 変更前の設定ファイル退避
 ```

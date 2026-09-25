@@ -88,48 +88,91 @@ fcitx5 の候補ウィンドウは `classicui` UI が描画する。素のまま
 **GNOME のようにデスクトップシェルが描いてくれる仕組みは Hyprland には無い**ので、
 fcitx5 のテーマで見た目を決める。
 
-### 採用: 自作 Tokyo Night テーマ (`omarchy-tokyo-night`)
+### 採用: Omarchy のテーマに追従する自作テーマ (`omarchy`)
 
-Omarchy のテーマ (Tokyo Night, accent `#7aa2f7`) に合わせた自作テーマ。
-**設計は [sanweiya/fcitx5-mellow-themes](https://github.com/sanweiya/fcitx5-mellow-themes) を参考**にした
-(スクリーンショット比較で一番洗練されていると判断)。
+Omarchy のテンプレート機能で、**`omarchy theme set` のたびに `colors.toml` の色から描き直す**自作テーマ。
+どのテーマ (暗い / 明るい) に切り替えても候補ウィンドウが追従する。
 
-> **採否**: 既製テーマ (Mellow / Tokyo Night / Fluent など) もスクショで比較したが、
-> 「Mellow の設計 + Tokyo Night 配色」の自作テーマが一番馴染むのでこれを採用する。
-> 変えたくなったら `Theme=` を差し替えるだけで切り替えられる。
+デザインは「Soft」: 角丸 8 の背景 + 薄いアクセント色の細い枠 + 淡いアクセント色の角丸ハイライト。
 
-配置先: `~/.local/share/fcitx5/themes/omarchy-tokyo-night/`
-一式はこのリポジトリの [`../assets/omarchy-tokyo-night/`](../assets/omarchy-tokyo-night/) に保存
-(他ホストへはコピーするだけ)。
+> **採否**: 3 案をスクショで比較して決めた。
+> - A「Omarchy」(角なし・2px アクセント枠・左端アクセント線) … Omarchy の UI に最も近い
+> - **B「Soft」(採用)** … 前の Mellow 風テーマを落ち着かせた方向。やわらかく読みやすい
+> - C「Bold」(角なし・2px 枠・アクセント塗りの選択) … 視認性は最も高いが強すぎる
+>
+> 前の自作テーマ (`omarchy-tokyo-night`: Mellow 設計 + Tokyo Night 配色を直書き) は
+> テーマを変えても Tokyo Night のまま残るため置き換えた。旧一式は
+> `backups/fcitx5-theme-omarchy-tokyo-night/`。
 
-| ファイル | 内容 |
+仕組み:
+
+```
+~/.config/omarchy/themed/fcitx5-*.tpl          # テンプレート ({{ accent }} や {{ mix background accent 22% }})
+   │ omarchy theme set (omarchy-theme-set-templates が描画)
+   ▼
+~/.local/state/omarchy/current/theme/fcitx5-*  # 描画結果
+   │ theme-set hook: ~/.config/omarchy/hooks/theme-set.d/fcitx5-theme
+   ▼
+~/.local/share/fcitx5/themes/omarchy/          # fcitx5 のテーマ (fcitx5- を外してコピー)
+   + D-Bus ReloadAddonConfig classicui          # fcitx5 を再起動せずに読み直す
+```
+
+一式はこのリポジトリの [`../assets/fcitx5-omarchy-theme/`](../assets/fcitx5-omarchy-theme/) に保存
+(`themed/` = テンプレート、`hooks/` = hook)。
+
+| テンプレート | 内容 |
 |---------|------|
-| `theme.conf` | 色・余白・画像の定義 |
-| `panel.svg` | **31x31 の角丸長方形 (radius 9.5)** + 控えめな枠。パネル/メニュー背景 |
-| `highlight.svg` | **31x31 の角丸ピル (radius 15.5)**。選択候補の背景 |
-| `prev.svg` / `next.svg` | ページ送りボタン |
-| `radio.svg` / `arrow.svg` | メニューのチェック / サブメニュー印 |
+| `fcitx5-theme.conf.tpl` | 色・余白・画像の定義。文字色は `foreground`、選択中は `bright_foreground` |
+| `fcitx5-panel.svg.tpl` | 24x24 の角丸長方形 (rx 8) + 1px 枠 (`mix background accent 45%`)。パネル/メニュー背景 |
+| `fcitx5-highlight.svg.tpl` | 16x16 の角丸長方形 (rx 5)、`mix background accent 22%`。選択候補の背景 |
+| `fcitx5-prev.svg.tpl` / `fcitx5-next.svg.tpl` | ページ送りボタン |
+| `fcitx5-radio.svg.tpl` / `fcitx5-arrow.svg.tpl` | メニューのチェック / サブメニュー印 |
 
 **SVG を 9 スライス**で伸ばすのがコツ:
-- `[InputPanel/Background] Image=panel.svg` + `Margin` 15 (角丸半径より大きい値)
-- `[InputPanel/Highlight] Image=highlight.svg` + `Margin` L/R=15, T/B=10
+- `[InputPanel/Background] Image=panel.svg` + `Margin` 9 (角丸半径 8 より大きい値)
+- `[InputPanel/Highlight] Image=highlight.svg` + `Margin` 6 (角丸半径 5 より大きい値)
 - SVG なら高 DPI でもジャギらない (PNG だと粗くなる)
 
 `~/.config/fcitx5/conf/classicui.conf`:
 
 ```ini
-Theme=omarchy-tokyo-night
-UseAccentColor=False   # ポータルのアクセント色で上書きさせない (決定的にする)
+Theme=omarchy
+UseAccentColor=False           # ポータルのアクセント色で上書きさせない (決定的にする)
 PerScreenDPI=True
-Font=Sans 12           # フォントはテーマではなくここ
-MenuFont=Sans 12
+Font=Noto Sans CJK JP 12       # フォントはテーマではなくここ。JP を明示する (下記)
+MenuFont=Noto Sans CJK JP 12
 ```
 
-適用は **fcitx5 のプロセス再起動**が必要 (下記ハマりどころ参照)。
+**フォントは `Noto Sans CJK JP` を明示する**。`Sans` のままだとロケールが `en_US` のため、
+漢字が **Noto Sans CJK KR (韓国語版の字形)** で描かれる (「直」「骨」などの形が違う)。
+英字も Liberation Sans になり日本語と揃わない。
 
 ```bash
-pkill -9 -x fcitx5      # 終了時の保存で上書きされないよう SIGKILL
-# systemd の Restart=always で数秒後に自動復帰
+fc-match "Sans:charset=76f4"   # => "Noto Sans CJK KR" (Sans のままだとこうなる)
+```
+
+反映は D-Bus で classicui を読み直す (fcitx5 の再起動は不要):
+
+```bash
+gdbus call --session --dest org.fcitx.Fcitx5 --object-path /controller \
+  --method org.fcitx.Fcitx.Controller1.ReloadAddonConfig classicui
+```
+
+**番号 (`1.`) と注釈 (`[カタカナ]`) は Mozc が候補の文字列に含めて渡す**ため、
+`CandidateLabelColor` / `CandidateCommentColor` では色を変えられない。
+
+### 見た目の確認方法 (エージェント向け)
+
+候補ウィンドウは入力中にしか出ないので、専用の端末を開いて Mozc で変換し、`grim` で撮る。
+**フォーカスが専用の端末にあることを確かめてから** `wtype` で入力する (他のウィンドウに打たないため)。
+
+```bash
+foot --app-id=imeshot --title=imeshot cat &          # 入力を捨てる専用ウィンドウ
+# hyprctl activewindow -j | jq -r .class が imeshot になるのを待つ
+fcitx5-remote -o                                     # IM オン
+wtype nihongo; wtype -k space; wtype -k space        # 変換して候補を出す
+grim -o "$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')" /tmp/ime.png
+wtype -k Escape; wtype -k Escape; fcitx5-remote -c   # 後片付け
 ```
 
 ### 参考: 既製テーマ (比較対象)
@@ -239,8 +282,9 @@ gdbus call --session --dest org.fcitx.Fcitx5 --object-path /controller \
   - `DefaultIM` は fcitx5 が `mozc` に書き戻す傾向 (Mozc が最初の「実 IM」のため)。
   - 手書き設定を確実に読ませたいときは **`pkill -9 -x fcitx5`** で保存させずに再起動
     (systemd の `Restart=always` で数秒後に自動復帰)。
-- **`fcitx5-remote -r` は profile / classicui を読まない**ことがある。テーマや IM 構成を
+- **`fcitx5-remote -r` は profile / classicui を読まない**ことがある。IM 構成を
   変えたら **プロセス再起動** (`omarchy restart xcompose` か SIGKILL) が必要。
+  classicui (テーマ・フォント) だけなら D-Bus の `ReloadAddonConfig classicui` で読み直せる。
 - **既定 `ActiveByDefault=False`** でも、`DefaultIM=mozc` の場合は起動時に日本語
   (state=2) になることがある。英数始まりにしたい時は `fcitx5-remote -c` で inactivate
   するか、`fcitx5-configtool` で既定 IM を調整。
@@ -267,5 +311,7 @@ sudo systemctl enable --now keyd
 ```bash
 omarchy pkg drop fcitx5-mozc fcitx5-material-color
 rm -f ~/.config/fcitx5/profile ~/.config/fcitx5/conf/classicui.conf
+rm -f ~/.config/omarchy/themed/fcitx5-*.tpl ~/.config/omarchy/hooks/theme-set.d/fcitx5-theme
+rm -rf ~/.local/share/fcitx5/themes/omarchy
 omarchy restart xcompose
 ```
