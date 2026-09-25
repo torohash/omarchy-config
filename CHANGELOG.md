@@ -8,9 +8,6 @@
 |------|------|------|------|
 | 2026-09-25 | GitHub のホスト鍵を公式 HTTPS API から取得し、SSH の初回検証を有効にする | `~/.ssh/known_hosts` | [apps/github-ssh.md](apps/github-ssh.md) |
 | 2026-09-25 | ブラウザを Chrome にして既定にする | `google-chrome` (AUR) / xdg default-web-browser | [apps/browser.md](apps/browser.md) |
-| 2026-09-25 | 記録を「どれを選んだか」の粒度に整理 (browser / エージェント) | `apps/browser.md`, `apps/omarchy-agent.md` | 各ファイル |
-| 2026-09-25 | 既定ブラウザが Chromium である理由を調査して記録 | `xdg-settings` / Omarchy ベースパッケージ | [apps/browser.md](apps/browser.md) |
-| 2026-09-25 | AGENTS.md に「作業前に必ず Omarchy スキルを読む」節を追加 | `AGENTS.md` | 同ファイル |
 | 2026-09-25 | Discord の Web アプリ版ランチャーを削除 (ネイティブと重複) | `~/.local/share/applications/Discord.desktop` | [apps/discord.md](apps/discord.md) |
 | 2026-09-25 | Discord (公式クライアント) を導入 | `discord` (`extra`) | [apps/discord.md](apps/discord.md) |
 | 2026-09-25 | `SUPER+SHIFT+/` (Passwords) を 1Password → Bitwarden に差し替え | `~/.config/hypr/bindings.lua` | [apps/bitwarden.md](apps/bitwarden.md) |
@@ -25,7 +22,7 @@
 | 2026-09-24 | キーボード `jp`→`us` / タッチパッド natural_scroll 反転 | `~/.config/hypr/input.lua` | [apps/hyprland-input.md](apps/hyprland-input.md) |
 | 2026-09-24 | agent/workspace の移動キーを追加 (`prefix+,` `.`) | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
 | 2026-09-24 | herdr キーバインドを本体デフォルトに戻す | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
-| 2026-09-24 | herdr prefix `ctrl+space`→`ctrl+b` (← 上の reset に内包) | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
+| 2026-09-24 | herdr prefix `ctrl+space`→`ctrl+b` | `~/.config/herdr/config.toml` | [apps/herdr.md](apps/herdr.md) |
 
 ## 新規ホストへの適用手順
 
