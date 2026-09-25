@@ -1,0 +1,15 @@
+# 作業の順番 (上から実行する)。 <skill名> <必須|任意>
+hyprland-input      必須
+fcitx5-mozc         必須
+herdr               必須
+github              必須
+claude-code-optout  必須
+nix-home-manager    必須
+pi-packages         必須
+display-scale       任意
+voxtype             任意
+chrome              任意
+bitwarden           任意
+discord             任意
+zed                 任意
+turso               任意

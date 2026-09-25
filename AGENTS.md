@@ -1,271 +1,49 @@
-# AGENTS.md — このディレクトリの引き継ぎ書
+# AGENTS.md
 
-これは **Omarchy マシンの設定変更ナレッジベース**。人間にもエージェントにも読めるように書いてある。
+新しい Omarchy マシンの環境を、エージェント (Claude Code / Pi) に素早く構築させるためのリポジトリ。
+作業は 1 つずつ skill (`.agents/skills/<name>/`) になっている。`.claude/skills` はその symlink。
 
----
+## 何をするか
 
-## 目的
+| 頼まれたこと | 使う skill |
+|-------------|-----------|
+| 環境を構築する・どこまで済んでいるか確かめる | **`omarchy-setup`** (メインの手順書) |
+| 特定の作業だけ行う・直す (例:「herdr の設定をして」) | その作業の skill (一覧は `omarchy-setup`) |
+| 新しい作業を追加する・既存の作業を書き直す | **`add-task`** |
 
-1. **別のホストマシンで同じ作業をまとめて再現できるようにする**
-2. **なぜその設定にしたかを残す**(採用理由・比較した選択肢)
+`~/.config/hypr/` や `~/.config/omarchy/` などを触る前に、Omarchy スキル (`omarchy`) を読む。
 
-## 非ゴール
-
-- Omarchy 本体の開発・改造ではない(→ `omarchy dev link` 系はスコープ外)
-- `/usr/share/omarchy/` の編集(パッケージ管理下。**読むのは自由**)
-
----
-
-## 前提環境
-
-| 項目 | 値 |
-|------|-----|
-| OS | Omarchy 4.0.4 (Arch ベース) |
-| WM | Hyprland(Lua 設定 `~/.config/hypr/`) |
-| Shell | Omarchy shell(Quickshell) |
-| テーマ | Tokyo Night / accent `#7aa2f7` |
-| パッケージ | pacman + AUR(`yay`)。**flatpak / snap は使わない** |
-| 特権 | エージェントの bash に TTY は無い → sudo 不可。Omarchy 経由か floating terminal で |
-
----
-
-## ディレクトリ構成と役割
+## 構成
 
 ```
 ~/dev/config/
-├── AGENTS.md              # ← これ。引き継ぎ書
-├── README.md              # 人間向けの概要
-├── CHANGELOG.md           # 索引: 日付 / 変更 / 対象 / 詳細リンク
-├── .agents/skills/        # 作業 skill (1 作業 = 1 skill)。移行中: 移したものから apps/ を消す
-│   ├── add-task/          # 作業 skill の書式とルール (新しく足すときはこれに従う)
-│   └── herdr/             # herdr のキー割り当て (SKILL.md = 手順 / reference.md = 理由)
-├── .claude/skills         # → .agents/skills (Claude Code 用の symlink)
-├── apps/                  # アプリ・機能ごとの詳細ナレッジ (skill へ移行中)
-│   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + 候補ウィンドウのテーマ
-│   ├── voxtype.md         # 音声入力(ディクテーション)
-│   ├── hyprland-input.md  # キーボード配列 / タッチパッド
-│   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
-│   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
-│   ├── discord.md         # チャット (公式クライアント)
-│   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
-│   ├── github-ssh.md      # GitHub SSH のホスト鍵登録と検証
-│   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
-│   ├── turso.md           # Turso CLI (mise)
-│   ├── nix.md             # Nix + Home Manager (nix-config との分担)
-│   ├── claude-code.md     # Claude Code のオプトアウト設定 (手順書)
-│   ├── zed.md             # エディタ (Arch は CLI 名が zeditor)
-├── setup/
-│   └── new-host.md        # 新規ホストへの適用手順(これをなぞれば再現できる)
-├── assets/                # 他ホストへコピーする実ファイル
-│   ├── fcitx5-omarchy-theme/  # fcitx5 候補ウィンドウ (Omarchy テーマ追従のテンプレート + hook)
-│   └── torohash.monitor/      # 改造した Display パネル (bar widget clone)
-└── backups/               # 変更前の設定ファイル退避
+├── AGENTS.md                  # これ (入口)
+├── README.md                  # 人間向けの概要
+├── .agents/skills/
+│   ├── omarchy-setup/         # メインの手順書 + status.sh / run-privileged.sh / order.txt
+│   ├── add-task/              # 作業 skill の書式とルール
+│   └── <作業>/                # SKILL.md = 手順 / reference.md = 理由・経緯 / files/ = 配るファイル
+└── .claude/skills -> ../.agents/skills
 ```
 
----
+## 共通のルール
 
-## 作業前に必ず読むもの (Omarchy スキル)
+- **インストールは Omarchy 経由** (`omarchy pkg add` / `omarchy pkg aur add` / `omarchy install ...` / `mise use -g`)。
+  素の `pacman -S` や `pkexec pacman` は使わない。入れる前に、Omarchy が最初から入れていないか確かめる。
+- **sudo はエージェントの bash では使えない** (TTY が無い)。特権の操作は `omarchy-setup` の
+  `run-privileged.sh` でフローティング端末にまとめ、ユーザーにパスワードを 1 回だけ入れてもらう。
+- **`/usr/share/omarchy/` は編集しない** (`omarchy update` で消える)。読むのは自由。
+- **変更前に現在の値を確認し**、上書きするファイルは `~/.local/state/omarchy-config/backups/` に退避する
+  (リポジトリには置かない)。
+- 変更したら skill の「検証」を実行し、期待される出力と合うことを確かめる。
 
-**~/.config/hypr/ や ~/.config/omarchy/ を触る前に、必ず Omarchy スキルを読む。**
-まだこのセッションで読んでいないなら、何よりも先に読むこと。読んでから作業を始める。
+## このリポジトリを編集するとき
 
-| ファイル | 中身 |
-|--------|------|
-| `/usr/share/omarchy/default/agents/skills/omarchy/SKILL.md` | 必須。Omarchy のコマンド体系・特権の使い分け・安全規則 |
-| 同 `hyprland.md` | bindings / monitors / window rules / Hyprland 設定 |
-| 同 `theming.md` / `plugins.md` / `capture.md` / `hooks.md` / `contributing.md` | テーマ / shell / 撮影 / hook / バグ報告 |
-
-(`~/.pi/agent/skills/omarchy/` はこのディレクトリへの symlink。どちらを読んでも同じ)
-
-このスキルが読めていないと実際にやらかす。実際に起きた事故:
-
-- `omarchy pkg add` ではなく **`pkexec pacman -S` でインストール**してしまった
-- **Omarchy に既にある手段(Web アプリ版 Discord)を確認せずネイティブを入れ、ランチャーを重複**させた
-- スキルの指示(`omarchy plugin clone` で複製してから編集)に気づかず、
-  `/usr/share/omarchy/` を直接編集しかけた
-
-特に**インストール**は必ず「スキルの決定フレームワーク」に従う:
-`omarchy pkg add` / `omarchy install ...` / `omarchy webapp ...` を使い、
-権限が要る操作はユーザーの端末で実行してもらう。
-
----
-
-## 記録ルール(**これがこのリポジトリの肝**)
-
-### 0. 状態を書かない(最優先)
-
-このリポジトリは**別ホストに同じ構成を作るための手順**。
-だから「この機械が今どうなっているか」は**書かない**。書くのは
-**何を入れるか / 何をするか / なぜそうするか / どこでハマるか / どう検証するか**だけ。
-
-| NG(この機械の状態を述べている) | OK(何を入れるか・何をするか) |
-|------------------------------|------------------------|
-| 「このホストの選択: Chrome」 | 「入れるもの: Google Chrome」 |
-| 「このマシンでは 1.8x にした」 | 「表示倍率を 1.8x にする」 |
-| 「本機では `jp` だった」 | 「JIS 機なら `jp` になる」 |
-| 「適用済み / 実施済み / 変更した」 | 「〜する」「〜にする」 |
-| 「(2026-09-25 時点)」 | 日付を書かない |
-
-- 例外: 「Omarchy 標準で `fcitx5` が導入済み」のように**対象が Omarchy 側**の前提は書いてよい
-  (この機械の状態ではない)。
-- 検査(残っていたら直す):
-
+- 書式とルールは skill `add-task` に従う。特に **状態を書かない** (「このマシンでは〜」「適用済み」「〜時点」)。
+- 検査 (出力が空であること):
   ```bash
-  # AGENTS.md 自身はこの表と検査コマンドを含むので除外する
-  grep -rn -E "このホスト|本機|このマシン|適用済み|実施済み|時点" --include="*.md" --exclude=AGENTS.md .
+  grep -rn -E "このホスト|本機|このマシン|適用済み|実施済み|時点" --include="*.md" . --exclude-dir=add-task --exclude=AGENTS.md
   ```
-
-### 1. `CHANGELOG.md` は索引
-- **1行 = 1変更**。日付 / 変更 / 対象 / 詳細ファイルへのリンク。
-- 新しいものを上に積む。
-- **決定事項も書く**(例:「既製テーマを比較したが自作を採用」)。後で「なぜこうなってるか」が追えるように。
-- 詳細(手順・ハマりどころ)は書かない。`apps/` に書く。
-
-### 2. `apps/<name>.md` は詳細ナレッジ
-1アプリ1ファイル。以下を必ず含める:
-- 何をするツールか / なぜ入れるか
-- **導入手順(コマンドそのまま)**
-- **ハマりどころ**(最重要)
-- 検証コマンドと**期待される出力**
-- 撤去方法
-- 参考リンク
-
-### 3. `assets/` は「配る実ファイル」
-設定ファイルの中身だけでなく、**テーマやアイコンなど実ファイルはここにコピー**しておく。
-他ホストでは `cp -r` するだけで済む。
-
-### 4. `backups/` は変更前の退避
-上書きする前に元ファイルを退避する(戻すとき・差分を見るとき用)。
-他のホストで使う実ファイルは `assets/` 側に置く。
-
-### 5. Markdown の書き方
-- **生 URL を表の中に置かない**(レンダラでリンクにならず、末尾の `|` を拾われる)。
-  `[owner/repo](https://...)` の形にする。
-- コマンドは実際に動いたものをそのまま書く(この書き方で `setup/new-host.md` をなぞれば再現できる)。
-
----
-
-## 作業の進め方(エージェント向け)
-
-1. **Omarchy スキルを先に読む** → 「作業前に必ず読むもの」の節を参照。
-   harness の `~/.pi/agent/skills/omarchy/SKILL.md` と、
-   必要なら `hyprland.md` 等のトピックガイド(`/usr/share/omarchy/default/agents/skills/omarchy/`)。
-   未読なら**最初に読む**。読まずに設定を触らない。
-2. **現状確認 → バックアップ**。設定を書く前に `cat` / `hyprctl getoption` / `... --print` で現在値を見る。
-3. **変更はユーザーに確認してから**。このリポジトリの運用では**勝手にインストールしない**方針。
-   入れるときは:
-   - **Omarchy のコマンド経由**にする (`omarchy pkg add` / `omarchy install ...` /
-     `omarchy webapp ...`)。素の `pacman -S` や `pkexec pacman` は使わない。
-   - **権限が必要な操作**は Omarchy コマンド経由で行う。AUR のように非対話で無理なものは
-     `omarchy-launch-floating-terminal-with-presentation` でユーザーの端末に出して
-     パスワードを入力してもらう(エージェントの bash には TTY が無く sudo が使えない)。
-   - 入れる**前に既存手段を確認**する: Omarchy の Web アプリ版 / mise 管理の CLI /
-     すでに入っているか (例: Discord は Web アプリ版が最初からあり、`gh` は mise に入っていた)。
-4. **検証コマンドを必ず実行**して、**期待される出力**をドキュメントに残す。
-5. **`CHANGELOG.md` に1行 + `apps/` に詳細**を書く。必要なら `assets/` に実ファイルをコピー。
-6. **git でコミット**(メッセージは日本語・本文に「何を/なぜ」)。
-
-### 変更対象ごとの検証コマンド
-
-```bash
-# Hyprland 設定 (~/.config/hypr/*.lua)  ← 変更後は必須
-hyprctl reload && hyprctl configerrors        # 空であること
-hyprctl getoption input:kb_layout
-hyprctl getoption input:touchpad:natural_scroll
-
-# fcitx5 / Mozc / 候補テーマ
-fcitx5-remote -n                              # 現在の IM
-fcitx5-remote -t                              # ON/OFF トグル (state 1⇄2)
-gdbus call --session --dest org.fcitx.Fcitx5 --object-path /controller \
-  --method org.fcitx.Fcitx.Controller1.GetConfig "fcitx://config/addon/classicui"
-
-# herdr
-herdr config check                            # => config: ok
-herdr server reload-config                    # => {"status":"applied"}
-omarchy-menu-herdr-keybindings --print        # 解決済みキーバインド
-
-# Voxtype
-voxtype setup check                           # All checks passed
-voxtype setup gpu --status                    # バックエンド
-voxtype transcribe /tmp/sample.wav            # 喋らずにテスト
-```
-
-### 安全規則・落とし穴
-
-- **`/usr/share/omarchy/` は絶対に編集しない**(`omarchy update` で消える)。読むのは自由。
-- **特権**: エージェントの bash には **TTY が無い**ので `sudo` はプロンプトを出せない
-  (実測: `sudo -v` → `sudo: a terminal is required to read the password`)。
-  よってスキルの「端末が無い場合」に該当する。ただし:
-  - **手順は必ず Omarchy コマンド経由**(`omarchy pkg add` / `omarchy install ...`)。
-    素の `pacman -S` / `pkexec pacman -S` を自前で叩かない。
-  - **AUR は root では入れられない**(makepkg / yay が root を拒否)。
-    その場合は `omarchy-launch-floating-terminal-with-presentation '<omarchy-install-...>'`
-    を使う。ユーザーの見えるフローティング端末で sudo を入力してもらえる
-    (Omarchy メニューと同じ経路)。
-  - 非対話で完結できるもの(システム設定の書き換え等)だけ `pkexec` を使う。
-- **fcitx5 は終了時に設定を書き戻す**。手書きの設定を確実に読ませたいときは
-  `pkill -9 -x fcitx5`(systemd の `Restart=always` で自動復帰)。
-  `fcitx5-remote -r` では profile / classicui は読み直されない。
-- **`omarchy-refresh-herdr` / `omarchy refresh hyprland` はユーザー設定を上書きする**。
-  更新後に効かなくなったら `setup/new-host.md` を再実行。
-- **Omarchy の既定は「そのままでは日本語で使えない」ものが多い**:
-  - fcitx5 → Mozc が入っていない
-  - Voxtype → `base.en` + `language="en"` の英語専用
-  - herdr → prefix `ctrl+space` が IME と衝突
-
----
-
-## 取り扱っている項目
-
-適用手順は [setup/new-host.md](setup/new-host.md) を上から順に。詳細は各 `apps/*.md`。
-
-| 領域 | 何をするか | 詳細 |
-|------|-----------|------|
-| 日本語入力 | fcitx5 + Mozc を入れ、`Ctrl+Space` で切替 | [apps/fcitx5-mozc.md](apps/fcitx5-mozc.md) |
-| 候補ウィンドウ | Omarchy のテーマに追従する自作テーマ `omarchy`(テンプレート + theme-set hook)。フォントは Noto Sans CJK JP | 同上 |
-| 音声入力 | Voxtype を `small` + `ja` + VAD 有効 + GPU(Vulkan) にする | [apps/voxtype.md](apps/voxtype.md) |
-| herdr | 純正キーを土台に、prefix を `alt+s`、`prefix+a` `d` で workspace、`prefix+shift+a` `d` で agent を移動 (左手だけ) | [.agents/skills/herdr](.agents/skills/herdr/SKILL.md) |
-| 入力デバイス | `kb_layout = us` / `natural_scroll = true` | [apps/hyprland-input.md](apps/hyprland-input.md) |
-| 表示倍率 | 1.8x(2880x1800 で選べるのは 1.667 / 1.8 / 1.875) | [apps/display-scale.md](apps/display-scale.md) |
-| Display パネル | bar widget を clone し、SCALE を11段スライダーにする | 同上 |
-| Bitwarden | `bitwarden` + `bitwarden-cli` を入れ、`SUPER+SHIFT+/` を Bitwarden に向ける | [apps/bitwarden.md](apps/bitwarden.md) |
-| Discord | 公式クライアント (`extra`) を入れ、初回起動で本体をDLする (Web アプリ版と重複しないよう注意) | [apps/discord.md](apps/discord.md) |
-| CLI ツール | `gh` / `node` / `pi` / `codex` / `turso` は mise でグローバル管理 | [setup/new-host.md](setup/new-host.md) の 8 |
-| GitHub SSH | 公式ホスト鍵を `known_hosts` に登録し、検証を無効化せず接続する | [apps/github-ssh.md](apps/github-ssh.md) |
-| ブラウザ | Chrome(既定。AUR の google-chrome。ベースの chromium は残す) | [apps/browser.md](apps/browser.md) |
-| エディタ | Zed を入れ、CLI 名 `zeditor` に `zed` symlink を張る | [apps/zed.md](apps/zed.md) |
-| Nix | `omarchy pkg add nix` で入れ、nix-config の `torohash_omarchy` でエージェント設定だけを共有する (Omarchy 優先) | [apps/nix.md](apps/nix.md) |
-| Claude Code | テレメトリ・エラー報告・評価アンケートを `settings.json` の `env` でオプトアウト (手順書で管理) | [apps/claude-code.md](apps/claude-code.md) |
-| 既定エージェント | 未設定(Omarchy は既定を勝手に選ばない) | [apps/omarchy-agent.md](apps/omarchy-agent.md) |
-
-## 別ホストへの適用
-
-→ **[setup/new-host.md](setup/new-host.md)** を上から順に実行する。
-`assets/fcitx5-omarchy-theme/` の配置も含まれている。
-
----
-
-## 注意点
-
-| 項目 | 内容 |
-|------|------|
-| fcitx5 の起動時 IM | 終了時に `DefaultIM` を `mozc` に書き戻す癖があるため、**ログイン直後が日本語始まりになる可能性**。英数固定にするならログイン時に `fcitx5-remote -c` を実行する設定を足す |
-| herdr の prefix 後の文字キー | IME オン中は `a` `d` などが Mozc に取られて効かない可能性がある。prefix は Pi / Claude Code のキーとも突き合わせる |
-| Caps Lock の IME 切替 | 検討したが **`Ctrl+Space` 運用で決着**。`keyd` は導入しない |
-| Display パネル clone | `omarchy update` 後にパネルが元に戻っていたら `setup/new-host.md` の 5 を再実行。QML は hot-reload されないので `omarchy restart shell` が必須 |
-| Bitwarden の見た目 | `no_screen_share` のため**スクショで検証できない**。倍率が合わないと感じたら `--force-device-scale-factor` で調整 (`apps/bitwarden.md`) |
-| classicui テーマ | 微調整は `~/.config/omarchy/themed/fcitx5-*.tpl` を編集して `omarchy theme refresh`。`~/.local/share/fcitx5/themes/omarchy/` は hook が上書きするので直接編集しない。変更したら `assets/` にも同期 |
-
----
-
-## よく使うコマンド
-
-```bash
-cd ~/dev/config && git log --oneline          # 変更履歴
-git add -A && git commit -m "..."             # 記録
-
-omarchy commands                              # Omarchy の全コマンド
-omarchy theme current
-hyprctl configerrors
-fcitx5-remote -n && voxtype setup check && herdr config check
-```
+- 手順と実際の環境がずれていないかは `omarchy-setup/files/status.sh` で確かめる (すべて ok)。
+- コミットメッセージは日本語で、本文に「何を / なぜ」を書く。署名 (Co-Authored-By など) は付けない。
+- 生の URL を表の中に置かない (`[owner/repo](https://...)` の形にする)。

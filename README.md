@@ -1,53 +1,47 @@
-# config — Omarchy 設定ナレッジベース
+# omarchy-config
 
-このリポジトリ (Omarchy / Hyprland) の設定を**別のホストに適用するための手順・設定値・知見**を記録する。
-**新しいマシンを同じ環境にする**ために、できるだけ多くのナレッジを残すことが目的。
+新しい [Omarchy](https://omarchy.org/) マシンを、いつもの環境にすばやく構築するためのリポジトリ。
+手順はエージェント (Claude Code / Pi) が読んで実行できる skill として書いてある。
+
+## 使い方
+
+```bash
+git clone https://github.com/torohash/omarchy-config ~/dev/config
+cd ~/dev/config
+claude        # または pi
+```
+
+エージェントに「セットアップして」と頼む。メインの手順書 (skill `omarchy-setup`) が次の順で進める。
+
+1. 各作業がもう済んでいるかを調べる (`status.sh`)
+2. 任意の作業 (アプリなど) を入れるか聞く
+3. sudo が要る操作をまとめて 1 つの端末で実行する (パスワードは 1 回)
+4. ブラウザでのログインなど、人にしかできない操作をまとめて案内する
+5. 残りの作業を順に実行し、最後に全体を検証する
+
+特定の作業だけなら「herdr の設定をして」のように頼むか、`/herdr` (Claude Code) / `/skill:herdr` (Pi) で呼ぶ。
 
 ## 構成
 
 ```
-~/dev/config/
-├── AGENTS.md              # 引き継ぎ書 (エージェント/人間向けの作業ルールと現状)
-├── README.md              # これ。目的と構成
-├── CHANGELOG.md           # 索引: 日付・概要・詳細ファイルへのリンク
-├── apps/                  # アプリ/機能ごとの詳細ナレッジ
-│   ├── fcitx5-mozc.md     # 日本語入力 (Mozc) + fcitx5
-│   ├── voxtype.md         # 音声入力(ディクテーション)
-│   ├── hyprland-input.md  # キーボード配列 / タッチパッド
-│   ├── display-scale.md   # 表示倍率 / Display パネルの11段スライダー
-│   ├── bitwarden.md       # パスワードマネージャ (デスクトップ + CLI)
-│   ├── discord.md         # チャット (公式クライアント)
-│   ├── omarchy-agent.md   # 既定エージェントの選択 (未設定)
-│   ├── github-ssh.md      # GitHub SSH のホスト鍵登録と検証
-│   ├── browser.md         # 使っているブラウザ (Chromium) と候補一覧
-│   └── zed.md             # エディタ (Arch は CLI 名が zeditor)
-├── setup/
-│   └── new-host.md        # 新規ホストへの適用手順 (まとめ)
-├── assets/                # 他ホストへコピーする実ファイル
-│   ├── fcitx5-omarchy-theme/  # fcitx5 候補ウィンドウ (Omarchy テーマ追従のテンプレート + hook)
-│   └── torohash.monitor/      # 改造した Display パネル (bar widget clone)
-└── backups/               # 変更前の設定ファイル退避
+.agents/skills/
+├── omarchy-setup/   メインの手順書 (順番は files/order.txt)
+├── add-task/        作業 skill の書き方
+└── <作業>/          SKILL.md (手順) / reference.md (理由・経緯・ハマりどころ) / files/ (配るファイル)
+.claude/skills  ->  .agents/skills
 ```
 
-## 使い方
+| 作業 | 内容 |
+|------|------|
+| `hyprland-input` | キーボード配列 US、タッチパッドの自然スクロール |
+| `fcitx5-mozc` | 日本語入力 (Ctrl+Space)、テーマに追従する候補ウィンドウ |
+| `herdr` | herdr を左手だけで操作 (prefix `alt+s`、A / D で移動) |
+| `github` | `gh auth login` の案内、GitHub の SSH ホスト鍵 |
+| `claude-code-optout` | Claude Code のテレメトリ等を止める |
+| `nix-home-manager` | Nix + [nix-config](https://github.com/torohash/nix-config) (Pi の設定) |
+| `pi-packages` | Pi の拡張 |
+| `display-scale` | Display パネルの倍率スライダー (任意) |
+| `voxtype` | 音声入力の日本語化 (任意) |
+| `chrome` / `bitwarden` / `discord` / `zed` / `turso` | アプリ (任意) |
 
-- **このリポジトリの運用ルール・現状・未解決事項** → `AGENTS.md`
-- **何を変えたか知りたい** → `CHANGELOG.md`
-- **あるアプリの入れ方・ハマりどころを知りたい** → `apps/<name>.md`
-- **新しいマシンに一気に適用したい** → `setup/new-host.md`
-
-## 環境の前提
-
-- OS: Omarchy 4.0.4 (Arch ベース, BUILD_ID=4.0.4)
-- WM: Hyprland (Lua 設定, `~/.config/hypr/`)
-- Shell: Omarchy shell (Quickshell)
-- テーマ: Tokyo Night
-- パッケージ管理: `pacman` + AUR(`yay`)。**flatpak / snap は未導入**
-- 特権: agent からは `sudo` の対話入力ができないため **`pkexec`** を使う
-
-## 記録ルール
-
-- `CHANGELOG.md` は **索引**。1行 = 1変更 + 詳細ファイルへのリンク。
-- 手順・コマンド・ハマりどころは `apps/<name>.md` に集約。
-- 変更前ファイルは必要に応じて `backups/` に退避。
-- `/usr/share/omarchy/` は **編集禁止**(参照のみ)。ユーザー設定は `~/.config/` 配下。
+作業の追加・変更のルールは [AGENTS.md](AGENTS.md) と skill `add-task`。

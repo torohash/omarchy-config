@@ -1,9 +1,0 @@
-# fcitx5 classicui (candidate window)
-# User theme: ~/.local/share/fcitx5/themes/omarchy-tokyo-night
-Theme=omarchy-tokyo-night
-# Deterministic: don't let the XDG accent-color portal override the theme
-UseAccentColor=False
-PerScreenDPI=True
-# Theme.conf has no Font key; font lives here.
-Font=Sans 12
-MenuFont=Sans 12
