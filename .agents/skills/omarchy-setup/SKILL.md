@@ -15,6 +15,7 @@ metadata:
 |-------|------|------|
 | `hyprland-input` | 必須 | キーボード配列 US、タッチパッドの自然スクロール |
 | `fcitx5-mozc` | 必須 | 日本語入力 (Ctrl+Space) と、テーマに追従する候補ウィンドウ |
+| `japanese-fonts` | 必須 | 等幅を HackGen Console NF に、漢字を日本語の字形に |
 | `herdr` | 必須 | herdr のキーを左手だけで操作できるようにする (prefix `alt+s`) |
 | `github` | 必須 | `gh auth login` の案内と GitHub の SSH ホスト鍵 |
 | `claude-code-optout` | 必須 | Claude Code のテレメトリ等を止める |
