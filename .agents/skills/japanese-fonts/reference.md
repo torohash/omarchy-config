@@ -13,6 +13,8 @@ fc-match "sans-serif:charset=76f4" family     # 「直」を描くフォント =
 
 候補ウィンドウ (fcitx5) は skill `fcitx5-mozc` でフォントを直接 `Noto Sans CJK JP` にしている。この skill はそれ以外のアプリ用。
 
+`50-cjk-jp.conf` で sans-serif / serif は直ったが、それ以外の経路では KR / SC / TC がまだ選ばれていた (下の「JP だけにする」)。
+
 ## HackGen Console NF
 
 [yuru7/HackGen](https://github.com/yuru7/HackGen): 英字は Hack、日本語は源柔ゴシック (JP の字形)、Nerd Font のアイコン入り。
@@ -39,6 +41,29 @@ AUR の `ttf-hackgen` に一式が入る。他のホスト (nix-config) の ghos
   **CJK JP だけを書くと、英字まで Noto CJK JP の字形になる** (CJK JP が先頭に来るため)。
 - `monospace` は書かない。`omarchy font set` が先頭を決め、HackGen が日本語を持っている。
 - Omarchy の既定の英字フォントが変わったら、`<prefer>` の先頭のフォント名も合わせる。
+
+## JP だけにする (`conf.d/51-cjk-jp-only.conf`)
+
+`50-cjk-jp.conf` は `sans-serif` / `serif` を頼まれたときにしか効かない。それ以外の経路で JP 以外の字形が選ばれていた。
+
+| 経路 | 選ばれていたもの |
+|------|------------------|
+| GTK の UI フォント `Adwaita Sans` (Chrome のタブ・アドレスバー・メニュー、GTK アプリ) | KR (「社」「神」「祝」の偏が「示」) |
+| ページの `lang="zh"` / `"zh-TW"` / `"ko"` | SC / TC / KR |
+| CSS の `SimHei` / `黑体` / `SimSun` / `宋体` / `PMingLiU` (`65-nonlatin.conf` の別名で Noto CJK に置き換わる) | SC / TC |
+| CSS で `"Noto Sans CJK SC"` などを名指し | SC / TC / KR |
+
+- `Adwaita Sans` は `60-latin.conf` の別名で `system-ui` の候補を引き継ぎ、`65-nonlatin.conf` がその候補に韓国語用の
+  `Noto Sans CJK KR` を入れている。ロケールが `en` なので JP を優先する手がかりが無く、KR が選ばれる。
+- 別名の順番を足して直すと経路ごとの対処になるので、`<selectfont><rejectfont>` で SC / TC / KR / HK を fontconfig から隠す。
+  フォントのパッケージには触らない。
+- **`<glob>` で弾かない**。Noto CJK は JP と同じ `.ttc` に全地域の字形が入っているので、ファイルごと JP まで消える。
+  ファミリー名の `<pattern>` で弾く。
+- JP の字形にもハングルは入っているので、韓国語は読める。中国語・韓国語のページは日本式の字形になる。
+- font-family の無いページや `system-ui` の漢字は、Noto Sans CJK JP か HackGen (どちらも JP の字形) になる。
+- サイトが Web フォント (例: Google Fonts の `Noto Sans SC`) を配っている場合は fontconfig を通らないので直らない。
+
+Chrome がどのフォントで描いたかは、DevTools Protocol の `CSS.getPlatformFontsForNode` で文字ごとに分かる。
 
 ## 確かめ方
 
